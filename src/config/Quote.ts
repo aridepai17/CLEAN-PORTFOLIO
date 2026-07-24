@@ -1,6 +1,6 @@
 export const quotes = [
     {
-        quote: `Your loves me strong, and your hate makes me unstoppable`,
+        quote: `Your love makes me strong, and your hate makes me unstoppable`,
         author: 'Cristiano Ronaldo',
     },
     {
