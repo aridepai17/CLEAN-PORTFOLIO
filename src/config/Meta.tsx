@@ -122,7 +122,8 @@ export function getPageMetadata(pathname: string): PageMeta {
 }
 
 export function generateMetadata(pathname: string) {
-    const pageMeta = getPageMetadata(pathname);
+    const resolvedPath = pageMetadata[pathname] ? pathname : '/';
+    const pageMeta = getPageMetadata(resolvedPath);
 
     return {
         metadataBase: new URL(siteConfig.url),
@@ -135,7 +136,7 @@ export function generateMetadata(pathname: string) {
 
         openGraph: {
             type: 'website',
-            url: `${siteConfig.url}${pathname}`,
+            url: `${siteConfig.url}${resolvedPath}`,
             title: pageMeta.title,
             description: pageMeta.description,
             siteName: heroConfig.name,
@@ -170,7 +171,7 @@ export function generateMetadata(pathname: string) {
         },
 
         alternates: {
-            canonical: `${siteConfig.url}${pathname}`,
+            canonical: `${siteConfig.url}${resolvedPath}`,
         },
     };
 }
