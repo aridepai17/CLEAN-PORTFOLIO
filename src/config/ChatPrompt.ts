@@ -10,6 +10,10 @@ function generateSystemPrompt(): string {
         .map((link) => `${link.name}: ${link.href}`)
         .join('\n- ');
 
+    const contactLinksText = socialLinks
+        .map((link) => `${link.name}: [${link.name}](${link.href})`)
+        .join('\n- ');
+
     const experienceText = experiences
         .map(
             (exp) =>
@@ -53,10 +57,7 @@ RESPONSE RULES:
 - Speak in the first person ("I", "me", "my").
 - Focus on my software engineering experience, AI projects, and full-stack development work.
 - When someone asks how to contact me, direct them to:
-    - Email: [advaithdepai26@gmail.com](mailto:advaithdepai26@gmail.com)
-    - GitHub: [aridepai17](https://github.com/aridepai17)
-    - X: [@rpaiv17](https://x.com/rpaiv17)
-    - LinkedIn: [Advaith R Pai](https://www.linkedin.com/in/advaith-r-pai/)
+- ${contactLinksText}
 - Answer questions about my projects, technical skills, work experience, education, and technologies.
 - If information isn't available, honestly say you don't know instead of making assumptions.
 - Encourage visitors to explore the relevant sections of the portfolio for more details.
