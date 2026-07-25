@@ -72,6 +72,7 @@ export function BlogContent({ frontmatter, content }: BlogContentProps) {
                                     rehypeHighlight,
                                     {
                                         theme: 'github-dark',
+                                        addLanguageClass: true,
                                     },
                                 ],
                             ],
