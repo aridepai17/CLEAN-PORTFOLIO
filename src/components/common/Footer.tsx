@@ -1,40 +1,16 @@
-import { navbarConfig } from '@/config/Navbar';
-import Image from 'next/image';
-import Link from 'next/link';
+import { footerConfig } from '@/config/Footer';
 import React from 'react';
 
 import Container from './Container';
-import { ThemeToggleButton } from './ThemeSwitch';
 
-export default function Navbar() {
+export default function Footer() {
     return (
-        <Container className="sticky top-0 z-20 rounded-md py-4 backdrop-blur-sm">
-            <div className="flex items-center justify-between px-6">
-                <div className="flex items-baseline gap-4">
-                    <Link href="/">
-                        <Image
-                            className="h-12 w-12 rounded-md border border-gray-200 bg-blue-300 transition-all duration-300 ease-in-out hover:scale-90 dark:bg-yellow-300"
-                            src={navbarConfig.logo.src}
-                            alt={navbarConfig.logo.alt}
-                            width={navbarConfig.logo.width}
-                            height={navbarConfig.logo.height}
-                        />
-                    </Link>
-                    <div className="flex items-center justify-center gap-4">
-                        {navbarConfig.navItems.map((item) => (
-                            <Link
-                                className="transition-all duration-300 ease-in-out hover:underline hover:decoration-2 hover:underline-offset-4"
-                                key={item.label}
-                                href={item.href}
-                            >
-                                {item.label}
-                            </Link>
-                        ))}
-                    </div>
-                </div>
-                <div className="flex items-center gap-4">
-                    <ThemeToggleButton />
-                </div>
+        <Container className="py-16">
+            <div className="flex flex-col items-center justify-center">
+                <p className="text-secondary text-center text-sm">
+                    {footerConfig.text} <b>{footerConfig.developer}</b> <br />{' '}
+                    &copy; {new Date().getFullYear()}. {footerConfig.copyright}
+                </p>
             </div>
         </Container>
     );
