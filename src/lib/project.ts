@@ -26,29 +26,52 @@ export function getProjectCaseStudySlugs(): string[] {
 export function getProjectCaseStudyBySlug(
     slug: string,
 ): ProjectCaseStudy | null {
-    try {
-        const fullPath = path.join(projectsDirectory, `${slug}.mdx`);
+    if (!slug || typeof slug !== 'string') {
+        return null;
+    }
 
-        if (!fs.existsSync(fullPath)) {
+    const sanitized = slug
+        .replace(/\//g, '')
+        .replace(/\\/g, '')
+        .replace(/\.\./g, '');
+
+    if (
+        !sanitized ||
+        sanitized !== slug ||
+        !/^[a-zA-Z0-9_-]+$/.test(sanitized)
+    ) {
+        return null;
+    }
+
+    try {
+        const fullPath = path.join(projectsDirectory, `${sanitized}.mdx`);
+        const resolvedPath = path.resolve(fullPath);
+        const resolvedDirectory = path.resolve(projectsDirectory);
+
+        if (!resolvedPath.startsWith(`${resolvedDirectory}${path.sep}`)) {
             return null;
         }
 
-        const fileContents = fs.readFileSync(fullPath, 'utf8');
+        if (!fs.existsSync(resolvedPath)) {
+            return null;
+        }
+
+        const fileContents = fs.readFileSync(resolvedPath, 'utf8');
         const { data, content } = matter(fileContents);
 
         // Validate frontmatter
         const frontmatter = data as ProjectCaseStudyFrontmatter;
         if (!frontmatter.title || !frontmatter.description) {
-            throw new Error(`Invalid frontmatter in ${slug}.mdx`);
+            throw new Error(`Invalid frontmatter in ${sanitized}.mdx`);
         }
 
         return {
-            slug,
+            slug: sanitized,
             frontmatter,
             content,
         };
     } catch (error) {
-        console.error(`Error reading project case study ${slug}:`, error);
+        console.error(`Error reading project case study ${sanitized}:`, error);
         return null;
     }
 }
