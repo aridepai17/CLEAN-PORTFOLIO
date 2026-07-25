@@ -4,9 +4,9 @@ import { Separator } from '@/components/ui/separator';
 import { ProjectCaseStudyFrontmatter } from '@/types/project';
 import rehypeHighlight from '@shikijs/rehype';
 import { MDXRemote } from 'next-mdx-remote/rsc';
-import { Link } from 'next-view-transitions';
 import Image from 'next/image';
 
+import { TrackedLink } from '../common/TrackedLink';
 import GitHubIcon from '../svgs/GitHubIcon';
 import Website from '../svgs/Website';
 import { ProjectComponents } from './ProjectComponents';
@@ -119,50 +119,45 @@ export function ProjectContent({ frontmatter, content }: ProjectContentProps) {
                     {/* Action Buttons */}
                     <div className="flex flex-wrap gap-3">
                         {live && (
-                            <Button
-                                asChild
-                                track={{
-                                    name: 'external_link_click',
-                                    data: {
-                                        url: live,
-                                        text: 'Live Demo',
-                                        location: 'project_detail',
-                                    },
-                                }}
-                            >
-                                <Link
+                            <Button asChild>
+                                <TrackedLink
                                     href={live}
                                     target="_blank"
                                     rel="noopener noreferrer"
+                                    track={{
+                                        name: 'external_link_click',
+                                        data: {
+                                            url: live,
+                                            text: 'Live Demo',
+                                            location: 'project_detail',
+                                        },
+                                    }}
                                     className="flex items-center gap-2"
                                 >
                                     <Website className="size-4" />
                                     Live Demo
-                                </Link>
+                                </TrackedLink>
                             </Button>
                         )}
                         {github && (
-                            <Button
-                                variant="outline"
-                                asChild
-                                track={{
-                                    name: 'external_link_click',
-                                    data: {
-                                        url: github,
-                                        text: 'Source Code',
-                                        location: 'project_detail',
-                                    },
-                                }}
-                            >
-                                <Link
+                            <Button variant="outline" asChild>
+                                <TrackedLink
                                     href={github}
                                     target="_blank"
                                     rel="noopener noreferrer"
+                                    track={{
+                                        name: 'external_link_click',
+                                        data: {
+                                            url: github,
+                                            text: 'Source Code',
+                                            location: 'project_detail',
+                                        },
+                                    }}
                                     className="flex items-center gap-2"
                                 >
                                     <GitHubIcon className="size-4" />
                                     Source Code
-                                </Link>
+                                </TrackedLink>
                             </Button>
                         )}
                     </div>
