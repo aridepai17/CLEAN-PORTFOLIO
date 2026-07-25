@@ -1,12 +1,7 @@
-// src/components/animations/SlideUp.tsx
 'use client';
 
 import { motion } from 'motion/react';
 import React from 'react';
-
-// src/components/animations/SlideUp.tsx
-
-// src/components/animations/SlideUp.tsx
 
 export function SlideUp({
     children,

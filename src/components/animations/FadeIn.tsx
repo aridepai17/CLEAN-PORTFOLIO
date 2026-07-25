@@ -1,12 +1,7 @@
-// src/components/animations/FadeIn.tsx
 'use client';
 
 import { motion } from 'motion/react';
 import React from 'react';
-
-// src/components/animations/FadeIn.tsx
-
-// src/components/animations/FadeIn.tsx
 
 export function FadeIn({
     children,
