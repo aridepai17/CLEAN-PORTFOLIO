@@ -19,8 +19,25 @@ export function getBlogPostSlugs(): string[] {
 
 // Get blog post by slug with full content
 export function getBlogPostBySlug(slug: string): BlogPost | null {
+    if (!slug || typeof slug !== 'string') {
+        return null;
+    }
+
+    const sanitized = slug
+        .replace(/\//g, '')
+        .replace(/\\/g, '')
+        .replace(/\.\./g, '');
+
+    if (
+        !sanitized ||
+        sanitized !== slug ||
+        !/^[a-zA-Z0-9_-]+$/.test(sanitized)
+    ) {
+        return null;
+    }
+
     try {
-        const fullPath = path.join(blogDirectory, `${slug}.mdx`);
+        const fullPath = path.join(blogDirectory, `${sanitized}.mdx`);
         if (!fs.existsSync(fullPath)) {
             return null;
         }
@@ -31,15 +48,15 @@ export function getBlogPostBySlug(slug: string): BlogPost | null {
         // Validate frontmatter
         const frontmatter = data as BlogFrontmatter;
         if (!frontmatter.title || !frontmatter.description) {
-            throw new Error(`Invalid frontmatter in ${slug}.mdx`);
+            throw new Error(`Invalid frontmatter in ${sanitized}.mdx`);
         }
         return {
-            slug,
+            slug: sanitized,
             frontmatter,
             content,
         };
     } catch (error) {
-        console.error(`Error reading blog post ${slug}:`, error);
+        console.error(`Error reading blog post ${sanitized}:`, error);
         return null;
     }
 }
