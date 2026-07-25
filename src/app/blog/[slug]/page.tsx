@@ -30,6 +30,8 @@ export async function generateStaticParams() {
     }));
 }
 
+export const dynamicParams = false;
+
 // Generate metadata for each blog post
 export async function generateMetadata({
     params,
