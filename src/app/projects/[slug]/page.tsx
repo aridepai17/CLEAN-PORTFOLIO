@@ -30,6 +30,8 @@ export async function generateStaticParams() {
     }));
 }
 
+export const dynamicParams = false;
+
 // Generate metadata for each project case study
 export async function generateMetadata({
     params,
@@ -81,25 +83,21 @@ export default async function ProjectCaseStudyPage({
         <Container className="py-16">
             <div className="space-y-12">
                 <div>
-                    <Button
-                        variant="ghost"
-                        asChild
-                        className="group"
-                        track={{
-                            name: 'button_click',
-                            data: {
-                                buttonId: 'project_back',
-                                section: 'project_detail',
-                            },
-                        }}
-                    >
-                        <Link
+                    <Button variant="ghost" asChild className="group">
+                        <TrackedLink
                             href="/projects"
+                            track={{
+                                name: 'button_click',
+                                data: {
+                                    buttonId: 'project_back',
+                                    section: 'project_detail',
+                                },
+                            }}
                             className="flex items-center space-x-2"
                         >
                             <ArrowLeft className="size-4" />
                             <span>Back to Projects</span>
-                        </Link>
+                        </TrackedLink>
                     </Button>
                 </div>
 
