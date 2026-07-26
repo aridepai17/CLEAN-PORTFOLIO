@@ -2,9 +2,9 @@ name: Lint and Build
 
 on:
   push:
-    branches: [main, mdxengine]
+    branches: ['*']
   pull_request:
-    branches: [main, mdxengine]
+    branches: ['*']
 
 jobs:
   lint-and-build:
