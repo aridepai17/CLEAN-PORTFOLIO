@@ -3,7 +3,7 @@ import { TrackedLink } from '@/components/common/TrackedLink';
 import { ProjectContent } from '@/components/projects/ProjectContent';
 import { ProjectNavigation } from '@/components/projects/ProjectNavigation';
 import ArrowLeft from '@/components/svgs/ArrowLeft';
-import { Button } from '@/components/ui/button';
+import { buttonVariants } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { siteConfig } from '@/config/Meta';
 import {
@@ -83,22 +83,20 @@ export default async function ProjectCaseStudyPage({
         <Container className="py-16">
             <div className="space-y-12">
                 <div>
-                    <Button variant="ghost" asChild className="group">
-                        <TrackedLink
-                            href="/projects"
-                            track={{
-                                name: 'button_click',
-                                data: {
-                                    buttonId: 'project_back',
-                                    section: 'project_detail',
-                                },
-                            }}
-                            className="flex items-center space-x-2"
-                        >
-                            <ArrowLeft className="size-4" />
-                            <span>Back to Projects</span>
-                        </TrackedLink>
-                    </Button>
+                    <TrackedLink
+                        href="/projects"
+                        track={{
+                            name: 'button_click',
+                            data: {
+                                buttonId: 'project_back',
+                                section: 'project_detail',
+                            },
+                        }}
+                        className={`${buttonVariants({ variant: 'ghost' })} group flex items-center space-x-2`}
+                    >
+                        <ArrowLeft className="size-4" />
+                        <span>Back to Projects</span>
+                    </TrackedLink>
                 </div>
 
                 <ProjectContent
@@ -207,9 +205,12 @@ export default async function ProjectCaseStudyPage({
                 {/* Back to Projects CTA */}
                 <div className="text-center">
                     <Separator className="mb-8" />
-                    <Button asChild size="lg">
-                        <Link href="/projects">View All Projects</Link>
-                    </Button>
+                    <Link
+                        href="/projects"
+                        className={buttonVariants({ size: 'lg' })}
+                    >
+                        View All Projects
+                    </Link>
                 </div>
             </div>
         </Container>
