@@ -16,9 +16,9 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 
 interface BlogPostPageProps {
-    params: {
+    params: Promise<{
         slug: string;
-    };
+    }>;
 }
 
 // Generate static paths for all blog posts
@@ -36,7 +36,7 @@ export const dynamicParams = false;
 export async function generateMetadata({
     params,
 }: BlogPostPageProps): Promise<Metadata> {
-    const { slug } = params;
+    const { slug } = await params;
     const post = await getBlogPostBySlug(slug);
 
     if (!post || !post.frontmatter.isPublished) {
@@ -67,7 +67,7 @@ export async function generateMetadata({
 }
 
 export default async function BlogPostPage({ params }: BlogPostPageProps) {
-    const { slug } = params;
+    const { slug } = await params;
     const post = await getBlogPostBySlug(slug);
 
     if (!post || !post.frontmatter.isPublished) {
