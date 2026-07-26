@@ -36,7 +36,7 @@ export default function Hero() {
                         name={part.skill.name}
                         href={part.skill.href}
                     >
-                        <SkillComponent />
+                        {SkillComponent && <SkillComponent />}
                     </Skill>
                 );
             } else if (part.type === 'bold' && 'text' in part) {
