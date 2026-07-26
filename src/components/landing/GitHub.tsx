@@ -51,7 +51,7 @@ export default function GitHub() {
     const [totalContributions, setTotalContributions] = useState<number>(0);
     const [isLoading, setIsLoading] = useState(true);
     const [hasError, setHasError] = useState(false);
-    const { theme } = useTheme();
+    const { resolvedTheme } = useTheme();
 
     useEffect(() => {
         async function fetchData() {
@@ -97,16 +97,16 @@ export default function GitHub() {
                         }));
 
                     if (validContributions.length > 0) {
-                        // Calculate total contributions
-                        const total = validContributions.reduce(
+                        // Filter to show only the past year to match the calendar
+                        const filteredContributions =
+                            filterLastYear(validContributions);
+
+                        // Calculate total from the same filtered range as the calendar
+                        const total = filteredContributions.reduce(
                             (sum, item) => sum + item.count,
                             0,
                         );
                         setTotalContributions(total);
-
-                        // Filter to show only the past year
-                        const filteredContributions =
-                            filterLastYear(validContributions);
                         setContributions(filteredContributions);
                     } else {
                         setHasError(true);
@@ -140,7 +140,7 @@ export default function GitHub() {
                         </p>
                         {!isLoading && !hasError && totalContributions > 0 && (
                             <p className="text-primary mt-1 text-sm font-medium">
-                                Total:{' '}
+                                Past year:{' '}
                                 <span className="font-black">
                                     {totalContributions.toLocaleString()}
                                 </span>{' '}
@@ -199,7 +199,9 @@ export default function GitHub() {
                                     blockMargin={4}
                                     fontSize={githubConfig.fontSize}
                                     colorScheme={
-                                        theme === 'dark' ? 'dark' : 'light'
+                                        resolvedTheme === 'dark'
+                                            ? 'dark'
+                                            : 'light'
                                     }
                                     maxLevel={githubConfig.maxLevel}
                                     theme={githubConfig.theme}
