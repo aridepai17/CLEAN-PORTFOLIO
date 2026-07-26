@@ -3,7 +3,7 @@ import { TrackedLink } from '@/components/common/TrackedLink';
 import { ProjectContent } from '@/components/projects/ProjectContent';
 import { ProjectNavigation } from '@/components/projects/ProjectNavigation';
 import ArrowLeft from '@/components/svgs/ArrowLeft';
-import { buttonVariants } from '@/components/ui/button';
+import { buttonVariants } from '@/components/ui/button-variants';
 import { Separator } from '@/components/ui/separator';
 import { siteConfig } from '@/config/Meta';
 import {
