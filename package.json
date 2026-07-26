@@ -27,6 +27,7 @@
     },
     "dependencies": {
         "@hookform/resolvers": "^5.4.0",
+        "@phosphor-icons/react": "^2.1.10",
         "@radix-ui/react-dialog": "^1.1.23",
         "@radix-ui/react-label": "^2.1.15",
         "@radix-ui/react-separator": "^1.1.15",
@@ -47,6 +48,7 @@
         "next-view-transitions": "^0.3.5",
         "radix-ui": "^1.6.5",
         "react": "18",
+        "react-activity-calendar": "^3.2.1",
         "react-day-picker": "^10.0.1",
         "react-dom": "18",
         "react-hook-form": "^7.82.0",
