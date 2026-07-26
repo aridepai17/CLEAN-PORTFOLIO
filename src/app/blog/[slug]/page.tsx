@@ -3,7 +3,7 @@ import { BlogList } from '@/components/blog/BlogList';
 import Container from '@/components/common/Container';
 import FontSizeControls from '@/components/common/FontSizeControls';
 import ArrowLeft from '@/components/svgs/ArrowLeft';
-import { buttonVariants } from '@/components/ui/button';
+import { buttonVariants } from '@/components/ui/button-variants';
 import { Separator } from '@/components/ui/separator';
 import { siteConfig } from '@/config/Meta';
 import {
