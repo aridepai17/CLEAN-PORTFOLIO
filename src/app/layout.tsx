@@ -1,4 +1,6 @@
 import { ThemeProvider } from '@/components/common/ThemeProviders';
+import { TooltipProvider } from '@/components/ui/tooltip';
+import { ViewTransitions } from 'next-view-transitions';
 
 import './globals.css';
 
@@ -13,17 +15,21 @@ export default function RootLayout({
     children: React.ReactNode;
 }>) {
     return (
-        <html lang="en" suppressHydrationWarning>
-            <body className="font-hanken-grotesk antialiased">
-                <ThemeProvider
-                    attribute="class"
-                    defaultTheme="system"
-                    enableSystem
-                    disableTransitionOnChange
-                >
-                    {children}
-                </ThemeProvider>
-            </body>
-        </html>
+        <ViewTransitions>
+            <html lang="en" suppressHydrationWarning>
+                <body className={`font-hanken-grotesk antialiased`}>
+                    <ThemeProvider
+                        attribute="class"
+                        defaultTheme="system"
+                        enableSystem
+                        disableTransitionOnChange
+                    >
+                        <TooltipProvider delayDuration={0}>
+                            {children}
+                        </TooltipProvider>
+                    </ThemeProvider>
+                </body>
+            </html>
+        </ViewTransitions>
     );
 }
