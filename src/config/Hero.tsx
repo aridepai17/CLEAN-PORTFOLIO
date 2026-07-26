@@ -53,7 +53,7 @@ export const skillComponents = {
 export const heroConfig: HeroConfig = {
     name: 'Advaith R Pai',
     title: 'Software Engineer',
-    avatar: '/assets/logo.png',
+    avatar: '/assets/logo.jpg',
 
     skills: [
         {
