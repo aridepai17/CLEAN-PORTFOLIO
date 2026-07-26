@@ -1,4 +1,4 @@
-import { Button } from '@/components/ui/button';
+import { buttonVariants } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 
 import { TrackedLink } from '../common/TrackedLink';
@@ -25,68 +25,56 @@ export function ProjectNavigation({ previous, next }: ProjectNavigationProps) {
             <div className={`grid gap-4 ${gridCols}`}>
                 {/* Previous Project */}
                 {previous && (
-                    <Button
-                        variant="outline"
-                        asChild
-                        className="group h-auto w-full justify-start p-4 text-left"
+                    <TrackedLink
+                        href={`/projects/${previous.slug}`}
+                        track={{
+                            name: 'button_click',
+                            data: {
+                                buttonId: 'project_nav_previous',
+                                section: 'project_detail',
+                                action: previous.slug,
+                            },
+                        }}
+                        className={` ${buttonVariants({ variant: 'outline' })} group h-auto w-full justify-start p-4 text-left`}
                     >
-                        <TrackedLink
-                            href={`/projects/${previous.slug}`}
-                            track={{
-                                name: 'button_click',
-                                data: {
-                                    buttonId: 'project_nav_previous',
-                                    section: 'project_detail',
-                                    action: previous.slug,
-                                },
-                            }}
-                        >
-                            <div className="flex items-center gap-3">
-                                <ArrowLeft className="size-4 transition-transform group-hover:-translate-x-1" />
-                                <div>
-                                    <div className="text-muted-foreground text-xs">
-                                        Previous Project
-                                    </div>
-                                    <div className="font-medium">
-                                        {previous.title}
-                                    </div>
+                        <div className="flex items-center gap-3">
+                            <ArrowLeft className="size-4 transition-transform group-hover:-translate-x-1" />
+                            <div>
+                                <div className="text-muted-foreground text-xs">
+                                    Previous Project
+                                </div>
+                                <div className="font-medium">
+                                    {previous.title}
                                 </div>
                             </div>
-                        </TrackedLink>
-                    </Button>
+                        </div>
+                    </TrackedLink>
                 )}
 
                 {/* Next Project */}
                 {next && (
-                    <Button
-                        variant="outline"
-                        asChild
-                        className="group h-auto w-full justify-end p-4 text-right"
+                    <TrackedLink
+                        href={`/projects/${next.slug}`}
+                        track={{
+                            name: 'button_click',
+                            data: {
+                                buttonId: 'project_nav_next',
+                                section: 'project_detail',
+                                action: next.slug,
+                            },
+                        }}
+                        className={` ${buttonVariants({ variant: 'outline' })} group h-auto w-full justify-end p-4 text-right`}
                     >
-                        <TrackedLink
-                            href={`/projects/${next.slug}`}
-                            track={{
-                                name: 'button_click',
-                                data: {
-                                    buttonId: 'project_nav_next',
-                                    section: 'project_detail',
-                                    action: next.slug,
-                                },
-                            }}
-                        >
-                            <div className="flex items-center gap-3">
-                                <div>
-                                    <div className="text-muted-foreground text-xs">
-                                        Next Project
-                                    </div>
-                                    <div className="font-medium">
-                                        {next.title}
-                                    </div>
+                        <div className="flex items-center gap-3">
+                            <div>
+                                <div className="text-muted-foreground text-xs">
+                                    Next Project
                                 </div>
-                                <ArrowUUpRight className="size-4 transition-transform group-hover:translate-x-1" />
+                                <div className="font-medium">{next.title}</div>
                             </div>
-                        </TrackedLink>
-                    </Button>
+                            <ArrowUUpRight className="size-4 transition-transform group-hover:translate-x-1" />
+                        </div>
+                    </TrackedLink>
                 )}
             </div>
         </div>
