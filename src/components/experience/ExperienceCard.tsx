@@ -15,8 +15,22 @@ interface ExperienceCardProps {
     experience: Experience;
 }
 
-const parseDescription = (text: string): string => {
-    return text.replace(/\*(.*?)\*/g, '<b>$1</b>');
+const parseBoldSegments = (text: string) => {
+    const parts = text.split(/(\*[^*]+\*)/);
+    return parts.map((part, index) => {
+        if (part.startsWith('*') && part.endsWith('*')) {
+            return {
+                text: part.slice(1, -1),
+                bold: true,
+                key: index,
+            };
+        }
+        return {
+            text: part,
+            bold: false,
+            key: index,
+        };
+    });
 };
 
 export function ExperienceCard({ experience }: ExperienceCardProps) {
@@ -148,14 +162,25 @@ export function ExperienceCard({ experience }: ExperienceCardProps) {
             {/* Description */}
             <div className="text-secondary flex flex-col">
                 {experience.description.map(
-                    (description: string, descIndex: number) => (
-                        <p
-                            key={descIndex}
-                            dangerouslySetInnerHTML={{
-                                __html: `• ${parseDescription(description)}`,
-                            }}
-                        />
-                    ),
+                    (description: string, descIndex: number) => {
+                        const segments = parseBoldSegments(description);
+                        return (
+                            <p key={descIndex}>
+                                <span className="mr-1">•</span>
+                                {segments.map((segment) =>
+                                    segment.bold ? (
+                                        <strong key={segment.key}>
+                                            {segment.text}
+                                        </strong>
+                                    ) : (
+                                        <span key={segment.key}>
+                                            {segment.text}
+                                        </span>
+                                    ),
+                                )}
+                            </p>
+                        );
+                    },
                 )}
             </div>
         </div>
