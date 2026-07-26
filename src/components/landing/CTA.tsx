@@ -58,7 +58,8 @@ export default function CTA({
                         {preText}
                     </p>
                     <div className="mt-4 flex w-full justify-center sm:mt-0 sm:w-auto sm:justify-end">
-                        <div
+                        <button
+                            type="button"
                             className="group inline-flex cursor-pointer items-center self-end rounded-md border border-dashed border-black/20 bg-black/5 px-2 py-1 text-sm text-black shadow-[0_0_5px_rgba(0,0,0,0.1)] transition-all dark:border-white/30 dark:bg-white/15 dark:text-white dark:shadow-[0_0_5px_rgba(255,255,255,0.1)]"
                             onClick={handleButtonClick}
                         >
@@ -97,7 +98,7 @@ export default function CTA({
                                     Get in Touch
                                 </span>
                             </div>
-                        </div>
+                        </button>
                     </div>
                 </div>
             </Container>
