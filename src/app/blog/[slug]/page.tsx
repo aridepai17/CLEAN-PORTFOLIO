@@ -3,7 +3,7 @@ import { BlogList } from '@/components/blog/BlogList';
 import Container from '@/components/common/Container';
 import FontSizeControls from '@/components/common/FontSizeControls';
 import ArrowLeft from '@/components/svgs/ArrowLeft';
-import { Button } from '@/components/ui/button';
+import { buttonVariants } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { siteConfig } from '@/config/Meta';
 import {
@@ -80,15 +80,13 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
             <Container className="py-16">
                 <div className="space-y-12">
                     <div>
-                        <Button variant="ghost" asChild className="group">
-                            <Link
-                                href="/blog"
-                                className="flex items-center space-x-2"
-                            >
-                                <ArrowLeft className="size-4" />
-                                <span>Back to Blog</span>
-                            </Link>
-                        </Button>
+                        <Link
+                            href="/blog"
+                            className={`${buttonVariants({ variant: 'ghost' })} group`}
+                        >
+                            <ArrowLeft className="size-4" />
+                            <span>Back to Blog</span>
+                        </Link>
                     </div>
                     <BlogContent
                         frontmatter={post.frontmatter}
@@ -108,9 +106,12 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
 
                     <div className="text-center">
                         <Separator className="mb-8" />
-                        <Button asChild size="lg">
-                            <Link href="/blog">View All Blogs</Link>
-                        </Button>
+                        <Link
+                            href="/blog"
+                            className={buttonVariants({ size: 'lg' })}
+                        >
+                            View All Blogs
+                        </Link>
                     </div>
                 </div>
             </Container>
