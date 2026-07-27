@@ -3,6 +3,7 @@ import Footer from '@/components/common/Footer';
 import Navbar from '@/components/common/Navbar';
 import { Quote } from '@/components/common/Quote';
 import { ThemeProvider } from '@/components/common/ThemeProviders';
+import { Toaster } from '@/components/ui/sonner';
 import { TooltipProvider } from '@/components/ui/tooltip';
 import { generateMetadata as getMetaData } from '@/config/Meta';
 import ReactLenis from 'lenis/react';
@@ -35,6 +36,7 @@ export default function RootLayout({
                             <Quote />
                             <Footer />
                             <UmamiAnalytics />
+                            <Toaster />
                         </ReactLenis>
                     </ThemeProvider>
                 </body>
