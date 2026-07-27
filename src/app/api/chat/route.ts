@@ -14,11 +14,12 @@ const chatSchema = z.object({
         .array(
             z.object({
                 role: z.enum(['user', 'model']),
-                parts: z.array(z.object({ text: z.string() })),
+                parts: z.array(z.object({ text: z.string().max(2000) })),
             }),
         )
         .optional()
-        .default([]),
+        .default([])
+        .max(20),
 });
 
 function sanitizeInput(input: string): string {
