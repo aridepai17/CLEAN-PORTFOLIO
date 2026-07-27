@@ -31,16 +31,9 @@ function sanitizeInput(input: string): string {
         /ignore all previous/gi,
         /forget everything/gi,
         /new instructions/gi,
-        /override/gi,
-        /bypass/gi,
-        /hack/gi,
-        /exploit/gi,
-        /inject/gi,
         /prompt injection/gi,
         /system message/gi,
         /role play/gi,
-        /character/gi,
-        /persona/gi,
         /behave as/gi,
         /respond as/gi,
     ];
@@ -208,7 +201,7 @@ export async function POST(request: NextRequest) {
             },
         };
 
-        const geminiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:streamGenerateContent?alt=sse&key=${apiKey}`;
+        const geminiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:streamGenerateContent?alt=sse`;
 
         const controller = new AbortController();
         const timeoutId = setTimeout(() => controller.abort(), 45000);
@@ -219,6 +212,7 @@ export async function POST(request: NextRequest) {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
+                    'x-goog-api-key': apiKey,
                 },
                 body: JSON.stringify(requestBody),
                 signal: controller.signal,
@@ -241,7 +235,6 @@ export async function POST(request: NextRequest) {
             }
             throw fetchError;
         }
-        clearTimeout(timeoutId);
 
         if (!response.ok) {
             throw new Error(`Gemini API error: ${response.status}`);
@@ -289,11 +282,13 @@ export async function POST(request: NextRequest) {
                         encoder.encode('data: {"done": true}\n\n'),
                     );
                     controller.close();
+                    clearTimeout(timeoutId);
                 } catch (error) {
                     console.error('Streaming error:', error);
                     const errorData = `data: ${JSON.stringify({ error: 'Stream error occurred' })}\n\n`;
                     controller.enqueue(encoder.encode(errorData));
                     controller.close();
+                    clearTimeout(timeoutId);
                 }
             },
         });
