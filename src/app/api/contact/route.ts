@@ -13,14 +13,14 @@ function getClientIP(request: NextRequest): string {
     const realIP = request.headers.get('x-real-ip');
     const cfConnectingIP = request.headers.get('cf-connecting-ip');
 
-    if (forwarded) {
-        return forwarded.split(',')[0].trim();
+    if (cfConnectingIP) {
+        return cfConnectingIP;
     }
     if (realIP) {
         return realIP;
     }
-    if (cfConnectingIP) {
-        return cfConnectingIP;
+    if (forwarded) {
+        return forwarded.split(',')[0].trim();
     }
 
     return 'unknown';
@@ -32,6 +32,15 @@ function checkRateLimit(clientIP: string): {
     resetTime?: number;
 } {
     const now = Date.now();
+
+    if (rateLimitStore.size > 1000) {
+        for (const [ip, clientData] of rateLimitStore) {
+            if (now > clientData.resetTime) {
+                rateLimitStore.delete(ip);
+            }
+        }
+    }
+
     const clientData = rateLimitStore.get(clientIP);
 
     if (!clientData || now > clientData.resetTime) {
@@ -81,17 +90,17 @@ async function sendToTelegram(data: {
     }
 
     const message = `
-🔔 *New Contact Form Submission*
+🔔 New Contact Form Submission
 
-👤 *Name:* ${data.name.trim()}
-📧 *Email:* ${data.email.trim()}
-📱 *Phone:* ${data.phone.trim()}
+👤 Name: ${data.name.trim()}
+📧 Email: ${data.email.trim()}
+📱 Phone: ${data.phone.trim()}
 
-💬 *Message:*
+💬 Message:
 ${data.message.trim()}
 
-⏰ *Submitted:* ${new Date().toISOString()}
-📍 *Timezone:* ${Intl.DateTimeFormat().resolvedOptions().timeZone}
+⏰ Submitted: ${new Date().toISOString()}
+📍 Timezone: ${Intl.DateTimeFormat().resolvedOptions().timeZone}
   `.trim();
 
     try {
@@ -105,7 +114,6 @@ ${data.message.trim()}
             body: JSON.stringify({
                 chat_id: telegramChatId,
                 text: message,
-                parse_mode: 'Markdown',
             }),
         });
 
