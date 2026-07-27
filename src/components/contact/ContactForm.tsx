@@ -19,41 +19,17 @@ import {
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { useUmami } from '@/hooks/use-umami';
+import {
+    type ContactFormValues,
+    contactFormSchema,
+} from '@/lib/contact-schema';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Loader2 } from 'lucide-react';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
-import * as z from 'zod';
 
 import Chat from '../svgs/Chat';
-
-const contactFormSchema = z.object({
-    name: z.string().min(2, {
-        message: 'Name must be at least 2 characters.',
-    }),
-    email: z.email({
-        message: 'Please enter a valid email address.',
-    }),
-    phone: z
-        .string()
-        .min(10, {
-            message: 'Phone number must be at least 10 characters.',
-        })
-        .regex(/^[\+]?[1-9][\d]{0,15}$/, {
-            message: 'Please enter a valid phone number.',
-        }),
-    message: z
-        .string()
-        .min(10, {
-            message: 'Message must be at least 10 characters.',
-        })
-        .max(1000, {
-            message: 'Message must not exceed 1000 characters.',
-        }),
-});
-
-type ContactFormValues = z.infer<typeof contactFormSchema>;
 
 export default function ContactForm() {
     const [isSubmitting, setIsSubmitting] = useState(false);
@@ -157,6 +133,7 @@ export default function ContactForm() {
                                         <FormControl>
                                             <Input
                                                 placeholder="+1 (123) xxx-xxxx"
+                                                type="tel"
                                                 {...field}
                                             />
                                         </FormControl>
