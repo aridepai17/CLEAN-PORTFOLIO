@@ -40,8 +40,8 @@ export const experiences: Experience[] = [
             'Explored signal-processing techniques applied to underwater acoustic data relevant to naval systems.',
             'Gained exposure to a defense-research environment, translating theoretical signal-processing concepts into applied analysis.',
         ],
-        startDate: 'September 2025',
-        endDate: 'October 2025',
+        startDate: 'Sept 2025',
+        endDate: 'Oct 2025',
         website: 'https://www.npol.drdo.gov.in/',
         technologies: [
             {
