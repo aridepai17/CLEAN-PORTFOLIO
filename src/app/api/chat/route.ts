@@ -17,9 +17,9 @@ const chatSchema = z.object({
                 parts: z.array(z.object({ text: z.string().max(2000) })),
             }),
         )
+        .max(20)
         .optional()
-        .default([])
-        .max(20),
+        .default([]),
 });
 
 function sanitizeInput(input: string): string {
