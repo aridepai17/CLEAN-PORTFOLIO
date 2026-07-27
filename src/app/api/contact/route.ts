@@ -1,3 +1,4 @@
+import { contactFormSchema } from '@/lib/contact-schema';
 import { NextRequest, NextResponse } from 'next/server';
 import * as z from 'zod';
 
@@ -5,13 +6,6 @@ const rateLimitStore = new Map<string, { count: number; resetTime: number }>();
 
 const RATE_LIMIT_WINDOW = 60 * 1000;
 const RATE_LIMIT_MAX_REQUESTS = 5;
-
-const contactSchema = z.object({
-    name: z.string().min(2).max(100),
-    email: z.email(),
-    phone: z.string().min(10).max(20),
-    message: z.string().min(10).max(1000),
-});
 
 function getClientIP(request: NextRequest): string {
     // Get IP from various headers in order of preference
@@ -35,6 +29,7 @@ function getClientIP(request: NextRequest): string {
 function checkRateLimit(clientIP: string): {
     allowed: boolean;
     remaining: number;
+    resetTime?: number;
 } {
     const now = Date.now();
     const clientData = rateLimitStore.get(clientIP);
@@ -49,7 +44,11 @@ function checkRateLimit(clientIP: string): {
     }
 
     if (clientData.count >= RATE_LIMIT_MAX_REQUESTS) {
-        return { allowed: false, remaining: 0 };
+        return {
+            allowed: false,
+            remaining: 0,
+            resetTime: clientData.resetTime,
+        };
     }
 
     // Increment count
@@ -129,28 +128,36 @@ export async function POST(request: NextRequest) {
         const rateLimit = checkRateLimit(clientIP);
 
         if (!rateLimit.allowed) {
+            const retryAfter = Math.max(
+                0,
+                Math.round((rateLimit.resetTime! - Date.now()) / 1000),
+            );
+
             return NextResponse.json(
                 {
                     error: 'Too many requests. Please try again later.',
-                    retryAfter: RATE_LIMIT_WINDOW / 1000,
+                    retryAfter,
                 },
                 {
                     status: 429,
                     headers: {
                         'X-RateLimit-Limit': RATE_LIMIT_MAX_REQUESTS.toString(),
-                        'X-RateLimit-Remaining': rateLimit.remaining.toString(),
-                        'X-RateLimit-Reset': (
-                            Date.now() + RATE_LIMIT_WINDOW
-                        ).toString(),
+                        'X-RateLimit-Remaining': '0',
+                        'X-RateLimit-Reset': rateLimit.resetTime!.toString(),
                     },
                 },
             );
         }
 
         const body = await request.json();
-        const validatedData = contactSchema.parse(body);
+        const validatedData = contactFormSchema.parse(body);
 
-        const telegramSent = await sendToTelegram(validatedData);
+        const normalizedData = {
+            ...validatedData,
+            phone: validatedData.phone.replace(/[\s\-()]/g, ''),
+        };
+
+        const telegramSent = await sendToTelegram(normalizedData);
 
         if (!telegramSent) {
             return NextResponse.json(
