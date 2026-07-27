@@ -278,6 +278,13 @@ const ChatBubble: React.FC = () => {
         } finally {
             setIsLoading(false);
             setNewMessage('');
+            setMessages((prev) =>
+                prev.map((msg) =>
+                    msg.id === botMessageId
+                        ? { ...msg, isStreaming: false }
+                        : msg,
+                ),
+            );
         }
     };
 
