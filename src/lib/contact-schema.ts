@@ -3,6 +3,7 @@ import * as z from 'zod';
 export const contactFormSchema = z.object({
     name: z
         .string()
+        .trim()
         .min(2, {
             message: 'Name must be at least 2 characters.',
         })
@@ -14,17 +15,18 @@ export const contactFormSchema = z.object({
     }),
     phone: z
         .string()
+        .regex(/^[+]?[1-9][\d\s\-()]{0,15}$/, {
+            message: 'Please enter a valid phone number.',
+        })
         .min(10, {
             message: 'Phone number must be at least 10 characters.',
-        })
-        .regex(/^[\+]?[1-9][\d]{0,15}$/, {
-            message: 'Please enter a valid phone number.',
         })
         .max(20, {
             message: 'Phone number must not exceed 20 characters.',
         }),
     message: z
         .string()
+        .trim()
         .min(10, {
             message: 'Message must be at least 10 characters.',
         })
