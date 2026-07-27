@@ -9,14 +9,12 @@ export const Quote = () => {
     const [currentQuote, setCurrentQuote] = useState<{
         quote: string;
         author: string;
-    } | null>(null);
+    }>(quotes[0]);
 
     useEffect(() => {
         const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
         setCurrentQuote(randomQuote);
     }, []);
-
-    if (!currentQuote) return null;
 
     const { quote, author } = currentQuote;
 
