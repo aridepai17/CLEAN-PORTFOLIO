@@ -1,13 +1,17 @@
+import UmamiAnalytics from '@/components/analytics/UmamiAnalytics';
+import Footer from '@/components/common/Footer';
+import Navbar from '@/components/common/Navbar';
+import { Quote } from '@/components/common/Quote';
 import { ThemeProvider } from '@/components/common/ThemeProviders';
+import { Toaster } from '@/components/ui/sonner';
 import { TooltipProvider } from '@/components/ui/tooltip';
+import { generateMetadata as getMetaData } from '@/config/Meta';
+import ReactLenis from 'lenis/react';
 import { ViewTransitions } from 'next-view-transitions';
 
 import './globals.css';
 
-export const metadata = {
-    title: 'Clean Portfolio',
-    description: 'A modern, responsive portfolio built with Next.js.',
-};
+export const metadata = getMetaData('/');
 
 export default function RootLayout({
     children,
@@ -24,9 +28,16 @@ export default function RootLayout({
                         enableSystem
                         disableTransitionOnChange
                     >
-                        <TooltipProvider delayDuration={0}>
-                            {children}
-                        </TooltipProvider>
+                        <ReactLenis root>
+                            <Navbar />
+                            <TooltipProvider delayDuration={0}>
+                                {children}
+                            </TooltipProvider>
+                            <Quote />
+                            <Footer />
+                            <UmamiAnalytics />
+                            <Toaster />
+                        </ReactLenis>
                     </ThemeProvider>
                 </body>
             </html>

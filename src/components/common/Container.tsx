@@ -8,7 +8,7 @@ export default function Container({
     return (
         <div
             className={[
-                'animate-fade-in-blur container mx-auto max-w-3xl px-4',
+                'animate-fade-in-blur container mx-auto max-w-5xl px-4',
                 className,
             ]
                 .filter(Boolean)
