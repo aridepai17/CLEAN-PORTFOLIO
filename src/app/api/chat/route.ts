@@ -266,13 +266,13 @@ export async function POST(request: NextRequest) {
                     }
 
                     const reader = response.body.getReader();
-                    const decoder = new TextDecoder();
+                    const decoder = new TextDecoder('utf-8', { fatal: false });
 
                     while (true) {
                         const { done, value } = await reader.read();
                         if (done) break;
 
-                        parser.feed(decoder.decode(value));
+                        parser.feed(decoder.decode(value, { stream: true }));
                     }
 
                     // Send completion signal
