@@ -16,6 +16,7 @@ import { heroConfig } from '@/config/Hero';
 import { useHapticFeedback } from '@/hooks/use-haptic-feedback';
 import { useUmami } from '@/hooks/use-umami';
 import { cn } from '@/lib/utils';
+import { createParser } from 'eventsource-parser';
 import React, { useEffect, useRef, useState } from 'react';
 import ReactMarkdown from 'react-markdown';
 
@@ -194,60 +195,58 @@ const ChatBubble: React.FC = () => {
 
             let accumulatedText = '';
 
+            const parser = createParser({
+                onEvent: (event) => {
+                    try {
+                        const data = JSON.parse(event.data);
+
+                        if (data.error) {
+                            throw new Error(data.error);
+                        }
+
+                        if (data.text) {
+                            accumulatedText += data.text;
+
+                            // Update the streaming message in real-time
+                            setMessages((prev) =>
+                                prev.map((msg) =>
+                                    msg.id === botMessageId
+                                        ? {
+                                              ...msg,
+                                              text: accumulatedText,
+                                              isStreaming: true,
+                                          }
+                                        : msg,
+                                ),
+                            );
+                        }
+
+                        if (data.done) {
+                            // Finalize the message
+                            setMessages((prev) =>
+                                prev.map((msg) =>
+                                    msg.id === botMessageId
+                                        ? {
+                                              ...msg,
+                                              text: accumulatedText,
+                                              isStreaming: false,
+                                          }
+                                        : msg,
+                                ),
+                            );
+                        }
+                    } catch {
+                        // Ignore malformed events
+                    }
+                },
+            });
+
             while (true) {
                 const { done, value } = await reader.read();
 
                 if (done) break;
 
-                const chunk = decoder.decode(value);
-                const lines = chunk.split('\n');
-
-                for (const line of lines) {
-                    if (line.startsWith('data: ')) {
-                        try {
-                            const data = JSON.parse(line.slice(6));
-
-                            if (data.error) {
-                                throw new Error(data.error);
-                            }
-
-                            if (data.text) {
-                                accumulatedText += data.text;
-
-                                // Update the streaming message in real-time
-                                setMessages((prev) =>
-                                    prev.map((msg) =>
-                                        msg.id === botMessageId
-                                            ? {
-                                                  ...msg,
-                                                  text: accumulatedText,
-                                                  isStreaming: true,
-                                              }
-                                            : msg,
-                                    ),
-                                );
-                            }
-
-                            if (data.done) {
-                                // Finalize the message
-                                setMessages((prev) =>
-                                    prev.map((msg) =>
-                                        msg.id === botMessageId
-                                            ? {
-                                                  ...msg,
-                                                  text: accumulatedText,
-                                                  isStreaming: false,
-                                              }
-                                            : msg,
-                                    ),
-                                );
-                                break;
-                            }
-                        } catch {
-                            continue;
-                        }
-                    }
-                }
+                parser.feed(decoder.decode(value));
             }
         } catch (error) {
             console.error('Error sending message:', error);
