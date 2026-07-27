@@ -60,7 +60,7 @@ const ExpandableChat: React.FC<ExpandableChatProps> = ({
             <div
                 ref={chatRef}
                 className={cn(
-                    'bg-background fixed inset-0 flex h-full w-full flex-col overflow-hidden border shadow-md transition-all duration-250 ease-out sm:absolute sm:inset-auto sm:h-[80vh] sm:w-[90vw] sm:rounded-lg',
+                    'bg-background fixed inset-0 flex h-full w-full flex-col overflow-hidden border shadow-md transition-all duration-200 ease-out sm:absolute sm:inset-auto sm:h-[80vh] sm:w-[90vw] sm:rounded-lg',
                     chatConfig.chatPositions[position],
                     chatConfig.dimensions[size],
                     isOpen ? chatConfig.states.open : chatConfig.states.closed,
