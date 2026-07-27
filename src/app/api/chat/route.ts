@@ -182,10 +182,7 @@ export async function POST(request: NextRequest) {
                     ...msg,
                     parts: msg.parts.map((part) => ({
                         ...part,
-                        text:
-                            msg.role === 'user'
-                                ? sanitizeInput(part.text)
-                                : part.text,
+                        text: sanitizeInput(part.text),
                     })),
                 })),
                 // Add current message
