@@ -200,46 +200,56 @@ const ChatBubble: React.FC = () => {
 
             const parser = createParser({
                 onEvent: (event) => {
+                    let data;
                     try {
-                        const data = JSON.parse(event.data);
-
-                        if (data.error) {
-                            throw new Error(data.error);
-                        }
-
-                        if (data.text) {
-                            accumulatedText += data.text;
-
-                            // Update the streaming message in real-time
-                            setMessages((prev) =>
-                                prev.map((msg) =>
-                                    msg.id === botMessageId
-                                        ? {
-                                              ...msg,
-                                              text: accumulatedText,
-                                              isStreaming: true,
-                                          }
-                                        : msg,
-                                ),
-                            );
-                        }
-
-                        if (data.done) {
-                            // Finalize the message
-                            setMessages((prev) =>
-                                prev.map((msg) =>
-                                    msg.id === botMessageId
-                                        ? {
-                                              ...msg,
-                                              text: accumulatedText,
-                                              isStreaming: false,
-                                          }
-                                        : msg,
-                                ),
-                            );
-                        }
+                        data = JSON.parse(event.data);
                     } catch {
-                        // Ignore malformed events
+                        return;
+                    }
+
+                    if (data.error) {
+                        setMessages((prev) =>
+                            prev.map((msg) =>
+                                msg.id === botMessageId
+                                    ? {
+                                          ...msg,
+                                          text: "I'm sorry, I'm having trouble responding right now. Please try again later.",
+                                          isStreaming: false,
+                                      }
+                                    : msg,
+                            ),
+                        );
+                        return;
+                    }
+
+                    if (data.text) {
+                        accumulatedText += data.text;
+
+                        setMessages((prev) =>
+                            prev.map((msg) =>
+                                msg.id === botMessageId
+                                    ? {
+                                          ...msg,
+                                          text: accumulatedText,
+                                          isStreaming: true,
+                                      }
+                                    : msg,
+                            ),
+                        );
+                    }
+
+                    if (data.done) {
+                        setMessages((prev) =>
+                            prev.map((msg) =>
+                                msg.id === botMessageId
+                                    ? {
+                                          ...msg,
+                                          text: accumulatedText,
+                                          isStreaming: false,
+                                      }
+                                    : msg,
+                            ),
+                        );
                     }
                 },
             });
