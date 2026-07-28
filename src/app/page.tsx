@@ -1,4 +1,5 @@
 import Container from '@/components/common/Container';
+import Reveal from '@/components/common/Reveal';
 import About from '@/components/landing/About';
 import Blog from '@/components/landing/Blog';
 import CTA from '@/components/landing/CTA';
@@ -16,13 +17,27 @@ export default function page() {
     return (
         <Container className="min-h-screen py-16">
             <Hero />
-            <Experience />
-            <Work />
-            <About />
-            <GitHub />
-            <Blog posts={posts} />
-            <CTA />
-            <Journey />
+            <Reveal>
+                <Experience />
+            </Reveal>
+            <Reveal>
+                <Work />
+            </Reveal>
+            <Reveal>
+                <About />
+            </Reveal>
+            <Reveal>
+                <GitHub />
+            </Reveal>
+            <Reveal>
+                <Blog posts={posts} />
+            </Reveal>
+            <Reveal>
+                <CTA />
+            </Reveal>
+            <Reveal>
+                <Journey />
+            </Reveal>
         </Container>
     );
 }
