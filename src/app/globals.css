@@ -2,6 +2,26 @@
 @import 'tw-animate-css';
 @plugin "@tailwindcss/typography";
 
+html.lenis, html.lenis body {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+.lenis.lenis-scrolling iframe {
+  pointer-events: none;
+}
+
 @font-face {
     font-family: 'Hanken Grotesk';
     src: url('/fonts/HankenGrotesk-Variable.ttf') format('truetype');
@@ -129,7 +149,19 @@
         @apply border-border outline-ring/50;
     }
     body {
-        @apply bg-background text-foreground;
+        @apply text-foreground;
+        background-color: #ffffff;
+        background-image:
+            linear-gradient(to right, #e5e7eb 1px, transparent 1px),
+            linear-gradient(to bottom, #e5e7eb 1px, transparent 1px);
+        background-size: 40px 40px;
+    }
+    .dark body {
+        background-color: #000000;
+        background-image:
+            linear-gradient(to right, rgba(75, 85, 99, 0.4) 1px, transparent 1px),
+            linear-gradient(to bottom, rgba(75, 85, 99, 0.4) 1px, transparent 1px);
+        background-size: 40px 40px;
     }
 }
 
