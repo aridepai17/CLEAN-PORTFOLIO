@@ -187,13 +187,17 @@ export async function POST(request: NextRequest) {
             },
         );
     } catch (error) {
+        // Log the actual detailed error server-side only
         console.error('API Error:', error);
 
         if (error instanceof z.ZodError) {
+            // Log Zod specifics securely on the server
+            console.error('Contact Validation Error Details:', error.issues);
+
             return NextResponse.json(
                 {
-                    error: 'Invalid form data',
-                    details: error.issues,
+                    error: 'Invalid form data. Please check your inputs and try again.',
+                    // Notice we removed the 'details' array here
                 },
                 { status: 400 },
             );
