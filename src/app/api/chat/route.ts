@@ -139,7 +139,6 @@ export async function POST(request: NextRequest) {
                         'X-RateLimit-Limit': RATE_LIMIT_MAX_REQUESTS.toString(),
                         'X-RateLimit-Remaining': rateLimit.remaining.toString(),
                         'X-RateLimit-Reset': rateLimit.resetTime.toString(),
-                        'Access-Control-Allow-Origin': '*',
                     },
                 },
             );
@@ -150,12 +149,7 @@ export async function POST(request: NextRequest) {
             console.error('GEMINI_API_KEY not configured');
             return NextResponse.json(
                 { error: 'AI service not configured' },
-                {
-                    status: 500,
-                    headers: {
-                        'Access-Control-Allow-Origin': '*',
-                    },
-                },
+                { status: 500 },
             );
         }
 
@@ -164,31 +158,26 @@ export async function POST(request: NextRequest) {
 
         // Prepare the request body for Gemini REST API
         const requestBody = {
+            // Native systemInstruction strictly separates the rules from the user
+            systemInstruction: {
+                parts: [{ text: systemPrompt }],
+            },
             contents: [
-                {
-                    parts: [{ text: systemPrompt }],
-                    role: 'user',
-                },
-                {
-                    parts: [
-                        {
-                            text: 'I understand. I will act as your portfolio assistant.',
-                        },
-                    ],
-                    role: 'model',
-                },
-                // Add conversation history
+                // Add conversation history (sanitized to prevent retroactive injection)
                 ...validatedData.history.map((msg) => ({
-                    ...msg,
+                    role: msg.role,
                     parts: msg.parts.map((part) => ({
-                        ...part,
                         text: sanitizeInput(part.text),
                     })),
                 })),
-                // Add current message
+                // Add current message with strict string data delimiters
                 {
-                    parts: [{ text: sanitizeInput(validatedData.message) }],
                     role: 'user',
+                    parts: [
+                        {
+                            text: `[USER INPUT]\n${sanitizeInput(validatedData.message)}\n[/USER INPUT]`,
+                        },
+                    ],
                 },
             ],
             generationConfig: {
@@ -223,12 +212,7 @@ export async function POST(request: NextRequest) {
             ) {
                 return NextResponse.json(
                     { error: 'AI service timeout' },
-                    {
-                        status: 504,
-                        headers: {
-                            'Access-Control-Allow-Origin': '*',
-                        },
-                    },
+                    { status: 504 },
                 );
             }
             throw fetchError;
@@ -297,37 +281,29 @@ export async function POST(request: NextRequest) {
                 'Content-Type': 'text/event-stream',
                 'Cache-Control': 'no-cache',
                 Connection: 'keep-alive',
-                'Access-Control-Allow-Origin': '*',
                 'X-RateLimit-Limit': RATE_LIMIT_MAX_REQUESTS.toString(),
                 'X-RateLimit-Remaining': rateLimit.remaining.toString(),
             },
         });
     } catch (error) {
+        // Log the actual detailed error server-side only
         console.error('Chat API Error:', error);
 
         if (error instanceof z.ZodError) {
+            // Log Zod specifics securely on the server
+            console.error('Chat Validation Error Details:', error.issues);
+
             return NextResponse.json(
                 {
-                    error: 'Invalid request data',
-                    details: error.issues,
+                    error: 'Invalid request data. Please try again.',
                 },
-                {
-                    status: 400,
-                    headers: {
-                        'Access-Control-Allow-Origin': '*',
-                    },
-                },
+                { status: 400 },
             );
         }
 
         return NextResponse.json(
             { error: 'Internal server error' },
-            {
-                status: 500,
-                headers: {
-                    'Access-Control-Allow-Origin': '*',
-                },
-            },
+            { status: 500 },
         );
     }
 }
