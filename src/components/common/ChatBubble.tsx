@@ -342,14 +342,18 @@ const ChatBubble: React.FC = () => {
                 </div>
             </ExpandableChatHeader>
 
-            <ExpandableChatBody>
-                <ScrollArea ref={scrollAreaRef} className="h-full p-4">
-                    <div className="w-full space-y-4">
+            {/* Layout and Physics Fixes applied here */}
+            <ExpandableChatBody className="flex-1 overflow-hidden">
+                <ScrollArea
+                    ref={scrollAreaRef}
+                    className="h-full w-full overscroll-contain"
+                >
+                    <div className="w-full space-y-4 p-4 pr-6">
                         {messages.map((message) => (
                             <div
                                 key={message.id}
                                 className={cn(
-                                    'flex w-fit max-w-[85%] flex-col gap-2 rounded-xl px-3 py-2 text-sm break-words',
+                                    'flex w-fit max-w-[85%] flex-col gap-2 rounded-xl px-3 py-2 text-sm wrap-break-word',
                                     message.sender === 'user'
                                         ? 'bg-muted text-secondary ml-auto rounded-tr-sm'
                                         : 'bg-muted/50 rounded-tl-sm border',
@@ -366,7 +370,7 @@ const ChatBubble: React.FC = () => {
                                         </Avatar>
                                     )}
                                     <div className="min-w-0 flex-1">
-                                        <div className="prose prose-sm dark:prose-invert max-w-none break-words">
+                                        <div className="prose prose-sm dark:prose-invert max-w-none wrap-break-word">
                                             {message.isStreaming &&
                                             !message.text ? (
                                                 <div className="flex h-5 items-center space-x-1 px-1">
@@ -382,7 +386,7 @@ const ChatBubble: React.FC = () => {
                                                                 {...props}
                                                                 target="_blank"
                                                                 rel="noopener noreferrer"
-                                                                className="break-words text-blue-500 underline hover:text-blue-700"
+                                                                className="wrap-break-word text-blue-500 underline hover:text-blue-700"
                                                             />
                                                         ),
                                                         p: (props) => (
@@ -474,7 +478,7 @@ const ChatBubble: React.FC = () => {
                         onChange={(e) => setNewMessage(e.target.value)}
                         onKeyDown={handleKeyDown}
                         disabled={isLoading}
-                        className="flex-1 focus-visible:ring-1"
+                        className="flex-1 text-base focus-visible:ring-1 sm:text-sm"
                     />
                     <Button
                         size="sm"
