@@ -4,25 +4,11 @@ export interface NavItem {
 }
 
 export const navbarConfig = {
-    logo: {
-        src: '/assets/logo.jpg',
-        alt: 'Advaith R Pai Logo',
-        width: 100,
-        height: 100,
-    },
-
     navItems: [
-        {
-            label: 'Experience',
-            href: '/work-experience',
-        },
-        {
-            label: 'Projects',
-            href: '/projects',
-        },
-        {
-            label: 'Blog',
-            href: '/blog',
-        },
+        { label: 'Home', href: '/' },
+        { label: 'Experience', href: '/work-experience' },
+        { label: 'Projects', href: '/projects' },
+        { label: 'Blog', href: '/blog' },
+        { label: 'Resume', href: '/resume' },
     ] as NavItem[],
 };
