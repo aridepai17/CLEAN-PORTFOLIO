@@ -38,11 +38,6 @@ export default function LenisProvider({
 
             (window as unknown as Record<string, unknown>).__LENIS__ =
                 lenisInstance;
-            console.log(
-                '[Lenis] initialized',
-                lenisInstance.className,
-                lenisInstance.limit,
-            );
         } catch (error) {
             console.error('[Lenis] init failed', error);
         }
