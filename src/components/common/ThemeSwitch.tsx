@@ -69,7 +69,11 @@ export const useThemeToggle = ({
             return;
         }
 
-        document.startViewTransition(switchTheme);
+        try {
+            document.startViewTransition(switchTheme);
+        } catch {
+            switchTheme();
+        }
     }, [
         setTheme,
         resolvedTheme,
@@ -97,7 +101,11 @@ export const useThemeToggle = ({
             return;
         }
 
-        document.startViewTransition(switchTheme);
+        try {
+            document.startViewTransition(switchTheme);
+        } catch {
+            switchTheme();
+        }
     }, [setTheme, variant, start, blur, gifUrl, updateStyles]);
 
     const setCrazyDarkTheme = useCallback(() => {
@@ -116,7 +124,11 @@ export const useThemeToggle = ({
             return;
         }
 
-        document.startViewTransition(switchTheme);
+        try {
+            document.startViewTransition(switchTheme);
+        } catch {
+            switchTheme();
+        }
     }, [setTheme, variant, start, blur, gifUrl, updateStyles]);
 
     return {
@@ -333,7 +345,7 @@ export const createAnimation = (
             name: `${variant}-${start}${blur ? '-blur' : ''}`,
             css: `
        ::view-transition-group(root) {
-        animation-duration: 0.7s;
+        animation-duration: 0.3s;
         animation-timing-function: var(--expo-out);
       }
             
@@ -383,7 +395,7 @@ export const createAnimation = (
             name: `${variant}-${start}${blur ? '-blur' : ''}`,
             css: `
        ::view-transition-group(root) {
-        animation-duration: 0.7s;
+        animation-duration: 0.3s;
         animation-timing-function: var(--expo-out);
       }
             
@@ -567,10 +579,10 @@ export const createAnimation = (
         return {
             name: `${variant}-${start}${blur ? '-blur' : ''}`,
             css: `
-      ::view-transition-group(root) {
-        animation-duration: 0.7s;
-        animation-timing-function: var(--expo-out);
-      }
+       ::view-transition-group(root) {
+         animation-duration: 0.3s;
+         animation-timing-function: var(--expo-out);
+       }
             
       ::view-transition-new(root) {
         animation-name: reveal-light-${start}${blur ? '-blur' : ''};
@@ -641,7 +653,7 @@ export const createAnimation = (
             name: `${variant}-${start}${blur ? '-blur' : ''}`,
             css: `
        ::view-transition-group(root) {
-        animation-duration: 1s;
+        animation-duration: 0.5s;
         animation-timing-function: var(--expo-out);
       }
             
