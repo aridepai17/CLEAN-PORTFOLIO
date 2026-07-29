@@ -1,7 +1,7 @@
 import Script from 'next/script';
 
 export default function UmamiAnalytics() {
-    const umamiSrc = process.env.NEXT_PUBLIC_UMAMI_SRC;
+    const umamiSrc = process.env.NEXT_PUBLIC_UMAMI_URL;
     const umamiId = process.env.NEXT_PUBLIC_UMAMI_ID;
 
     if (!umamiSrc || !umamiId) {
