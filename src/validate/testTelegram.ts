@@ -118,4 +118,6 @@ async function testTelegram(): Promise<void> {
     }
 }
 
-testTelegram().catch(console.error);
+if (typeof require !== 'undefined' && require.main === module) {
+    testTelegram().catch(console.error);
+}
