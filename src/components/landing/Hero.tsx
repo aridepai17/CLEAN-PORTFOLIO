@@ -60,83 +60,89 @@ export default function Hero() {
     };
 
     return (
-        <Container className="mx-auto max-w-5xl">
-            {/* Image */}
-            <Image
-                src={avatar}
-                alt="hero"
-                width={100}
-                height={100}
-                className="size-24 rounded-full bg-blue-300 dark:bg-yellow-300"
-            />
+        <div className="animate-in fade-in slide-in-from-bottom-4 fill-mode-both duration-1000 ease-out">
+            <Container className="mx-auto max-w-5xl">
+                {/* Image */}
+                <Image
+                    src={avatar}
+                    alt="hero"
+                    width={100}
+                    height={100}
+                    className="size-24 rounded-full bg-blue-300 dark:bg-yellow-300"
+                />
 
-            {/* Text Area */}
-            <div className="mt-8 flex flex-col gap-2">
-                <h1 className="text-4xl font-bold">
-                    Hi, I&apos;m {name} -{' '}
-                    <span className="text-secondary">{title}</span>
-                </h1>
+                {/* Text Area */}
+                <div className="mt-8 flex flex-col gap-2">
+                    <h1 className="text-4xl font-bold">
+                        Hi, I&apos;m {name} -{' '}
+                        <span className="text-secondary">{title}</span>
+                    </h1>
 
-                <div className="mt-4 flex flex-wrap items-center gap-x-1.5 gap-y-2 text-base whitespace-pre-wrap text-neutral-500 md:text-lg">
-                    {renderDescription()}
+                    <div className="mt-4 flex flex-wrap items-center gap-x-1.5 gap-y-2 text-base whitespace-pre-wrap text-neutral-500 md:text-lg">
+                        {renderDescription()}
+                    </div>
                 </div>
-            </div>
 
-            {/* Buttons */}
-            <div className="mt-8 flex gap-4">
-                {buttons.map((button, index) => {
-                    const IconComponent =
-                        buttonIcons[button.icon as keyof typeof buttonIcons];
-                    return (
-                        <TrackedLink
-                            key={index}
-                            href={button.href}
-                            track={{
-                                name: 'button_click',
-                                data: {
-                                    buttonId: button.text,
-                                    section: 'hero',
-                                },
-                            }}
-                            className={buttonVariants({
-                                variant: button.variant as
-                                    'outline' | 'default',
-                            })}
-                        >
-                            {IconComponent && <IconComponent />}
-                            {button.text}
-                        </TrackedLink>
-                    );
-                })}
-            </div>
-
-            {/* Social Links */}
-            <div className="mt-8 flex gap-2">
-                {socialLinks.map((link) => (
-                    <Tooltip key={link.name} delayDuration={0}>
-                        <TooltipTrigger asChild>
+                {/* Buttons */}
+                <div className="mt-8 flex gap-4">
+                    {buttons.map((button, index) => {
+                        const IconComponent =
+                            buttonIcons[
+                                button.icon as keyof typeof buttonIcons
+                            ];
+                        return (
                             <TrackedLink
-                                href={link.href}
-                                key={link.name}
-                                className="text-secondary flex items-center gap-2"
+                                key={index}
+                                href={button.href}
                                 track={{
-                                    name: 'external_link_click',
+                                    name: 'button_click',
                                     data: {
-                                        url: link.href,
-                                        text: link.name,
-                                        location: 'hero_social',
+                                        buttonId: button.text,
+                                        section: 'hero',
                                     },
                                 }}
+                                className={buttonVariants({
+                                    variant: button.variant as
+                                        'outline' | 'default',
+                                })}
                             >
-                                <span className="size-6">{link.icon}</span>
+                                {IconComponent && <IconComponent />}
+                                {button.text}
                             </TrackedLink>
-                        </TooltipTrigger>
-                        <TooltipContent>
-                            <p>{link.name}</p>
-                        </TooltipContent>
-                    </Tooltip>
-                ))}
-            </div>
-        </Container>
+                        );
+                    })}
+                </div>
+
+                {/* Social Links */}
+                <div className="mt-8 flex gap-2">
+                    {socialLinks.map((link) => (
+                        <Tooltip key={link.name} delayDuration={0}>
+                            <TooltipTrigger asChild>
+                                <TrackedLink
+                                    href={link.href}
+                                    key={link.name}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="text-secondary flex items-center gap-2"
+                                    track={{
+                                        name: 'external_link_click',
+                                        data: {
+                                            url: link.href,
+                                            text: link.name,
+                                            location: 'hero_social',
+                                        },
+                                    }}
+                                >
+                                    <span className="size-6">{link.icon}</span>
+                                </TrackedLink>
+                            </TooltipTrigger>
+                            <TooltipContent>
+                                <p>{link.name}</p>
+                            </TooltipContent>
+                        </Tooltip>
+                    ))}
+                </div>
+            </Container>
+        </div>
     );
 }
