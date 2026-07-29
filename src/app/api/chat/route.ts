@@ -167,7 +167,11 @@ export async function POST(request: NextRequest) {
                 ...validatedData.history.map((msg) => ({
                     role: msg.role,
                     parts: msg.parts.map((part) => ({
-                        text: sanitizeInput(part.text),
+                        // FIX: Only sanitize the user's past inputs, leave model context alone
+                        text:
+                            msg.role === 'user'
+                                ? sanitizeInput(part.text)
+                                : part.text,
                     })),
                 })),
                 // Add current message with strict string data delimiters
