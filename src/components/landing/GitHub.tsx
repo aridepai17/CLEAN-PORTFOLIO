@@ -59,9 +59,16 @@ export default function GitHub() {
                 setIsLoading(true);
                 const response = await fetch('/api/github');
 
+                // Graceful check instead of throwing a raw runtime error
                 if (!response.ok) {
-                    throw new Error('Internal proxy failed to fetch');
+                    console.error(
+                        `GitHub API route returned status: ${response.status}`,
+                    );
+                    setHasError(true);
+                    setIsLoading(false);
+                    return;
                 }
+
                 const data: { contributions?: unknown[] } =
                     await response.json();
 
@@ -163,7 +170,7 @@ export default function GitHub() {
                         </div>
                     </div>
                 ) : hasError || contributions.length === 0 ? (
-                    <div className="text-muted-foreground border-border rounded-xl border-2 border-dashed p-8 text-center">
+                    <div className="text-muted-foreground relative mt-8 rounded-xl border bg-white/80 p-8 text-center backdrop-blur-sm dark:border-white/20 dark:bg-black/60">
                         <div className="bg-muted mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full">
                             <GithubIcon className="h-8 w-8" />
                         </div>
@@ -192,23 +199,19 @@ export default function GitHub() {
                         </TrackedLink>
                     </div>
                 ) : (
-                    <div className="relative overflow-hidden">
-                        <div className="bg-background/50 relative rounded-lg border border-dashed border-black/20 p-6 backdrop-blur-sm dark:border-white/10">
-                            <div className="w-full overflow-x-auto">
-                                <ActivityCalendar
-                                    data={contributions}
-                                    blockSize={12}
-                                    blockMargin={4}
-                                    fontSize={githubConfig.fontSize}
-                                    colorScheme={
-                                        resolvedTheme === 'dark'
-                                            ? 'dark'
-                                            : 'light'
-                                    }
-                                    maxLevel={githubConfig.maxLevel}
-                                    theme={githubConfig.theme}
-                                />
-                            </div>
+                    <div className="relative mt-8 overflow-hidden rounded-xl border bg-white/80 p-6 backdrop-blur-sm dark:border-white/20 dark:bg-black/60">
+                        <div className="w-full overflow-x-auto">
+                            <ActivityCalendar
+                                data={contributions}
+                                blockSize={12}
+                                blockMargin={4}
+                                fontSize={githubConfig.fontSize}
+                                colorScheme={
+                                    resolvedTheme === 'dark' ? 'dark' : 'light'
+                                }
+                                maxLevel={githubConfig.maxLevel}
+                                theme={githubConfig.theme}
+                            />
                         </div>
                     </div>
                 )}
