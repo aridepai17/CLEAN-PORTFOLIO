@@ -1,12 +1,14 @@
 import UmamiAnalytics from '@/components/analytics/UmamiAnalytics';
+import BackToTop from '@/components/common/BackToTop';
+import ChatBubble from '@/components/common/ChatBubble';
 import Footer from '@/components/common/Footer';
+import LenisProvider from '@/components/common/LenisProvider';
 import Navbar from '@/components/common/Navbar';
 import { Quote } from '@/components/common/Quote';
 import { ThemeProvider } from '@/components/common/ThemeProviders';
 import { Toaster } from '@/components/ui/sonner';
 import { TooltipProvider } from '@/components/ui/tooltip';
 import { generateMetadata as getMetaData } from '@/config/Meta';
-import ReactLenis from 'lenis/react';
 import { ViewTransitions } from 'next-view-transitions';
 
 import './globals.css';
@@ -28,16 +30,18 @@ export default function RootLayout({
                         enableSystem
                         disableTransitionOnChange
                     >
-                        <ReactLenis root>
+                        <LenisProvider>
                             <Navbar />
                             <TooltipProvider delayDuration={0}>
                                 {children}
+                                <BackToTop />
                             </TooltipProvider>
                             <Quote />
                             <Footer />
                             <UmamiAnalytics />
                             <Toaster />
-                        </ReactLenis>
+                            <ChatBubble />
+                        </LenisProvider>
                     </ThemeProvider>
                 </body>
             </html>

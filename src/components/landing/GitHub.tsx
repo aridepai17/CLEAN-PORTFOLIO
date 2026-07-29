@@ -57,9 +57,11 @@ export default function GitHub() {
         async function fetchData() {
             try {
                 setIsLoading(true);
-                const response = await fetch(
-                    `${githubConfig.apiUrl}/${githubConfig.username}.json`,
-                );
+                const response = await fetch('/api/github');
+
+                if (!response.ok) {
+                    throw new Error('Internal proxy failed to fetch');
+                }
                 const data: { contributions?: unknown[] } =
                     await response.json();
 

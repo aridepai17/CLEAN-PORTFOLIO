@@ -13,7 +13,7 @@ export const projects: Project[] = [
         description:
             'ATS resume optimization tool that analyzes and rewrites resumes to improve applicant-tracking-system scores.',
         image: '/project/selectra.png',
-        link: 'https://github.com/aridepai17/selectra',
+        link: 'https://selectra-nine.vercel.app',
         technologies: [
             { name: 'Next.js', icon: <NextJs key="nextjs" /> },
             { name: 'TypeScript', icon: <TypeScript key="typescript" /> },
@@ -30,7 +30,7 @@ export const projects: Project[] = [
         description:
             'AI-powered kitchen assistant that recognizes pantry ingredients from images, generates personalized recipes, and helps users manage meals with secure authentication and subscriptions.',
         image: '/project/servd.png',
-        link: 'https://github.com/aridepai17/servd',
+        link: 'https://servdai.vercel.app/',
         technologies: [
             { name: 'Next.js', icon: <NextJs key="nextjs" /> },
             { name: 'TypeScript', icon: <TypeScript key="typescript" /> },
@@ -47,7 +47,7 @@ export const projects: Project[] = [
         description:
             'AI-powered architectural visualization platform that transforms 2D floor plans into photorealistic 3D renders with cloud-based project management.',
         image: '/project/roomify.png',
-        link: 'https://github.com/aridepai17/ROOMIFY',
+        link: 'https://roomify-virid-three.vercel.app/',
         technologies: [
             { name: 'Next.js', icon: <NextJs key="nextjs" /> },
             { name: 'TypeScript', icon: <TypeScript key="typescript" /> },
@@ -64,7 +64,7 @@ export const projects: Project[] = [
         description:
             'Full-stack sports analytics platform that predicts the 2026 FIFA World Cup using Elo ratings, Poisson goal models, and 10,000 Monte Carlo simulations with interactive tournament and match visualizations.',
         image: '/project/worldcuporacle.png',
-        link: 'https://github.com/aridepai17/worldcuporacle',
+        link: 'https://worldcuporacle-eight.vercel.app/',
         technologies: [
             { name: 'Next.js', icon: <NextJs key="nextjs" /> },
             { name: 'TypeScript', icon: <TypeScript key="typescript" /> },
@@ -81,7 +81,7 @@ export const projects: Project[] = [
         description:
             'Full-stack expense splitting platform with real-time group expense tracking, automated balance calculations, settlement management, and AI-powered spending insights.',
         image: '/project/splitr.png',
-        link: 'https://github.com/aridepai17/splitr',
+        link: 'https://splitr-psi-bay.vercel.app/',
         technologies: [
             { name: 'Next.js', icon: <NextJs key="nextjs" /> },
             { name: 'TypeScript', icon: <TypeScript key="typescript" /> },
@@ -98,7 +98,7 @@ export const projects: Project[] = [
         description:
             'Full-stack stock market intelligence platform featuring real-time market dashboards, personalized watchlists, AI-powered news summaries, and live financial analytics.',
         image: '/project/signalist.png',
-        link: 'https://github.com/aridepai17/SIGNALIST',
+        link: 'https://signalistrealtimestocks.vercel.app/',
         technologies: [
             { name: 'Next.js', icon: <NextJs key="nextjs" /> },
             { name: 'TypeScript', icon: <TypeScript key="typescript" /> },
@@ -116,7 +116,7 @@ export const projects: Project[] = [
         description:
             'Interactive portfolio that recreates the macOS desktop experience with draggable windows, a functional dock, smooth animations, and desktop-inspired navigation.',
         image: '/project/macosportfolio.png',
-        link: 'https://github.com/aridepai17/ADVAITH-R-PAI-PORTFOLIO',
+        link: 'https://advaithrpai-portfolio.vercel.app/',
         technologies: [
             { name: 'React', icon: <ReactIcon key="react" /> },
             { name: 'TypeScript', icon: <TypeScript key="typescript" /> },

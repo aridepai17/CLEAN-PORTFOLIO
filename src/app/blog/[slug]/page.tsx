@@ -2,6 +2,7 @@ import { BlogContent } from '@/components/blog/BlogContent';
 import { BlogList } from '@/components/blog/BlogList';
 import Container from '@/components/common/Container';
 import FontSizeControls from '@/components/common/FontSizeControls';
+import Reveal from '@/components/common/Reveal';
 import ArrowLeft from '@/components/svgs/ArrowLeft';
 import { buttonVariants } from '@/components/ui/button-variants';
 import { Separator } from '@/components/ui/separator';
@@ -78,42 +79,44 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
     return (
         <>
             <Container className="py-16">
-                <div className="space-y-12">
-                    <div>
-                        <Link
-                            href="/blog"
-                            className={`${buttonVariants({ variant: 'ghost' })} group`}
-                        >
-                            <ArrowLeft className="size-4" />
-                            <span>Back to Blog</span>
-                        </Link>
-                    </div>
-                    <BlogContent
-                        frontmatter={post.frontmatter}
-                        content={post.content}
-                    />
-                    {relatedPosts.length > 0 && (
-                        <div className="space-y-6">
-                            <Separator />
-                            <div className="space-y-6">
-                                <h2 className="text-2xl font-semibold">
-                                    Related Posts
-                                </h2>
-                                <BlogList posts={relatedPosts} />
-                            </div>
+                <Reveal>
+                    <div className="space-y-12">
+                        <div>
+                            <Link
+                                href="/blog"
+                                className={`${buttonVariants({ variant: 'ghost' })} group`}
+                            >
+                                <ArrowLeft className="size-4" />
+                                <span>Back to Blog</span>
+                            </Link>
                         </div>
-                    )}
+                        <BlogContent
+                            frontmatter={post.frontmatter}
+                            content={post.content}
+                        />
+                        {relatedPosts.length > 0 && (
+                            <div className="space-y-6">
+                                <Separator />
+                                <div className="space-y-6">
+                                    <h2 className="text-2xl font-semibold">
+                                        Related Posts
+                                    </h2>
+                                    <BlogList posts={relatedPosts} />
+                                </div>
+                            </div>
+                        )}
 
-                    <div className="text-center">
-                        <Separator className="mb-8" />
-                        <Link
-                            href="/blog"
-                            className={buttonVariants({ size: 'lg' })}
-                        >
-                            View All Blogs
-                        </Link>
+                        <div className="text-center">
+                            <Separator className="mb-8" />
+                            <Link
+                                href="/blog"
+                                className={buttonVariants({ size: 'lg' })}
+                            >
+                                View All Blogs
+                            </Link>
+                        </div>
                     </div>
-                </div>
+                </Reveal>
             </Container>
             <FontSizeControls />
         </>

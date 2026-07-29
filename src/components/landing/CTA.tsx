@@ -52,7 +52,7 @@ export default function CTA({
 
     return (
         <>
-            <Container className="mt-20 rounded-md border border-dashed border-black/20 py-8 dark:border-white/10">
+            <Container className="mt-20 rounded-md border border-dashed border-black/20 bg-white/80 py-8 backdrop-blur-sm dark:border-white/10 dark:bg-black/60">
                 <div className="mt-6 w-full flex-col px-6 pb-8 sm:flex sm:items-center sm:justify-between sm:px-12">
                     <p className="mb-4 text-center text-base opacity-50 sm:mb-3 md:text-xl">
                         {preText}
@@ -60,21 +60,24 @@ export default function CTA({
                     <div className="mt-4 flex w-full justify-center sm:mt-0 sm:w-auto sm:justify-end">
                         <button
                             type="button"
-                            className="group inline-flex cursor-pointer items-center self-end rounded-md border border-dashed border-black/20 bg-black/5 px-2 py-1 text-sm text-black shadow-[0_0_5px_rgba(0,0,0,0.1)] transition-all dark:border-white/30 dark:bg-white/15 dark:text-white dark:shadow-[0_0_5px_rgba(255,255,255,0.1)]"
+                            className="group inline-flex cursor-pointer items-center self-end rounded-md border border-dashed border-black/20 bg-black/5 px-2 py-1 text-sm text-black shadow-[0_0_5px_rgba(0,0,0,0.1)] transition-all hover:bg-black/10 dark:border-white/30 dark:bg-white/15 dark:text-white dark:shadow-[0_0_5px_rgba(255,255,255,0.1)] dark:hover:bg-white/20"
                             onClick={handleButtonClick}
                         >
-                            <div className="relative z-20 flex items-center gap-2 transition-all duration-300 group-hover:gap-8">
-                                <div className="h-5 w-5 shrink-0 overflow-hidden rounded-full">
-                                    <Image
-                                        alt={profileAlt}
-                                        width={20}
-                                        height={20}
-                                        className="h-full w-full object-cover"
-                                        src={profileImage}
-                                        style={{ color: 'transparent' }}
-                                    />
-                                </div>
-                                <div className="absolute left-6 flex -translate-x-full transform items-center gap-0 opacity-0 transition-all duration-300 group-hover:translate-x-0 group-hover:opacity-100">
+                            {/* Main Wrapper: Handles the spacing between the Avatar cluster and the Text */}
+                            <div className="relative z-20 flex items-center gap-2 transition-all duration-300 group-hover:gap-6">
+                                {/* Avatar Cluster: Keeps the Pic, Plus, and You tightly packed together */}
+                                <div className="flex items-center gap-1">
+                                    <div className="h-5 w-5 shrink-0 overflow-hidden rounded-full">
+                                        <Image
+                                            alt={profileAlt}
+                                            width={20}
+                                            height={20}
+                                            className="h-full w-full object-cover"
+                                            src={profileImage}
+                                            style={{ color: 'transparent' }}
+                                        />
+                                    </div>
+
                                     <svg
                                         xmlns="http://www.w3.org/2000/svg"
                                         width="20"
@@ -82,19 +85,22 @@ export default function CTA({
                                         viewBox="0 0 24 24"
                                         fill="none"
                                         stroke="currentColor"
-                                        strokeWidth="2"
+                                        strokeWidth="2.5"
                                         strokeLinecap="round"
                                         strokeLinejoin="round"
-                                        className="h-3 w-3"
+                                        className="h-3 w-3 text-black/40 dark:text-white/40"
                                     >
                                         <path d="M5 12h14"></path>
                                         <path d="M12 5v14"></path>
                                     </svg>
-                                    <div className="mr-2 ml-1 flex h-5 w-5 items-center justify-center rounded-full bg-black/10 text-[8px] dark:bg-white/10">
+
+                                    <div className="flex h-5 w-5 items-center justify-center rounded-full bg-black/10 text-[8px] font-medium dark:bg-white/20">
                                         You
                                     </div>
                                 </div>
-                                <span className="relative ml-0 block text-sm font-bold whitespace-nowrap transition-all duration-300 group-hover:ml-4">
+
+                                {/* Text */}
+                                <span className="relative block text-sm font-bold whitespace-nowrap">
                                     Get in Touch
                                 </span>
                             </div>

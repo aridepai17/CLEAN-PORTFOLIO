@@ -15,8 +15,10 @@ export const contactFormSchema = z.object({
     }),
     phone: z
         .string()
-        .regex(/^[+]?[1-9][\d\s\-()]{0,15}$/, {
-            message: 'Please enter a valid phone number.',
+        // Allows optional +, allows leading 0s, and standard formatting chars
+        .regex(/^[+]?[\d\s\-()]+$/, {
+            message:
+                'Phone number can only contain digits, spaces, hyphens, and parentheses.',
         })
         .min(10, {
             message: 'Phone number must be at least 10 characters.',

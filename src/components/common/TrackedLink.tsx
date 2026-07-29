@@ -18,10 +18,18 @@ export function TrackedLink({
         <Link
             {...props}
             onClick={(event) => {
-                if (track) {
-                    trackEvent(track);
-                }
+                // 1. Fire the original onClick immediately so navigation isn't delayed
                 onClick?.(event);
+
+                // 2. Safely attempt to track the event in the background
+                if (track) {
+                    try {
+                        trackEvent(track);
+                    } catch (error) {
+                        // Silently swallow the error (e.g., if blocked by an ad-blocker)
+                        console.debug('Analytics blocked or failed:', error);
+                    }
+                }
             }}
         />
     );
