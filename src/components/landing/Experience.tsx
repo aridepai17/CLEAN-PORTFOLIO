@@ -12,7 +12,11 @@ import { buttonVariants } from '../ui/button-variants';
 export default function Experience() {
     return (
         <Container className="mt-20">
-            <SectionHeading subHeading="Featured" heading="Experience" />
+            <SectionHeading
+                id="experience"
+                subHeading="Featured"
+                heading="Experience"
+            />
             <div className="mt-4 flex flex-col gap-8">
                 {experiences.slice(0, 2).map((experience: Experience) => (
                     <ExperienceCard

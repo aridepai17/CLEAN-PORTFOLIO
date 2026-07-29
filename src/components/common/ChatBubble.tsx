@@ -327,7 +327,6 @@ const ChatBubble: React.FC = () => {
                             </div>
                         </div>
                     </div>
-                    {/* Optional: A small subtle button to clear history if it gets too long */}
                     {messages.length > 1 && (
                         <Button
                             variant="ghost"
@@ -342,9 +341,12 @@ const ChatBubble: React.FC = () => {
                 </div>
             </ExpandableChatHeader>
 
-            <ExpandableChatBody>
-                <ScrollArea ref={scrollAreaRef} className="h-full p-4">
-                    <div className="w-full space-y-4">
+            <ExpandableChatBody className="flex-1 overflow-hidden">
+                <ScrollArea
+                    ref={scrollAreaRef}
+                    className="h-full w-full overscroll-contain"
+                >
+                    <div className="w-full space-y-4 p-4 pr-6">
                         {messages.map((message) => (
                             <div
                                 key={message.id}
@@ -474,7 +476,7 @@ const ChatBubble: React.FC = () => {
                         onChange={(e) => setNewMessage(e.target.value)}
                         onKeyDown={handleKeyDown}
                         disabled={isLoading}
-                        className="flex-1 focus-visible:ring-1"
+                        className="flex-1 text-base focus-visible:ring-1 sm:text-sm"
                     />
                     <Button
                         size="sm"

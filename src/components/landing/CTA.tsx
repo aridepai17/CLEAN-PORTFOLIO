@@ -52,7 +52,10 @@ export default function CTA({
 
     return (
         <>
-            <Container className="mt-20 rounded-md border border-dashed border-black/20 bg-white/80 py-8 backdrop-blur-sm dark:border-white/10 dark:bg-black/60">
+            <Container
+                id="contact"
+                className="mt-20 scroll-mt-24 rounded-md border border-dashed border-black/20 bg-white/80 py-8 backdrop-blur-sm dark:border-white/10 dark:bg-black/60"
+            >
                 <div className="mt-6 w-full flex-col px-6 pb-8 sm:flex sm:items-center sm:justify-between sm:px-12">
                     <p className="mb-4 text-center text-base opacity-50 sm:mb-3 md:text-xl">
                         {preText}
@@ -60,7 +63,7 @@ export default function CTA({
                     <div className="mt-4 flex w-full justify-center sm:mt-0 sm:w-auto sm:justify-end">
                         <button
                             type="button"
-                            className="group inline-flex cursor-pointer items-center self-end rounded-md border border-dashed border-black/20 bg-black/5 px-2 py-1 text-sm text-black shadow-[0_0_5px_rgba(0,0,0,0.1)] transition-all hover:bg-black/10 dark:border-white/30 dark:bg-white/15 dark:text-white dark:shadow-[0_0_5px_rgba(255,255,255,0.1)] dark:hover:bg-white/20"
+                            className="group focus-visible:ring-primary inline-flex cursor-pointer items-center self-end rounded-md border border-dashed border-black/20 bg-black/5 px-2 py-1 text-sm text-black shadow-[0_0_5px_rgba(0,0,0,0.1)] transition-all duration-200 hover:bg-black/10 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 active:scale-[0.98] dark:border-white/30 dark:bg-white/15 dark:text-white dark:shadow-[0_0_5px_rgba(255,255,255,0.1)] dark:hover:bg-white/20 dark:focus-visible:ring-offset-black"
                             onClick={handleButtonClick}
                         >
                             {/* Main Wrapper: Handles the spacing between the Avatar cluster and the Text */}
@@ -143,7 +146,7 @@ export default function CTA({
                                         },
                                     })
                                 }
-                                className="hover:bg-muted block rounded-lg border p-3 transition"
+                                className="hover:bg-muted focus-visible:ring-primary block rounded-lg border p-3 transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 active:scale-[0.98] dark:focus-visible:ring-offset-black"
                             >
                                 {link.label}
                             </a>

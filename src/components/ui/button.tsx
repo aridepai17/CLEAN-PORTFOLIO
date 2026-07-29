@@ -24,7 +24,10 @@ function Button({
             data-slot="button"
             data-variant={variant}
             data-size={size}
-            className={cn(buttonVariants({ variant, size, className }))}
+            className={cn(
+                'transition-transform duration-200 active:scale-[0.98]',
+                buttonVariants({ variant, size, className }),
+            )}
             {...props}
         />
     );
