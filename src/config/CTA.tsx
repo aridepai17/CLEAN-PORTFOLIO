@@ -1,6 +1,6 @@
 export const ctaConfig = {
     // Profile image
-    profileImage: '/assets/logo.png',
+    profileImage: '/assets/logo.jpg',
     profileAlt: 'Advaith R Pai',
 
     // CTA message
