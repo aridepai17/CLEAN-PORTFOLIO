@@ -144,9 +144,9 @@ export async function POST(request: NextRequest) {
             );
         }
 
-        const apiKey = process.env.GEMINI_API_KEY;
+        const apiKey = process.env.GROQ_API_KEY;
         if (!apiKey) {
-            console.error('GEMINI_API_KEY not configured');
+            console.error('GROQ_API_KEY not configured');
             return NextResponse.json(
                 { error: 'AI service not configured' },
                 { status: 500 },
@@ -156,54 +156,43 @@ export async function POST(request: NextRequest) {
         const body = await request.json();
         const validatedData = chatSchema.parse(body);
 
-        // Prepare the request body for Gemini REST API
+        // Map frontend structure to OpenAI/Groq compatible chat completion payload
+        const messages = [
+            { role: 'system', content: systemPrompt },
+            ...validatedData.history.map((msg) => ({
+                // Map frontend structure 'model' to the standard OpenAI 'assistant' role
+                role: msg.role === 'model' ? 'assistant' : 'user',
+                content:
+                    msg.role === 'user'
+                        ? sanitizeInput(msg.parts.map((p) => p.text).join('\n'))
+                        : msg.parts.map((p) => p.text).join('\n'),
+            })),
+            {
+                role: 'user',
+                content: `[USER INPUT]\n${sanitizeInput(validatedData.message)}\n[/USER INPUT]`,
+            },
+        ];
+
         const requestBody = {
-            // Native systemInstruction strictly separates the rules from the user
-            systemInstruction: {
-                parts: [{ text: systemPrompt }],
-            },
-            contents: [
-                // Add conversation history (sanitized to prevent retroactive injection)
-                ...validatedData.history.map((msg) => ({
-                    role: msg.role,
-                    parts: msg.parts.map((part) => ({
-                        // FIX: Only sanitize the user's past inputs, leave model context alone
-                        text:
-                            msg.role === 'user'
-                                ? sanitizeInput(part.text)
-                                : part.text,
-                    })),
-                })),
-                // Add current message with strict string data delimiters
-                {
-                    role: 'user',
-                    parts: [
-                        {
-                            text: `[USER INPUT]\n${sanitizeInput(validatedData.message)}\n[/USER INPUT]`,
-                        },
-                    ],
-                },
-            ],
-            generationConfig: {
-                maxOutputTokens: 512,
-                temperature: 0.7,
-                topP: 0.8,
-                topK: 40,
-            },
+            model: 'llama-3.3-70b-versatile',
+            messages,
+            temperature: 0.7,
+            max_tokens: 1024,
+            stream: true,
         };
 
-        const geminiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:streamGenerateContent?alt=sse`;
+        const groqUrl = 'https://api.groq.com/openai/v1/chat/completions';
 
         const controller = new AbortController();
         const timeoutId = setTimeout(() => controller.abort(), 45000);
 
         let response: Response;
         try {
-            response = await fetch(geminiUrl, {
+            response = await fetch(groqUrl, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'x-goog-api-key': apiKey,
+                    Authorization: `Bearer ${apiKey}`,
                 },
                 body: JSON.stringify(requestBody),
                 signal: controller.signal,
@@ -223,7 +212,15 @@ export async function POST(request: NextRequest) {
         }
 
         if (!response.ok) {
-            throw new Error(`Gemini API error: ${response.status}`);
+            if (response.status === 429) {
+                return NextResponse.json(
+                    {
+                        error: 'Groq free-tier rate limit reached. Please wait a moment before trying again.',
+                    },
+                    { status: 429 },
+                );
+            }
+            throw new Error(`Groq API error: ${response.status}`);
         }
 
         const encoder = new TextEncoder();
@@ -234,12 +231,13 @@ export async function POST(request: NextRequest) {
                     const parser = createParser({
                         onEvent: (event) => {
                             try {
+                                // Gracefully skip standard event completion token
+                                if (event.data === '[DONE]') return;
+
                                 const data = JSON.parse(event.data);
-                                const text =
-                                    data?.candidates?.[0]?.content?.parts?.[0]
-                                        ?.text;
+                                const text = data?.choices?.[0]?.delta?.content;
                                 if (text) {
-                                    // Send as Server-Sent Event format
+                                    // Package as the exact same { text } payload the UI is built for
                                     const sseData = `data: ${JSON.stringify({ text })}\n\n`;
                                     controller.enqueue(encoder.encode(sseData));
                                 }
@@ -263,7 +261,7 @@ export async function POST(request: NextRequest) {
                         parser.feed(decoder.decode(value, { stream: true }));
                     }
 
-                    // Send completion signal
+                    // Send completion signal matching original protocol
                     controller.enqueue(
                         encoder.encode('data: {"done": true}\n\n'),
                     );
@@ -290,13 +288,10 @@ export async function POST(request: NextRequest) {
             },
         });
     } catch (error) {
-        // Log the actual detailed error server-side only
         console.error('Chat API Error:', error);
 
         if (error instanceof z.ZodError) {
-            // Log Zod specifics securely on the server
             console.error('Chat Validation Error Details:', error.issues);
-
             return NextResponse.json(
                 {
                     error: 'Invalid request data. Please try again.',

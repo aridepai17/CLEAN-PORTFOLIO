@@ -29,11 +29,11 @@ export function middleware(request: NextRequest) {
     // Upgrades insecure HTTP requests to HTTPS automatically
     const cspHeader = `
         default-src 'self';
-        script-src 'self' 'unsafe-eval' 'unsafe-inline' https://va.vercel-scripts.com\;
+        script-src 'self' 'unsafe-eval' 'unsafe-inline' https://va.vercel-scripts.com https://cloud.umami.is;
         style-src 'self' 'unsafe-inline';
         img-src 'self' blob: data: https:;
         font-src 'self' data:;
-        connect-src 'self' https://generativelanguage.googleapis.com https://api.telegram.org https://vitals.vercel-insights.com\;
+        connect-src 'self' https://api.telegram.org https://vitals.vercel-insights.com https://cloud.umami.is https://gateway.umami.is;
         object-src 'none';
         base-uri 'self';
         form-action 'self';

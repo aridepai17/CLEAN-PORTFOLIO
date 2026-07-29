@@ -1,39 +1,14 @@
 'use client';
 
 import { githubConfig } from '@/config/GitHub';
-import { useTheme } from 'next-themes';
-import dynamic from 'next/dynamic';
+import { type ContributionItem } from '@/lib/github';
 import { useEffect, useState } from 'react';
 
 import Container from '../common/Container';
 import { TrackedLink } from '../common/TrackedLink';
 import GithubIcon from '../svgs/GitHubIcon';
 import { buttonVariants } from '../ui/button-variants';
-
-const ActivityCalendar = dynamic(
-    () =>
-        import('react-activity-calendar').then((mod) => ({
-            default: mod.ActivityCalendar,
-        })),
-    { ssr: false },
-);
-
-type ContributionItem = {
-    date: string;
-    count: number;
-    level: 0 | 1 | 2 | 3 | 4;
-};
-
-type GitHubContributionResponse = {
-    date: string;
-    contributionCount: number;
-    contributionLevel:
-        | 'NONE'
-        | 'FIRST_QUARTILE'
-        | 'SECOND_QUARTILE'
-        | 'THIRD_QUARTILE'
-        | 'FOURTH_QUARTILE';
-};
+import GitHubCalendarClient from './GitHubCalendarClient';
 
 // Helper function to filter contributions to past year
 function filterLastYear(contributions: ContributionItem[]): ContributionItem[] {
@@ -51,7 +26,6 @@ export default function GitHub() {
     const [totalContributions, setTotalContributions] = useState<number>(0);
     const [isLoading, setIsLoading] = useState(true);
     const [hasError, setHasError] = useState(false);
-    const { resolvedTheme } = useTheme();
 
     useEffect(() => {
         async function fetchData() {
@@ -59,49 +33,26 @@ export default function GitHub() {
                 setIsLoading(true);
                 const response = await fetch('/api/github');
 
+                // Graceful check instead of throwing a raw runtime error
                 if (!response.ok) {
-                    throw new Error('Internal proxy failed to fetch');
+                    console.error(
+                        `GitHub API route returned status: ${response.status}`,
+                    );
+                    setHasError(true);
+                    setIsLoading(false);
+                    return;
                 }
-                const data: { contributions?: unknown[] } =
+
+                // The API route now uses lib/github.ts, returning a pre-flattened and mapped array
+                const data: { contributions?: ContributionItem[] } =
                     await response.json();
 
                 if (data?.contributions && Array.isArray(data.contributions)) {
-                    // Flatten the nested array structure
-                    const flattenedContributions = data.contributions.flat();
-
-                    // Convert contribution levels to numbers
-                    const contributionLevelMap = {
-                        NONE: 0,
-                        FIRST_QUARTILE: 1,
-                        SECOND_QUARTILE: 2,
-                        THIRD_QUARTILE: 3,
-                        FOURTH_QUARTILE: 4,
-                    };
-
-                    // Transform to the expected format
-                    const validContributions = flattenedContributions
-                        .filter(
-                            (
-                                item: unknown,
-                            ): item is GitHubContributionResponse =>
-                                typeof item === 'object' &&
-                                item !== null &&
-                                'date' in item &&
-                                'contributionCount' in item &&
-                                'contributionLevel' in item,
-                        )
-                        .map((item: GitHubContributionResponse) => ({
-                            date: String(item.date),
-                            count: Number(item.contributionCount || 0),
-                            level: (contributionLevelMap[
-                                item.contributionLevel as keyof typeof contributionLevelMap
-                            ] || 0) as ContributionItem['level'],
-                        }));
-
-                    if (validContributions.length > 0) {
+                    if (data.contributions.length > 0) {
                         // Filter to show only the past year to match the calendar
-                        const filteredContributions =
-                            filterLastYear(validContributions);
+                        const filteredContributions = filterLastYear(
+                            data.contributions,
+                        );
 
                         // Calculate total from the same filtered range as the calendar
                         const total = filteredContributions.reduce(
@@ -163,7 +114,7 @@ export default function GitHub() {
                         </div>
                     </div>
                 ) : hasError || contributions.length === 0 ? (
-                    <div className="text-muted-foreground border-border rounded-xl border-2 border-dashed p-8 text-center">
+                    <div className="text-muted-foreground relative mt-8 rounded-xl border bg-white/80 p-8 text-center backdrop-blur-sm dark:border-white/20 dark:bg-black/60">
                         <div className="bg-muted mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full">
                             <GithubIcon className="h-8 w-8" />
                         </div>
@@ -192,24 +143,9 @@ export default function GitHub() {
                         </TrackedLink>
                     </div>
                 ) : (
-                    <div className="relative overflow-hidden">
-                        <div className="bg-background/50 relative rounded-lg border border-dashed border-black/20 p-6 backdrop-blur-sm dark:border-white/10">
-                            <div className="w-full overflow-x-auto">
-                                <ActivityCalendar
-                                    data={contributions}
-                                    blockSize={12}
-                                    blockMargin={4}
-                                    fontSize={githubConfig.fontSize}
-                                    colorScheme={
-                                        resolvedTheme === 'dark'
-                                            ? 'dark'
-                                            : 'light'
-                                    }
-                                    maxLevel={githubConfig.maxLevel}
-                                    theme={githubConfig.theme}
-                                />
-                            </div>
-                        </div>
+                    <div className="relative mt-8 overflow-hidden rounded-xl border bg-white/80 p-6 backdrop-blur-sm dark:border-white/20 dark:bg-black/60">
+                        {/* The new client component takes over rendering and theme detection */}
+                        <GitHubCalendarClient contributions={contributions} />
                     </div>
                 )}
             </div>

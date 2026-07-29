@@ -1,34 +1,22 @@
-import { githubConfig } from '@/config/GitHub';
+import { getGithubContributions } from '@/lib/github';
 import { NextResponse } from 'next/server';
 
 export async function GET() {
     try {
-        const response = await fetch(
-            `${githubConfig.apiUrl}/${githubConfig.username}.json`,
-            {
-                // Cache the result for 1 hour (3600 seconds)
-                next: { revalidate: 3600 },
-            },
-        );
+        const contributions = await getGithubContributions();
 
-        if (!response.ok) {
-            throw new Error(
-                `GitHub API responded with status: ${response.status}`,
+        if (!contributions) {
+            return NextResponse.json(
+                { error: 'Failed to fetch or parse GitHub contributions' },
+                { status: 502 },
             );
         }
 
-        const data = await response.json();
-
-        return NextResponse.json(data, {
-            headers: {
-                'Cache-Control':
-                    'public, s-maxage=3600, stale-while-revalidate=86400',
-            },
-        });
+        return NextResponse.json({ contributions });
     } catch (error) {
-        console.error('Error fetching GitHub data on server:', error);
+        console.error('Failed to securely fetch native GitHub data:', error);
         return NextResponse.json(
-            { error: 'Failed to fetch GitHub contributions' },
+            { error: 'Internal server error processing GitHub timeline' },
             { status: 500 },
         );
     }

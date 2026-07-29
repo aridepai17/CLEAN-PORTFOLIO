@@ -7,6 +7,7 @@ import Experience from '@/components/landing/Experience';
 import GitHub from '@/components/landing/GitHub';
 import Hero from '@/components/landing/Hero';
 import Journey from '@/components/landing/Journey';
+import LeetCode from '@/components/landing/LeetCode';
 import Work from '@/components/landing/Projects';
 import { getPublishedBlogPosts } from '@/lib/blog';
 import React from 'react';
@@ -28,6 +29,9 @@ export default function page() {
             </Reveal>
             <Reveal>
                 <GitHub />
+            </Reveal>
+            <Reveal>
+                <LeetCode />
             </Reveal>
             <Reveal>
                 <Blog posts={posts} />
