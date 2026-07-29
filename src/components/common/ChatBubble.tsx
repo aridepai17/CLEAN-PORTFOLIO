@@ -17,13 +17,15 @@ import { useHapticFeedback } from '@/hooks/use-haptic-feedback';
 import { useUmami } from '@/hooks/use-umami';
 import { cn } from '@/lib/utils';
 import { createParser } from 'eventsource-parser';
+import { Trash2 } from 'lucide-react';
 import React, { useEffect, useRef, useState } from 'react';
 import ReactMarkdown from 'react-markdown';
 
 import SendIcon from '../svgs/SendIcon';
 
+// 1. Changed id from 'number' to 'string' to support UUIDs
 interface Message {
-    id: number;
+    id: string;
     text: string;
     sender: 'user' | 'bot';
     timestamp: string;
@@ -32,7 +34,7 @@ interface Message {
 
 const initialMessages: Message[] = [
     {
-        id: 1,
+        id: 'initial-msg-1',
         text: "Hello! I'm Advaith's Portfolio Assistant. How can I help you?",
         sender: 'bot',
         timestamp: new Date().toLocaleTimeString([], {
@@ -42,41 +44,78 @@ const initialMessages: Message[] = [
     },
 ];
 
+const LOCAL_STORAGE_KEY = 'advaith-portfolio-chat-history';
+
 const ChatBubble: React.FC = () => {
     const [messages, setMessages] = useState<Message[]>(initialMessages);
     const [newMessage, setNewMessage] = useState('');
     const [isLoading, setIsLoading] = useState(false);
+    const [isInitialized, setIsInitialized] = useState(false);
     const scrollAreaRef = useRef<HTMLDivElement>(null);
     const { triggerHaptic, isMobile } = useHapticFeedback();
     const { trackEvent } = useUmami();
 
-    // Auto-scroll to bottom when new messages are added
+    // Load chat history from local storage on mount
+    useEffect(() => {
+        const savedHistory = localStorage.getItem(LOCAL_STORAGE_KEY);
+        if (savedHistory) {
+            try {
+                const parsed = JSON.parse(savedHistory);
+                // Reset any 'isStreaming' states that might have been saved if the user refreshed mid-stream
+                const cleanedHistory = parsed.map((msg: Message) => ({
+                    ...msg,
+                    isStreaming: false,
+                }));
+                setMessages(cleanedHistory);
+            } catch (error) {
+                console.error('Failed to parse chat history:', error);
+            }
+        }
+        setIsInitialized(true);
+    }, []);
+
+    // Save chat history to local storage whenever it changes
+    useEffect(() => {
+        if (isInitialized) {
+            localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(messages));
+        }
+    }, [messages, isInitialized]);
+
+    // Smooth auto-scroll to bottom
     useEffect(() => {
         if (scrollAreaRef.current) {
             const scrollElement = scrollAreaRef.current.querySelector(
                 '[data-radix-scroll-area-viewport]',
             );
             if (scrollElement) {
-                scrollElement.scrollTop = scrollElement.scrollHeight;
+                scrollElement.scrollTo({
+                    top: scrollElement.scrollHeight,
+                    behavior: 'smooth',
+                });
             }
         }
     }, [messages]);
 
+    const clearChat = () => {
+        if (isMobile()) triggerHaptic('medium');
+        setMessages(initialMessages);
+        localStorage.removeItem(LOCAL_STORAGE_KEY);
+    };
+
     const handleSendMessage = async () => {
         if (!newMessage.trim() || isLoading) return;
 
-        // Trigger haptic feedback on mobile devices
-        if (isMobile()) {
-            triggerHaptic('light');
-        }
+        if (isMobile()) triggerHaptic('light');
 
         const messageText = newMessage.trim();
         trackEvent({
             name: 'chat_message_sent',
             data: { message: messageText, sender: 'user' },
         });
+
+        // 2. Use crypto.randomUUID() for guaranteed unique React keys
         const userMessage: Message = {
-            id: Date.now(),
+            id: crypto.randomUUID(),
             text: messageText,
             sender: 'user',
             timestamp: new Date().toLocaleTimeString([], {
@@ -89,8 +128,7 @@ const ChatBubble: React.FC = () => {
         setNewMessage('');
         setIsLoading(true);
 
-        // Create a temporary bot message for streaming
-        const botMessageId = Date.now() + 1;
+        const botMessageId = crypto.randomUUID();
         const botMessage: Message = {
             id: botMessageId,
             text: '',
@@ -103,8 +141,6 @@ const ChatBubble: React.FC = () => {
         };
 
         setMessages((prev) => [...prev, botMessage]);
-
-        // Send the message using the refactored function
         await sendMessage(messageText, botMessageId);
     };
 
@@ -116,10 +152,7 @@ const ChatBubble: React.FC = () => {
     };
 
     const handleSuggestionClick = (suggestion: string) => {
-        // Trigger haptic feedback on mobile devices
-        if (isMobile()) {
-            triggerHaptic('selection');
-        }
+        if (isMobile()) triggerHaptic('selection');
 
         trackEvent({
             name: 'chat_message_sent',
@@ -127,9 +160,8 @@ const ChatBubble: React.FC = () => {
         });
 
         setNewMessage(suggestion);
-        // Auto-send the suggestion
         const userMessage: Message = {
-            id: Date.now(),
+            id: crypto.randomUUID(),
             text: suggestion,
             sender: 'user',
             timestamp: new Date().toLocaleTimeString([], {
@@ -141,8 +173,7 @@ const ChatBubble: React.FC = () => {
         setMessages((prev) => [...prev, userMessage]);
         setIsLoading(true);
 
-        // Create a temporary bot message for streaming
-        const botMessageId = Date.now() + 1;
+        const botMessageId = crypto.randomUUID();
         const botMessage: Message = {
             id: botMessageId,
             text: '',
@@ -155,16 +186,14 @@ const ChatBubble: React.FC = () => {
         };
 
         setMessages((prev) => [...prev, botMessage]);
-
-        // Send the message (reuse the same logic as handleSendMessage)
         sendMessage(suggestion, botMessageId);
     };
 
-    const sendMessage = async (messageText: string, botMessageId: number) => {
+    const sendMessage = async (messageText: string, botMessageId: string) => {
         try {
-            // Prepare conversation history for Gemini API format
             const history = messages
-                .filter((msg) => msg.id !== 1)
+                // 3. Update filter to match the new string ID
+                .filter((msg) => msg.id !== 'initial-msg-1')
                 .slice(-10)
                 .map((msg) => ({
                     role:
@@ -176,28 +205,18 @@ const ChatBubble: React.FC = () => {
 
             const response = await fetch('/api/chat', {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    message: messageText,
-                    history,
-                }),
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ message: messageText, history }),
             });
 
-            if (!response.ok) {
+            if (!response.ok)
                 throw new Error(`HTTP error! status: ${response.status}`);
-            }
 
             const reader = response.body?.getReader();
             const decoder = new TextDecoder();
-
-            if (!reader) {
-                throw new Error('No reader available');
-            }
+            if (!reader) throw new Error('No reader available');
 
             let accumulatedText = '';
-
             const parser = createParser({
                 onEvent: (event) => {
                     let data;
@@ -224,7 +243,6 @@ const ChatBubble: React.FC = () => {
 
                     if (data.text) {
                         accumulatedText += data.text;
-
                         setMessages((prev) =>
                             prev.map((msg) =>
                                 msg.id === botMessageId
@@ -256,14 +274,11 @@ const ChatBubble: React.FC = () => {
 
             while (true) {
                 const { done, value } = await reader.read();
-
                 if (done) break;
-
                 parser.feed(decoder.decode(value));
             }
         } catch (error) {
             console.error('Error sending message:', error);
-
             setMessages((prev) =>
                 prev.map((msg) =>
                     msg.id === botMessageId
@@ -290,119 +305,127 @@ const ChatBubble: React.FC = () => {
 
     return (
         <ExpandableChat
-            className="mt-4 ml-4 max-h-[95vh] max-w-[calc(100vw-2rem)] hover:cursor-pointer sm:max-w-[calc(100vw-4rem)] md:max-w-xl"
             position="bottom-right"
-            size="lg"
             icon={<ChatBubbleIcon className="h-6 w-6" />}
         >
             <ExpandableChatHeader>
-                <div className="flex items-center space-x-3">
-                    <Avatar className="border-primary h-8 w-8 border-2 bg-blue-300 dark:bg-yellow-300">
-                        <AvatarImage src="/assets/logo.png" alt="Assistant" />
-                        <AvatarFallback>AI</AvatarFallback>
-                    </Avatar>
-                    <div>
-                        <h3 className="text-sm font-semibold">
-                            {heroConfig.name}&apos;s Portfolio Assistant
-                        </h3>
-                        <div className="text-muted-foreground text-xs">
-                            <div className="flex items-center gap-1">
-                                <div className="h-2 w-2 animate-pulse rounded-full bg-green-500"></div>
-                                Online
+                <div className="flex w-full items-center justify-between overflow-hidden pr-2">
+                    <div className="flex items-center space-x-3 overflow-hidden">
+                        <Avatar className="border-primary h-8 w-8 shrink-0 border bg-blue-300 dark:bg-yellow-300">
+                            <AvatarImage src="/assets/ai.jpg" alt="Assistant" />
+                            <AvatarFallback>AI</AvatarFallback>
+                        </Avatar>
+                        <div className="min-w-0 flex-1">
+                            <h3 className="truncate text-sm font-semibold">
+                                {heroConfig.name}&apos;s Portfolio Assistant
+                            </h3>
+                            <div className="text-muted-foreground text-xs">
+                                <div className="mt-0.5 flex items-center gap-1.5">
+                                    <div className="h-1.5 w-1.5 animate-pulse rounded-full bg-green-500"></div>
+                                    Online
+                                </div>
                             </div>
                         </div>
                     </div>
+                    {/* Optional: A small subtle button to clear history if it gets too long */}
+                    {messages.length > 1 && (
+                        <Button
+                            variant="ghost"
+                            size="icon"
+                            onClick={clearChat}
+                            className="text-muted-foreground hover:text-destructive h-7 w-7 shrink-0"
+                            title="Clear Chat"
+                        >
+                            <Trash2 className="h-4 w-4" />
+                        </Button>
+                    )}
                 </div>
             </ExpandableChatHeader>
 
             <ExpandableChatBody>
                 <ScrollArea ref={scrollAreaRef} className="h-full p-4">
-                    <div className="space-y-4">
+                    <div className="w-full space-y-4">
                         {messages.map((message) => (
                             <div
                                 key={message.id}
                                 className={cn(
-                                    'flex w-max max-w-xs flex-col gap-2 rounded-lg px-3 py-2 text-sm',
+                                    'flex w-fit max-w-[85%] flex-col gap-2 rounded-xl px-3 py-2 text-sm break-words',
                                     message.sender === 'user'
-                                        ? 'text-secondary bg-muted ml-auto'
-                                        : 'bg-muted',
+                                        ? 'bg-muted text-secondary ml-auto rounded-tr-sm'
+                                        : 'bg-muted/50 rounded-tl-sm border',
                                 )}
                             >
                                 <div className="flex items-start space-x-2">
                                     {message.sender === 'bot' && (
-                                        <Avatar className="border-primary h-6 w-6 border-2 bg-blue-300 dark:bg-yellow-300">
+                                        <Avatar className="border-primary mt-0.5 h-6 w-6 shrink-0 border bg-blue-300 dark:bg-yellow-300">
                                             <AvatarImage
-                                                src="/assets/logo.png"
+                                                src="/assets/ai.jpg"
                                                 alt="Assistant"
                                             />
                                             <AvatarFallback>AI</AvatarFallback>
                                         </Avatar>
                                     )}
-                                    <div className="max-w-xs flex-1 md:max-w-sm">
-                                        <div className="flex items-center gap-2">
-                                            <div className="prose prose-sm dark:prose-invert max-w-none flex-1">
-                                                {message.text ? (
-                                                    <ReactMarkdown
-                                                        components={{
-                                                            a: (props) => (
-                                                                <a
-                                                                    {...props}
-                                                                    target="_blank"
-                                                                    rel="noopener noreferrer"
-                                                                    className="wrap-break-word text-blue-500 underline hover:text-blue-700"
-                                                                />
-                                                            ),
-                                                            // Custom paragraph component to remove default margins
-                                                            p: (props) => (
-                                                                <p
-                                                                    {...props}
-                                                                    className="m-0 leading-relaxed"
-                                                                />
-                                                            ),
-                                                            // Custom list components
-                                                            ul: (props) => (
-                                                                <ul
-                                                                    {...props}
-                                                                    className="m-0 pl-4"
-                                                                />
-                                                            ),
-                                                            ol: (props) => (
-                                                                <ol
-                                                                    {...props}
-                                                                    className="m-0 pl-4"
-                                                                />
-                                                            ),
-                                                            li: (props) => (
-                                                                <li
-                                                                    {...props}
-                                                                    className="m-0"
-                                                                />
-                                                            ),
-                                                            // Custom strong/bold component
-                                                            strong: (props) => (
-                                                                <strong
-                                                                    {...props}
-                                                                    className="font-semibold"
-                                                                />
-                                                            ),
-                                                        }}
-                                                    >
-                                                        {message.text}
-                                                    </ReactMarkdown>
-                                                ) : (
-                                                    message.isStreaming && (
-                                                        <span className="text-muted-foreground">
-                                                            Thinking...
-                                                        </span>
-                                                    )
-                                                )}
-                                            </div>
+                                    <div className="min-w-0 flex-1">
+                                        <div className="prose prose-sm dark:prose-invert max-w-none break-words">
+                                            {message.isStreaming &&
+                                            !message.text ? (
+                                                <div className="flex h-5 items-center space-x-1 px-1">
+                                                    <div className="bg-muted-foreground/60 h-1.5 w-1.5 animate-bounce rounded-full [animation-delay:-0.3s]"></div>
+                                                    <div className="bg-muted-foreground/60 h-1.5 w-1.5 animate-bounce rounded-full [animation-delay:-0.15s]"></div>
+                                                    <div className="bg-muted-foreground/60 h-1.5 w-1.5 animate-bounce rounded-full"></div>
+                                                </div>
+                                            ) : (
+                                                <ReactMarkdown
+                                                    components={{
+                                                        a: (props) => (
+                                                            <a
+                                                                {...props}
+                                                                target="_blank"
+                                                                rel="noopener noreferrer"
+                                                                className="break-words text-blue-500 underline hover:text-blue-700"
+                                                            />
+                                                        ),
+                                                        p: (props) => (
+                                                            <p
+                                                                {...props}
+                                                                className="m-0 leading-relaxed whitespace-pre-wrap"
+                                                            />
+                                                        ),
+                                                        ul: (props) => (
+                                                            <ul
+                                                                {...props}
+                                                                className="m-0 pl-4"
+                                                            />
+                                                        ),
+                                                        ol: (props) => (
+                                                            <ol
+                                                                {...props}
+                                                                className="m-0 pl-4"
+                                                            />
+                                                        ),
+                                                        li: (props) => (
+                                                            <li
+                                                                {...props}
+                                                                className="m-0"
+                                                            />
+                                                        ),
+                                                        strong: (props) => (
+                                                            <strong
+                                                                {...props}
+                                                                className="font-semibold"
+                                                            />
+                                                        ),
+                                                    }}
+                                                >
+                                                    {message.text}
+                                                </ReactMarkdown>
+                                            )}
                                         </div>
                                         <p
                                             className={cn(
-                                                'mt-1 text-xs',
+                                                'mt-1.5 text-[10px]',
                                                 message.sender === 'user'
-                                                    ? 'text-secondary'
+                                                    ? 'text-secondary/70 text-right'
                                                     : 'text-muted-foreground',
                                             )}
                                         >
@@ -413,13 +436,12 @@ const ChatBubble: React.FC = () => {
                             </div>
                         ))}
 
-                        {/* Show suggestions only when conversation just started */}
                         {messages.length === 1 && !isLoading && (
-                            <div className="space-y-2">
-                                <p className="text-muted-foreground px-3 text-xs">
+                            <div className="w-full space-y-2 pt-2">
+                                <p className="text-muted-foreground px-1 text-xs font-medium">
                                     Quick questions:
                                 </p>
-                                <div className="flex flex-wrap gap-2 px-3">
+                                <div className="flex w-full flex-wrap gap-2">
                                     {chatSuggestions.map(
                                         (suggestion, index) => (
                                             <Button
@@ -431,7 +453,7 @@ const ChatBubble: React.FC = () => {
                                                         suggestion,
                                                     )
                                                 }
-                                                className="bg-background hover:bg-muted border-muted-foreground/20 h-8 px-3 text-xs"
+                                                className="bg-background hover:bg-muted border-muted-foreground/20 h-auto max-w-full px-3 py-1.5 text-left text-xs whitespace-normal"
                                             >
                                                 {suggestion}
                                             </Button>
@@ -445,24 +467,25 @@ const ChatBubble: React.FC = () => {
             </ExpandableChatBody>
 
             <ExpandableChatFooter>
-                <div className="flex space-x-2">
+                <div className="flex items-end space-x-2">
                     <Input
-                        placeholder="Ask me about my work and experience..."
+                        placeholder="Ask me about my work..."
                         value={newMessage}
                         onChange={(e) => setNewMessage(e.target.value)}
                         onKeyDown={handleKeyDown}
                         disabled={isLoading}
-                        className="flex-1"
+                        className="flex-1 focus-visible:ring-1"
                     />
                     <Button
                         size="sm"
                         onClick={handleSendMessage}
                         disabled={!newMessage.trim() || isLoading}
+                        className="h-9 w-9 shrink-0 p-0"
                     >
                         {isLoading ? (
                             <div className="h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent" />
                         ) : (
-                            <SendIcon className="h-4 w-4" />
+                            <SendIcon className="ml-0.5 h-4 w-4" />
                         )}
                     </Button>
                 </div>
