@@ -33,7 +33,7 @@ export function middleware(request: NextRequest) {
         style-src 'self' 'unsafe-inline';
         img-src 'self' blob: data: https:;
         font-src 'self' data:;
-        connect-src 'self' https://generativelanguage.googleapis.com https://api.telegram.org https://vitals.vercel-insights.com https://cloud.umami.is https://gateway.umami.is;
+        connect-src 'self' https://api.telegram.org https://vitals.vercel-insights.com https://cloud.umami.is https://gateway.umami.is;
         object-src 'none';
         base-uri 'self';
         form-action 'self';
