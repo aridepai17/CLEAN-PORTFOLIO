@@ -16,12 +16,14 @@ interface BlogProps {
 export default function Blog({ posts }: BlogProps) {
     return (
         <Container className="mt-20">
-            <SectionHeading subHeading="Featured" heading="Blogs" />
+            <SectionHeading id="blog" subHeading="Featured" heading="Blogs" />
+
             <div className="mt-8 grid grid-cols-1 gap-4 md:grid-cols-2">
                 {posts.slice(0, 2).map((post) => (
                     <BlogCard key={post.slug} post={post} />
                 ))}
             </div>
+
             <div className="mt-8 flex justify-center">
                 <TrackedLink
                     href="/blog"
