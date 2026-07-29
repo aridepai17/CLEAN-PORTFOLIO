@@ -327,7 +327,6 @@ const ChatBubble: React.FC = () => {
                             </div>
                         </div>
                     </div>
-                    {/* Optional: A small subtle button to clear history if it gets too long */}
                     {messages.length > 1 && (
                         <Button
                             variant="ghost"
@@ -342,7 +341,6 @@ const ChatBubble: React.FC = () => {
                 </div>
             </ExpandableChatHeader>
 
-            {/* Layout and Physics Fixes applied here */}
             <ExpandableChatBody className="flex-1 overflow-hidden">
                 <ScrollArea
                     ref={scrollAreaRef}
@@ -353,7 +351,7 @@ const ChatBubble: React.FC = () => {
                             <div
                                 key={message.id}
                                 className={cn(
-                                    'flex w-fit max-w-[85%] flex-col gap-2 rounded-xl px-3 py-2 text-sm wrap-break-word',
+                                    'flex w-fit max-w-[85%] flex-col gap-2 rounded-xl px-3 py-2 text-sm break-words',
                                     message.sender === 'user'
                                         ? 'bg-muted text-secondary ml-auto rounded-tr-sm'
                                         : 'bg-muted/50 rounded-tl-sm border',
@@ -370,7 +368,7 @@ const ChatBubble: React.FC = () => {
                                         </Avatar>
                                     )}
                                     <div className="min-w-0 flex-1">
-                                        <div className="prose prose-sm dark:prose-invert max-w-none wrap-break-word">
+                                        <div className="prose prose-sm dark:prose-invert max-w-none break-words">
                                             {message.isStreaming &&
                                             !message.text ? (
                                                 <div className="flex h-5 items-center space-x-1 px-1">
@@ -386,7 +384,7 @@ const ChatBubble: React.FC = () => {
                                                                 {...props}
                                                                 target="_blank"
                                                                 rel="noopener noreferrer"
-                                                                className="wrap-break-word text-blue-500 underline hover:text-blue-700"
+                                                                className="break-words text-blue-500 underline hover:text-blue-700"
                                                             />
                                                         ),
                                                         p: (props) => (
