@@ -57,7 +57,6 @@ export default function Reveal({
             whileInView="visible"
             viewport={{ once, margin, amount: 0.1 }}
             className={className}
-            style={{ willChange: 'transform, opacity' }}
         >
             {children}
         </motion.div>
