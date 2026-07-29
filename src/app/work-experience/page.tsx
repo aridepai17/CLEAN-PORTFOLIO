@@ -5,7 +5,6 @@ import { Separator } from '@/components/ui/separator';
 import { experiences } from '@/config/Experience';
 import { generateMetadata as getMetadata } from '@/config/Meta';
 import { Metadata } from 'next';
-import { Robots } from 'next/dist/lib/metadata/types/metadata-types';
 
 export const metadata: Metadata = {
     ...getMetadata('/work-experience'),
@@ -19,7 +18,7 @@ export const metadata: Metadata = {
             'max-image-preview': 'large',
             'max-snippet': -1,
         },
-    } as Robots,
+    },
 };
 
 export default function WorkExperiencePage() {
