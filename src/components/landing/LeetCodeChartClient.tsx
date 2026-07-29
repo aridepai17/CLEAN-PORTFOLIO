@@ -1,15 +1,7 @@
-// src/components/landing/LeetCodeChartClient.tsx
 'use client';
 
-import localFont from 'next/font/local';
+import { sfProRounded } from '@/lib/fonts';
 import { useState } from 'react';
-
-// src/components/landing/LeetCodeChartClient.tsx
-
-const sfProRounded = localFont({
-    src: '../../../public/fonts/SF-Pro-Rounded-Black.otf',
-    display: 'swap',
-});
 
 interface LeetCodeChartClientProps {
     totalSolved: number;

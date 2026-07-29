@@ -1,18 +1,12 @@
 import { leetCodeConfig } from '@/config/LeetCode';
+import { sfProRounded } from '@/lib/fonts';
 import { getLeetCodeStats } from '@/lib/leetcode';
-import localFont from 'next/font/local';
 import Link from 'next/link';
 
 import Container from '../common/Container';
 import SectionHeading from '../common/SectionHeading';
 import { Button } from '../ui/button';
 import LeetCodeChartClient from './LeetCodeChartClient';
-
-// Load the custom font from public/fonts
-const sfProRounded = localFont({
-    src: '../../../public/fonts/SF-Pro-Rounded-Black.otf',
-    display: 'swap',
-});
 
 export default async function LeetCode() {
     const stats = await getLeetCodeStats();
