@@ -22,7 +22,7 @@ export const generateMetadata = (): Metadata => {
                 'max-video-preview': -1,
                 'max-image-preview': 'large',
                 'max-snippet': -1,
-            }['googleBot'],
+            },
         },
     };
 };
