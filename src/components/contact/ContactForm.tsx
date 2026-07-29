@@ -93,7 +93,7 @@ export default function ContactForm() {
     };
 
     return (
-        <Card className="border-none bg-transparent shadow-none">
+        <Card className="rounded-md border border-dashed border-black/20 bg-white/80 py-8 backdrop-blur-sm dark:border-white/10 dark:bg-black/60">
             <CardHeader>
                 <CardTitle>Send me a message</CardTitle>
                 <CardDescription>
