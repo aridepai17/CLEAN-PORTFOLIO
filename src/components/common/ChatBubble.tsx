@@ -23,7 +23,6 @@ import ReactMarkdown from 'react-markdown';
 
 import SendIcon from '../svgs/SendIcon';
 
-// 1. Changed id from 'number' to 'string' to support UUIDs
 interface Message {
     id: string;
     text: string;
@@ -54,6 +53,7 @@ const ChatBubble: React.FC = () => {
     const scrollAreaRef = useRef<HTMLDivElement>(null);
     const { triggerHaptic, isMobile } = useHapticFeedback();
     const { trackEvent } = useUmami();
+    const justLoaded = useRef(true);
 
     // Load chat history from local storage on mount
     useEffect(() => {
@@ -98,11 +98,20 @@ const ChatBubble: React.FC = () => {
 
                 const isStreaming = messages.some((msg) => msg.isStreaming);
 
-                if (isNearBottom) {
+                const shouldScroll = isNearBottom || justLoaded.current;
+
+                if (shouldScroll) {
                     viewport.scrollTo({
                         top: viewport.scrollHeight,
-                        behavior: isStreaming ? 'auto' : 'smooth',
+                        behavior:
+                            justLoaded.current || isStreaming
+                                ? 'auto'
+                                : 'smooth',
                     });
+                }
+
+                if (messages.length > 1) {
+                    justLoaded.current = false;
                 }
             }
         }
@@ -355,9 +364,14 @@ const ChatBubble: React.FC = () => {
 
             <ExpandableChatBody
                 className="flex-1 overflow-hidden"
-                onWheelCapture={(e) => e.stopPropagation()}
-                onTouchMoveCapture={(e) => e.stopPropagation()}
-                onPointerDownCapture={(e) => e.stopPropagation()}
+                onWheel={(e) => e.stopPropagation()}
+                onTouchMove={(e) => e.stopPropagation()}
+                onPointerDown={(e) => {
+                    const target = e.target as HTMLElement;
+                    if (target.closest('[data-radix-scroll-area-scrollbar]')) {
+                        e.stopPropagation();
+                    }
+                }}
             >
                 <ScrollArea ref={scrollAreaRef} className="h-full w-full">
                     <div className="w-full space-y-4 p-4 pr-6">
