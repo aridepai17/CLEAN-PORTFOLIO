@@ -84,14 +84,26 @@ const ChatBubble: React.FC = () => {
     // Smooth auto-scroll to bottom
     useEffect(() => {
         if (scrollAreaRef.current) {
-            const scrollElement = scrollAreaRef.current.querySelector(
+            const viewport = scrollAreaRef.current.querySelector(
                 '[data-radix-scroll-area-viewport]',
             );
-            if (scrollElement) {
-                scrollElement.scrollTo({
-                    top: scrollElement.scrollHeight,
-                    behavior: 'smooth',
-                });
+
+            if (viewport) {
+                const distanceFromBottom =
+                    viewport.scrollHeight -
+                    viewport.scrollTop -
+                    viewport.clientHeight;
+
+                const isNearBottom = distanceFromBottom < 100;
+
+                const isStreaming = messages.some((msg) => msg.isStreaming);
+
+                if (isNearBottom) {
+                    viewport.scrollTo({
+                        top: viewport.scrollHeight,
+                        behavior: isStreaming ? 'auto' : 'smooth',
+                    });
+                }
             }
         }
     }, [messages]);
@@ -341,11 +353,13 @@ const ChatBubble: React.FC = () => {
                 </div>
             </ExpandableChatHeader>
 
-            <ExpandableChatBody className="flex-1 overflow-hidden">
-                <ScrollArea
-                    ref={scrollAreaRef}
-                    className="h-full w-full overscroll-contain"
-                >
+            <ExpandableChatBody
+                className="flex-1 overflow-hidden"
+                onWheelCapture={(e) => e.stopPropagation()}
+                onTouchMoveCapture={(e) => e.stopPropagation()}
+                onPointerDownCapture={(e) => e.stopPropagation()}
+            >
+                <ScrollArea ref={scrollAreaRef} className="h-full w-full">
                     <div className="w-full space-y-4 p-4 pr-6">
                         {messages.map((message) => (
                             <div
