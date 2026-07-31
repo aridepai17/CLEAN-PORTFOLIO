@@ -106,17 +106,17 @@ export function ProjectCard({ project }: ProjectCardProps) {
 
             <CardContent className="px-6 pt-6">
                 <div className="space-y-4">
-                    <div className="flex items-center justify-between gap-4">
+                    <div className="flex items-start justify-between gap-4">
                         <Link
                             href={project.projectDetailsPageSlug}
                             onClick={() => trackProject('view_details')}
-                            className="focus-visible:ring-primary rounded-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-black"
+                            className="focus-visible:ring-primary min-w-0 rounded-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-black"
                         >
                             <h3 className="group-hover:text-primary text-xl leading-tight font-semibold transition-colors hover:cursor-pointer">
                                 {project.title}
                             </h3>
                         </Link>
-                        <div className="flex items-center gap-2">
+                        <div className="flex shrink-0 items-center gap-2">
                             <Tooltip>
                                 <TooltipTrigger asChild>
                                     <Link
