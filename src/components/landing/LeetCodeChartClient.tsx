@@ -20,6 +20,7 @@ const DIFFICULTY_CONFIG: Record<
         bgClass: string;
         textClass: string;
         borderClass: string;
+        hoverBorderClass: string;
         ringClass: string;
         activeBg: string;
         activeBorder: string;
@@ -32,6 +33,7 @@ const DIFFICULTY_CONFIG: Record<
         bgClass: 'bg-emerald-500',
         textClass: 'text-emerald-500',
         borderClass: 'border-emerald-500/50',
+        hoverBorderClass: 'hover:border-emerald-500/50',
         ringClass: 'focus:ring-emerald-500',
         activeBg: 'bg-emerald-500/10',
         activeBorder: 'border-emerald-500',
@@ -43,6 +45,7 @@ const DIFFICULTY_CONFIG: Record<
         bgClass: 'bg-amber-500',
         textClass: 'text-amber-500',
         borderClass: 'border-amber-500/50',
+        hoverBorderClass: 'hover:border-amber-500/50',
         ringClass: 'focus:ring-amber-500',
         activeBg: 'bg-amber-500/10',
         activeBorder: 'border-amber-500',
@@ -54,6 +57,7 @@ const DIFFICULTY_CONFIG: Record<
         bgClass: 'bg-rose-500',
         textClass: 'text-rose-500',
         borderClass: 'border-rose-500/50',
+        hoverBorderClass: 'hover:border-rose-500/50',
         ringClass: 'focus:ring-rose-500',
         activeBg: 'bg-rose-500/10',
         activeBorder: 'border-rose-500',
@@ -72,7 +76,6 @@ export default function LeetCodeChartClient({
     const [selected, setSelected] = useState<Difficulty | null>(null);
     const [isMounted, setIsMounted] = useState(false);
 
-    // Initial Mount Animation Trigger
     useEffect(() => {
         const timer = setTimeout(() => setIsMounted(true), 50);
         return () => clearTimeout(timer);
@@ -80,7 +83,6 @@ export default function LeetCodeChartClient({
 
     if (totalSolved === 0) return null;
 
-    // Desktop Hover Priority with Selected Lock Fallback
     const activeState = hovered || selected;
 
     const easyPct = (easySolved / totalSolved) * 100;
@@ -109,7 +111,6 @@ export default function LeetCodeChartClient({
                 ? Math.round(hardPct)
                 : 100;
 
-    // Clean Touch/Click Handler
     const handleCardInteraction = (difficulty: Difficulty) => {
         setSelected(selected === difficulty ? null : difficulty);
     };
@@ -122,7 +123,6 @@ export default function LeetCodeChartClient({
                     viewBox="0 0 100 100"
                     className="h-full w-full -rotate-90 transform overflow-visible"
                 >
-                    {/* Background Track */}
                     <circle
                         cx="50"
                         cy="50"
@@ -133,7 +133,6 @@ export default function LeetCodeChartClient({
                         pathLength="100"
                     />
 
-                    {/* Chart Segments with Mount Animation & Layout Jump Prevention */}
                     {(['Easy', 'Medium', 'Hard'] as Difficulty[]).map(
                         (level) => {
                             const pct =
@@ -226,6 +225,8 @@ export default function LeetCodeChartClient({
                             aria-pressed={selected === level}
                             onMouseEnter={() => setHovered(level)}
                             onMouseLeave={() => setHovered(null)}
+                            onFocus={() => setHovered(level)}
+                            onBlur={() => setHovered(null)}
                             onClick={() => handleCardInteraction(level)}
                             onKeyDown={(e) => {
                                 if (e.key === 'Enter' || e.key === ' ') {
@@ -236,7 +237,7 @@ export default function LeetCodeChartClient({
                             className={`flex cursor-pointer items-center justify-between rounded-xl border p-4 transition-all focus:ring-2 ${config.ringClass} focus:outline-none sm:p-5 ${
                                 isActive
                                     ? `scale-[1.02] ${config.activeBorder} ${config.activeBg} shadow-lg ${config.shadowColor}`
-                                    : `border-border/60 bg-background/40 hover:${config.borderClass}`
+                                    : `border-border/60 bg-background/40 ${config.hoverBorderClass}`
                             }`}
                         >
                             <div className="flex items-center gap-3.5">
@@ -250,7 +251,6 @@ export default function LeetCodeChartClient({
                                 </span>
                             </div>
                             <div className="text-right">
-                                {/* Consistent Number Formatting */}
                                 <span
                                     className={`${sfProRounded.className} text-base font-bold`}
                                 >
