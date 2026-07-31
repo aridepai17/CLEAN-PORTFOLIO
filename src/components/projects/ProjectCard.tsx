@@ -120,7 +120,7 @@ export function ProjectCard({ project }: ProjectCardProps) {
                             <Tooltip>
                                 <TooltipTrigger asChild>
                                     <Link
-                                        className="text-secondary hover:text-primary focus-visible:ring-primary flex size-6 items-center justify-center rounded-sm transition-colors focus:outline-none focus-visible:ring-2"
+                                        className="text-secondary hover:text-primary focus-visible:ring-primary flex size-6 items-center justify-center rounded-sm transition-colors focus:outline-none focus-visible:ring-2 [&>svg]:size-5 [&>svg]:shrink-0"
                                         href={project.link}
                                         target="_blank"
                                         rel="noopener noreferrer"
@@ -139,7 +139,7 @@ export function ProjectCard({ project }: ProjectCardProps) {
                                 <Tooltip>
                                     <TooltipTrigger asChild>
                                         <Link
-                                            className="text-secondary hover:text-primary focus-visible:ring-primary flex size-6 items-center justify-center rounded-sm transition-colors focus:outline-none focus-visible:ring-2"
+                                            className="text-secondary hover:text-primary focus-visible:ring-primary flex size-6 items-center justify-center rounded-sm transition-colors focus:outline-none focus-visible:ring-2 [&>svg]:size-5 [&>svg]:shrink-0"
                                             href={project.github}
                                             target="_blank"
                                             rel="noopener noreferrer"
