@@ -1,0 +1,136 @@
+---
+title: 'SELECTRA'
+description: 'An AI-powered ATS resume optimization platform that performs client-side PDF rasterization and LLM-driven keyword analysis to improve job application success rates.'
+image: '/project/selectra.png'
+isPublished: true
+status: 'completed'
+timeline: 'September 2025'
+role: 'Full Stack & AI Engineer'
+github: 'https://github.com/aridepai17/SELECTRA'
+live: 'https://selectra-nine.vercel.app'
+technologies:
+    - 'React'
+    - 'TypeScript'
+    - 'Tailwind CSS'
+    - 'OpenAI'
+    - 'PDF.js'
+    - 'Zustand'
+    - 'Vite'
+challenges:
+    - 'Performing memory-efficient PDF parsing and rasterization entirely on the client side to minimize server bandwidth and ensure data privacy.'
+    - 'Engineering deterministic, strictly structured JSON responses from the OpenAI API despite processing highly unstructured resume text.'
+    - 'Managing complex, multi-step asynchronous states (uploading, parsing, inferencing, saving) without degrading UI responsiveness.'
+learnings:
+    - 'Mastered the implementation of Web Workers for off-main-thread processing using PDF.js.'
+    - 'Deepened expertise in global state management and re-render optimization utilizing Zustand.'
+    - 'Gained hands-on experience integrating persistent Key-Value cloud storage (Puter) into a serverless frontend architecture.'
+---
+
+
+
+## The Problem Space
+
+Modern recruitment relies heavily on Applicant Tracking Systems (ATS) to filter candidates. Unfortunately, highly qualified engineers are frequently auto-rejected not for a lack of skill, but due to poor resume parsing, formatting errors, or missing semantic keywords.
+
+Job seekers needed a tool that didn't just passively "score" their resume, but actively simulated an ATS parser and provided actionable, context-aware feedback based on specific job descriptions. **SELECTRA** was architected to bridge this gap.
+
+
+
+## Core Features & UX
+
+SELECTRA is designed to be frictionless. By eliminating the need for user authentication just to analyze a document, the time-to-value is reduced to seconds.
+
+- **🔍 AI-Powered Analysis:** Generates deterministic, strictly structured feedback based on the user's target job title and specific job description.
+- **📁 Smart File Processing:** Features a drag-and-drop interface supporting multiple file formats, instantly converting PDFs to high-quality PNGs for visual preview.
+- **📊 Actionable Reporting:** Breaks down the LLM inference into a comprehensive UI, highlighting exact missing keywords and formatting bottlenecks.
+- **💾 Edge Persistence:** Integrates a secure Key-Value cloud storage system, allowing users to save and revisit their analysis results without a traditional backend.
+
+
+
+## Architectural Deep Dive
+
+SELECTRA is built as a highly responsive Single Page Application (SPA) designed around a serverless, client-first architecture. By offloading heavy processing tasks directly to the user's browser, the application achieves zero-latency file uploads and strict data privacy.
+
+The application pipeline is broken into three distinct engineering phases:
+
+
+### 1. Client-Side Rasterization via Web Workers
+
+Sending multi-megabyte PDFs to a Node.js backend for parsing introduces network latency, server costs, and privacy concerns.
+
+Instead, SELECTRA utilizes `pdf.js` alongside Web Workers (`pdf.worker.min.js`). The application extracts the raw text stream and generates high-fidelity PNG rasterizations entirely on a background thread. This keeps the main React UI thread completely unblocked and running at 60fps during the computationally expensive canvas rendering phase.
+
+
+### 2. Deterministic LLM Inference
+
+Integrating with the OpenAI API required strict prompt engineering to ensure the UI received actionable data rather than raw text blocks.
+
+The LLM is configured to act as a strict JSON parser. It evaluates the candidate's extracted text against the target job description, calculates a deterministic match score, and returns categorized arrays of "Found" and "Missing" keywords. The frontend instantly maps this JSON payload to the `ScoreGauge` and `Accordion` UI components.
+
+
+### 3. Decoupled State Management
+
+Managing the lifecycle of a resume - from file selection, to local parsing, to API polling, to rendering the final dashboard - requires a robust state machine.
+
+To avoid prop - drilling and unnecessary React Context re-renders, SELECTRA utilizes **Zustand**. Specific UI components subscribe only to the atomic state slices they care about, ensuring the interface remains highly responsive during complex asynchronous data mutations.
+
+
+
+## Under the Hood
+
+A clean, modular directory structure was critical for maintaining the separation of concerns between UI components, background utilities, and routing logic.
+
+```text
+
+app/
+├── components/
+│   ├── ATS.tsx              # Core analysis logic
+│   ├── FileUploader.tsx     # Drag-and-drop boundary
+│   ├── ScoreGauge.tsx       # SVG animated progress
+│   └── ResumeCard.tsx       # Visual feedback renderer
+├── lib/
+│   ├── pdf2img.ts           # Web Worker abstraction
+│   └── puter.ts             # KV Storage integration
+└── routes/
+    ├── home.tsx
+    ├── resume.tsx
+    └── upload.tsx
+    
+```
+
+
+
+## Performance & Delivery
+
+A core requirement for SELECTRA was to maintain exceptional web performance metrics. The application was rigorously audited, achieving near-perfect Lighthouse scores across all categories.
+
+<div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4 my-8">
+    <div className="glass-panel flex flex-col gap-1 p-4">
+        <span className="text-muted-foreground text-xs font-semibold uppercase tracking-wider">Performance</span>
+        <span className="text-2xl font-bold tracking-tight text-foreground">95/100</span>
+        <span className="text-xs text-emerald-500 font-medium mt-1">🟢 Excellent</span>
+    </div>
+    <div className="glass-panel flex flex-col gap-1 p-4">
+        <span className="text-muted-foreground text-xs font-semibold uppercase tracking-wider">Accessibility</span>
+        <span className="text-2xl font-bold tracking-tight text-foreground">98/100</span>
+        <span className="text-xs text-emerald-500 font-medium mt-1">🟢 Excellent</span>
+    </div>
+    <div className="glass-panel flex flex-col gap-1 p-4">
+        <span className="text-muted-foreground text-xs font-semibold uppercase tracking-wider">Best Practices</span>
+        <span className="text-2xl font-bold tracking-tight text-foreground">92/100</span>
+        <span className="text-xs text-emerald-500 font-medium mt-1">🟢 Good</span>
+    </div>
+    <div className="glass-panel flex flex-col gap-1 p-4">
+        <span className="text-muted-foreground text-xs font-semibold uppercase tracking-wider">SEO</span>
+        <span className="text-2xl font-bold tracking-tight text-foreground">100/100</span>
+        <span className="text-xs text-emerald-500 font-medium mt-1">🟢 Perfect</span>
+    </div>
+</div>
+
+> **Note on Optimization:** These metrics were achieved through aggressive code-splitting via Vite, deferring the loading of heavy PDF rendering libraries until the exact moment a user interacts with the `FileUploader`, and strictly adhering to semantic HTML accessibility standards.
+
+
+
+## Looking Forward
+
+SELECTRA successfully demonstrates how combining edge-computing principles with powerful LLM inference can create a highly scalable, zero-backend SaaS tool. Future iterations will focus on implementing local, browser-based LLM models via WebGPU to remove the OpenAI dependency entirely, further decreasing latency and operating costs.

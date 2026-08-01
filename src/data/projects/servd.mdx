@@ -1,0 +1,233 @@
+---
+title: 'SERVD'
+description: 'An AI-powered culinary and pantry management platform featuring multi-modal computer vision, secure subscription billing, and real-time edge security.'
+image: '/project/servd.png'
+isPublished: true
+status: 'completed'
+timeline: 'February 2026'
+role: 'Full-Stack & AI Systems Engineer'
+github: 'https://github.com/aridepai17/SERVD'
+live: 'https://servdai.vercel.app'
+technologies:
+    - 'Next.js'
+    - 'React'
+    - 'Tailwind CSS'
+    - 'Strapi'
+    - 'PostgreSQL'
+    - 'Google Gemini'
+    - 'Clerk'
+    - 'Razorpay'
+    - 'Arcjet'
+challenges:
+    - 'Orchestrating a decoupled headless architecture between a Next.js 15 edge frontend and a Strapi 5 CMS backend.'
+    - 'Enforcing strict server-side subscription validation and cryptographic payment verification via Razorpay webhooks.'
+    - 'Managing strict rate-limiting and bot mitigation using Arcjet to protect resource-heavy Google Gemini multi-modal vision calls.'
+learnings:
+    - 'Mastered multi-modal AI integration leveraging Google Gemini Vision for automated image-to-ingredient extraction.'
+    - 'Deepened implementation expertise in secure webhook handling, HMAC-SHA256 signature verification, and timing-safe comparisons.'
+    - 'Gained enterprise production experience deploying a containerized, decoupled Node.js and PostgreSQL application pipeline.'
+---
+
+## The Culinary Logistics Challenge
+
+According to the USDA, approximately 30% to 40% of the food supply in the United States goes to waste, driven largely by poor meal planning and an inability to dynamically track and utilize perishable pantry ingredients.
+
+Home cooks face significant friction when trying to minimize waste: manual inventory logging is tedious, and bridging the gap between random leftover ingredients and a coherent, delicious recipe requires cognitive overhead. **Servd** was engineered to solve this by transforming raw kitchen inventory into structured, context-aware culinary assets using multi-modal AI computer vision and robust inventory management.
+
+
+## System Architecture & Decoupled Topology
+
+Servd implements a resilient, decoupled full-stack architecture that strictly isolates the presentation and client-side routing layer from content management and database persistence.
+
+```text
+
+┌─────────────────────────────────────────────────────────────────┐
+│                        User's Browser                           │
+│                                                                 │
+│  ┌──────────────────────────────────────────────────────────┐   │
+│  │                    Next.js Frontend                      │   │
+│  │  ┌──────────┐  ┌──────────┐  ┌──────────┐  ┌──────────┐  │   │
+│  │  │ Landing  │  │ Dashboard│  │  Pantry  │  │ Recipes  │  │   │
+│  │  │   Page   │  │          │  │ Manager  │  │          │  │   │
+│  │  └──────────┘  └──────────┘  └──────────┘  └──────────┘  │   │
+│  └──────────────────────────────────────────────────────────┘   │
+│                                 │                               │
+│            Clerk Auth           │                               │
+│            (OAuth/Email)        │                               │
+└──────────────────────────────┼──────────────────────────────────┘
+                               │
+                               ▼
+┌─────────────────────────────────────────────────────────────────┐
+│                     Next.js API Routes                          │
+│  ┌───────────────────────────────────────────────────────────┐  │
+│  │  /api/subscription/create   │  Razorpay Payment Links     │  │
+│  │  /api/subscription/callback │  Payment verification       │  │
+│  │  /api/subscription/verify   │  Subscription activation    │  │
+│  └───────────────────────────────────────────────────────────┘  │
+│                                                                 │
+│              Google Gemini AI (Recipe Generation)               │
+│              TheMealDB API (Recipe Discovery)                   │
+│              Unsplash API (Recipe Images)                       │
+└──────────────────────────────┼──────────────────────────────────┘
+                               │
+                               ▼
+┌─────────────────────────────────────────────────────────────────┐
+│                       Strapi Backend                            │
+│  ┌──────────┐  ┌──────────┐  ┌──────────┐  ┌──────────┐         │
+│  │  Users   │  │ Recipes  │  │ Pantry   │  │ Saved    │         │
+│  │          │  │          │  │ Items    │  │ Recipes  │         │
+│  └──────────┘  └──────────┘  └──────────┘  └──────────┘         │
+│                                                                 │
+│                        PostgreSQL DB                            │
+└─────────────────────────────────────────────────────────────────┘
+
+```
+
+## Intelligent Pantry & Multi-Modal AI Pipeline
+
+Processing user-generated images through large language models introduces risks regarding compute exhaustion and unstructured payloads. Servd addresses this via an optimized pipeline:
+
+```text
+User Input (Photo/Text)
+        │
+        ▼
+┌─────────────────┐
+│ Clerk Auth      │ ← Verify user identity & subscription tier
+│ Authentication  │
+└────────┬────────┘
+         │
+         ▼
+┌─────────────────┐
+│ Arcjet Rate     │ ← Check usage limits (10 scans/month free)
+│ Limit Check     │   (1000/day for Pro)
+└────────┬────────┘
+         │
+         ▼
+┌─────────────────┐
+│ Google Gemini   │ ← AI vision for image recognition
+│ Vision API      │   AI text for recipe generation
+└────────┬────────┘
+         │
+         ▼
+┌─────────────────┐
+│ Gemini AI       │ ← Generate structured recipe JSON
+│ Recipe Gen      │
+└────────┬────────┘
+         │
+         ▼
+┌─────────────────┐
+│ Strapi Backend  │ ← Save generated recipes
+│ (PostgreSQL)    │   Link to user account
+└────────┬────────┘
+         │
+         ▼
+         │
+    Display to User
+
+```
+
+- **Smart Pantry Scanning:** Automatically parses refrigerator and pantry snapshots using Google Gemini Vision to extract ingredient arrays.
+- **Context-Aware Synthesis:** Dynamically cross-references scanned inventories with user dietary preferences, skill levels, and missing component metrics.
+
+
+## Secure Monetization & Webhook Verification
+
+To guarantee robust monetization without relying on client-side state assertions, subscription lifecycle upgrades follow a rigorous server-to-server validation protocol:
+
+1. **Payment Initialization:** The Next.js API route provisions a secure checkout session via Razorpay.
+2. **Cryptographic Validation:** Incoming webhook callbacks undergo strict **HMAC-SHA256 signature verification** and timing-safe comparisons to completely eliminate replay attacks.
+3. **Tenant State Mutation:** Validated payloads trigger backend database updates via Strapi, instantly scaling user resource quotas from the free tier to Pro status.
+
+```text
+User Clicks "Upgrade"
+        │
+        ▼
+┌─────────────────┐
+│ Create Razorpay │ ← Generate Payment Link
+│ Payment Link    │   Customer ID lookup/create
+└────────┬────────┘
+         │
+         ▼
+    User Completes Payment on Razorpay
+        │
+        ▼
+┌─────────────────┐
+│ Razorpay        │ ← POST callback with payment info
+│ Callback        │   Signature verification (HMAC-SHA256)
+└────────┬────────┘
+         │
+         ▼
+┌─────────────────┐
+│ Verify Payment  │ ← Fetch payment from Razorpay API
+│ Status          │   Validate amount & customer
+└────────┬────────┘
+         │
+         ▼
+┌─────────────────┐
+│ Update Strapi   │ ← Set subscriptionTier = "pro"
+│ User Record     │   Store payment references
+└────────┬────────┘
+         │
+         ▼
+    Redirect to Success Page
+
+```
+
+
+## Data Schema & Relational Design
+
+The backend relies on structured Strapi 5 content types mapped directly to PostgreSQL for ACID-compliant persistence:
+
+- **Recipes Collection:** Stores dynamic instruction sets, ingredients, category classifications, and Unsplash visual asset references.
+- **Pantry Items Collection:** Relational user items tracking quantities, expiration timelines, and real-time cloud sync states.
+- **Saved Recipes:** Junction collection handling user bookmarking and personal digital cookbook collections.
+- **User Records:** Centralized user profile metrics storing subscription tiers and rate-limit counters.
+
+## Edge Defense, Rate Limiting & WAF
+
+Servd was engineered from the ground up to withstand production traffic spikes and defend against scraper bots:
+
+- **Arcjet Token Bucket WAF:** Enforces granular limits-capping free-tier users at 10 pantry scans per month while provisioning up to 1,000 requests per day for Pro subscribers.
+- **Zero-Trust Token Isolation:** Strapi administrative API tokens remain locked on the server tier and are never exposed to the client browser bundle.
+- **Input Sanitization:** All payload parameters undergo strict server-side schema validation prior to database execution.
+
+
+## Monorepository Topology
+
+The repository is structured to cleanly separate Next.js server actions and application routes from the underlying Strapi headless CMS microservice:
+
+```text
+
+SERVD/
+├── frontend/                 # Next.js frontend application
+│   ├── app/                  # App Router pages and API routes
+│   │   ├── (auth)/           # Authentication layout group
+│   │   ├── (main)/           # Core application dashboards & pantry views
+│   │   └── api/              # Secure API route handlers & webhooks
+│   ├── components/           # Reusable React UI primitives
+│   ├── actions/              # Server actions for atomic data mutations
+│   ├── lib/                  # Utility wrappers (Arcjet, auth helpers)
+│   └── hooks/                # Custom React data-fetching hooks
+│
+├── backend/                  # Strapi Headless CMS application
+│   ├── src/                  # Custom API content types and controllers
+│   ├── config/               # Database and server environment settings
+│   └── database/             # Migrations and schema definitions
+
+```
+
+## Performance, Error Resilience & Observability
+
+- **Edge Caching:** Static and dynamic assets are optimized via Next.js 15 edge caching strategies to ensure sub-second First Contentful Paint (FCP).
+- **Graceful Error Boundaries:** API failures during AI inference or payment gateways fail safely with contextual toast feedback via Sonner, preventing unhandled promise rejections.
+- **Zero-Latency Mutations:** React Server Actions handle atomic updates with optimistic UI rendering where applicable.
+
+
+## Scalability Roadmap & Future Vision
+
+Servd successfully proves how multi-modal AI can be embedded into consumer applications to streamline daily logistical tasks. Planned roadmap milestones include:
+
+- **Automated Weekly Meal Planning:** Dynamic calendar scheduling mapped against expiring pantry inventory.
+- **Instant Grocery List Generation:** One-click automated shopping cart fulfillment for missing recipe components.
+- **Voice-Activated Kitchen Assistant:** Hands-free voice commands for real-time step navigation.
+- **Nutritional Macro Tracking:** Integrated calorie and macronutrient breakdown per generated serving.

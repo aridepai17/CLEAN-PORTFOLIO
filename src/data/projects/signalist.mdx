@@ -1,0 +1,107 @@
+---
+title: 'SIGNALIST'
+description: 'A real-time stock market intelligence platform integrating live financial data, dynamic watchlists, and asynchronous AI-driven market summaries.'
+image: '/project/signalist.png'
+isPublished: true
+status: 'completed'
+timeline: '2026'
+role: 'Full-Stack AI Engineer'
+github: 'https://github.com/aridepai17/SIGNALIST'
+technologies:
+    - 'Next.js 15'
+    - 'TypeScript'
+    - 'Tailwind CSS'
+    - 'MongoDB Atlas'
+    - 'Google Gemini'
+    - 'Inngest'
+    - 'Finnhub API'
+    - 'TradingView'
+challenges:
+    - 'Orchestrating reliable, scheduled asynchronous background jobs to generate personalized AI market summaries without blocking the main thread.'
+    - 'Implementing robust caching mechanisms for high-frequency financial API calls to prevent rate-limiting and minimize latency.'
+    - 'Integrating complex client-side TradingView rendering within a Next.js Server Component architecture.'
+learnings:
+    - 'Mastered event-driven serverless background processing and CRON job scheduling using Inngest infrastructure.'
+    - 'Deepened expertise in context-aware prompt engineering and structured AI outputs using Google Gemini 2.5 Flash.'
+    - 'Gained advanced experience in session-based authentication and database modeling using Better Auth and Mongoose.'
+---
+
+## The Market Intelligence Challenge
+
+Retail investors often suffer from platform fatigue—juggling multiple browser tabs across brokerages, news aggregators, and charting tools just to maintain a pulse on their portfolio. Furthermore, the sheer volume of daily financial news makes it nearly impossible for passive investors to extract actionable insights without dedicating hours to research.
+
+**Signalist** was engineered to solve this fragmentation. By unifying institutional-grade charting, real-time market data, and deterministic AI summarization into a single, cohesive dashboard, the platform acts as a personalized quantitative assistant for both active day traders and passive investors.
+
+## Core Platform Architecture
+
+Signalist is built on a highly decoupled, serverless architecture that optimizes for rapid data ingestion, seamless UI reactivity, and fault-tolerant background processing.
+
+```text
+
+┌─────────────────────────────────────────────────────────────┐
+│                       Client Interface                      │
+│                  (Next.js 15 App Router)                    │
+└──────────────┬──────────────────────────────┬───────────────┘
+               │                              │
+               ▼                              ▼
+┌──────────────────────────────┐┌─────────────────────────────┐
+│      Finnhub & TradingView   ││        Better Auth &        │
+│       (Live Market Data)     ││   MongoDB Atlas (State)     │
+└──────────────┬───────────────┘└──────────────┬──────────────┘
+               │                              │
+               ▼                              ▼
+┌─────────────────────────────────────────────────────────────┐
+│                 Inngest Event Orchestration                 │
+│                 (Background Jobs & CRON)                    │
+└──────────────┬──────────────────────────────┬───────────────┘
+               │                              │
+               ▼                              ▼
+┌──────────────────────────────┐┌─────────────────────────────┐
+│      Google Gemini 2.5       ││         Nodemailer          │
+│   (AI Context & Synthesis)   ││      (SMTP Delivery)        │
+└──────────────────────────────┘└─────────────────────────────┘
+
+```
+
+### 1. High-Frequency Data Ingestion & Caching
+
+Financial APIs are strictly rate-limited and expensive. Signalist implements a multi-tiered caching strategy to ensure zero-latency responses while protecting upstream API quotas:
+
+- **Search & Discovery:** Debounced `Cmd+K` command palette queries are cached for 30 minutes. Empty states instantly load a pre-cached array of 80+ global blue-chip equities.
+- **Financial Profiles:** Market capitalization, P/E ratios, and company fundamentals are cached on a 1-hour Time-To-Live (TTL).
+- **Real-Time Quotes:** Watchlist pricing and daily percentage changes operate on a strict 60-second TTL to maintain accuracy without exhausting limits.
+
+### 2. Client-Side TradingView Integration
+
+Each stock detail page dynamically mounts six distinct TradingView widgets (Advanced Candlesticks, Technical Analysis, Baseline performance, etc.). By abstracting the script injection into custom React hooks, the application maintains strict separation between Next.js Server Components and heavy client-side canvas rendering, ensuring optimal core web vitals.
+
+
+## Asynchronous AI Orchestration (The Engine)
+
+The standout engineering achievement within Signalist is its automated, personalized notification engine. Instead of relying on manual triggers, the platform uses **Inngest** to manage resilient, distributed background jobs.
+
+### The Daily Market Synthesis Pipeline
+
+Every day at 12:00 PM UTC, an automated CRON job triggers a complex, multi-step data pipeline for every registered user:
+
+1. **State Hydration:** Fetches the user's customized risk profile, investment goals, and localized industry preferences from MongoDB.
+2. **Portfolio Aggregation:** Retrieves the exact array of ticker symbols currently tracked in the user's personalized watchlist.
+3. **Data Fetching:** Pulls the latest, raw company-specific news articles via the Finnhub API for those exact symbols.
+4. **AI Transformation:** Injects the raw news payloads and user profile data into a highly tuned Google Gemini 2.5 Flash context window. The LLM is instructed to generate a concise, actionable summary formatted in strict HTML (Top Movers, Sector Impact, Bottom Line).
+5. **Delivery:** The synthesized HTML is routed through Nodemailer via secure SMTP directly to the user's inbox.
+
+
+## Security & Identity Management
+
+- **Session-Based Auth:** Migrated away from standard JWTs to utilize **Better Auth**, implementing secure, database-backed session management via MongoDB.
+- **Protected Routing:** Next.js Middleware intercepts all route changes, redirecting unauthenticated traffic to the onboarding flow and bypassing restricted endpoints.
+- **Secure Environment:** All Gemini inference prompts, Finnhub keys, and SMTP credentials are strictly isolated within server actions, guaranteeing they are never exposed to the client bundle.
+
+
+## Scalability Roadmap
+
+Signalist establishes a robust foundation for automated quantitative analysis. Future roadmap items include:
+
+- **WebSockets for Live Tickers:** Replacing 60-second polling intervals with persistent WSS connections for millisecond-accurate order book data.
+- **Portfolio Tracking:** Allowing users to input exact share counts and buy-in prices to track real-time P&L (Profit and Loss) directly within the dashboard.
+- **Algorithmic Alerting:** Push notifications triggered when technical indicators (like RSI or MACD) cross user-defined thresholds.

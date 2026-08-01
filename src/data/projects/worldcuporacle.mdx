@@ -1,0 +1,87 @@
+---
+title: 'WORLD CUP ORACLE'
+description: 'A full-stack sports analytics platform for the 2026 FIFA World Cup featuring historical Elo ratings, Poisson-based match modeling, and Monte Carlo simulations.'
+image: '/project/worldcuporacle.png'
+isPublished: true
+status: 'completed'
+timeline: '2026'
+role: 'Full-Stack Engineer'
+github: 'https://github.com/aridepai17/worldcuporacle'
+live: 'https://worldcuporacle-eight.vercel.app'
+technologies:
+    - 'React'
+    - 'TypeScript'
+    - 'Vite'
+    - 'Tailwind CSS'
+    - 'Express'
+    - 'Zod'
+    - 'Recharts'
+challenges:
+    - 'Processing over 49,500 historical international matches spanning 1872-2026 to compute pre-tournament Elo ratings.'
+    - 'Executing 10,000 seeded Monte Carlo simulations across the complete 104-match 2026 World Cup bracket.'
+learnings:
+    - 'Mastered analytical double-Poisson scoreline matrix modeling for head-to-head match predictions.'
+    - 'Implemented deterministic mulberry32 PRNG to ensure reproducible simulation results across server restarts.'
+---
+
+## Overview & System Architecture
+
+World Cup Oracle is a full-stack sports analytics platform built for the 2026 FIFA World Cup. It integrates historical Elo ratings, a Poisson-based match model, and 10,000-seeded Monte Carlo simulations to predict tournament outcomes, simulate head-to-head matchups, and visualize title probabilities across all 48 qualified nations.
+
+The platform is structured as a monorepo utilizing pnpm workspaces, featuring an Express 5 REST API backend `artifacts/api-server` and a React 19 / Vite 7 frontend `artifacts/worldcuporacle`. End-to-end type safety is maintained via an OpenAPI specification and Orval-generated React Query clients.
+
+
+## Core Features & Analytics
+
+- **Tournament Predictions**: Runs 10,000 seeded Monte Carlo simulations of the complete 2026 tournament bracket, spanning the Group Stage, Round of 32, Round of 16, Quarterfinals, Semifinals, and Final. Calculates title probabilities, pre-tournament baselines, group win probabilities across all 12 groups (A-L), final appearance likelihoods, and elimination tracking.
+- **Head-to-Head Simulator**: Delivers instant match projections for any two selected teams. Derives win, draw, and loss probabilities from an analytical double-Poisson scoreline matrix ranging from 0-0 through 9-9. Computes expected goals (xG) from pre-tournament Elo ratings and identifies the most likely exact scoreline based on Poisson distribution maxima.
+- **Tournament Log**: Includes a complete 104-match bracket featuring actual results from the 2026 World Cup. Ordered chronologically from June 11 through July 19, 2026, it tracks match status indicators and verified outcomes for all fixtures, including the Final and Third Place Playoff.
+- **Historical Data Integration**: Pre-tournament Elo ratings are computed from a corpus of over 49,500 historical international matches spanning from 1872 to 2026. Incorporates time-decay recency weighting and tournament-strength scaling (World Cup: 60, continental championships: 50, qualifiers: 40, friendlies: 20).
+
+
+## Quantitative Methodology & Mathematical Rigor
+
+### 1. Dynamic Elo Rating System
+
+Pre-tournament ratings are derived from a corpus of over 49,500 international matches spanning from 1872 to 2026. Rather than a static implementation, the rating engine incorporates time-decay recency weighting and tournament-strength scaling:
+
+- **Recency Decay Multiplier**: `1.0×` for matches within the last 8 years, `0.85×` within 20 years, and `0.7×` beyond.
+- **Goal Difference Scaling**: Amplifies K-factors based on margin of victory (`1.0×` for 1-goal, `1.5×` for 2-goal, and `1.75×+` for dominant 3+ goal margins).
+- **Venue Adjustment**: Applies a `+100` Elo home-advantage scalar for non-neutral fixtures.
+- **Baseline Floor**: Establishes a standard 1500 rating floor for federations with sparse historical data.
+
+### 2. Double-Poisson Match & Expected Goals (λ) Model
+
+Match outcomes are modeled as independent Poisson distributions for each competitor's scoring rate:
+
+<FormulaCard title="Double-Poisson Probability Model">
+    P(A scores a, B scores b) = Poisson(a, λ_A) × Poisson(b, λ_B)
+</FormulaCard>
+
+The expected goals parameter ($\lambda$) representing offensive output is dynamically computed from the historical Elo rating differential:
+
+<FormulaCard title="Expected Goals (λ) Derivation">
+λ_A = 1.3 × 10 ^ ((Elo_A - Elo_B) / 800)
+
+λ_B = 1.3 × 10 ^ ((Elo_B - Elo_A) / 800)
+
+</FormulaCard>
+
+> **System Constraint & Clamping:** To prevent extreme outliers from breaking matrix evaluations, both lambdas are strictly clamped to the operational range `[0.15, 5.0]`. The engine evaluates every discrete scoreline combination from `0-0` to `9-9` to compute win, draw, and loss probabilities.
+
+### 3. Seeded Monte Carlo Simulation Engine
+
+Tournament title probabilities are computed by executing 10,000 parallel simulations of the complete 104-match 2026 bracket:
+
+1. **Group Stage Execution:** Replays all 72 group fixtures using stochastic sampling governed by the Poisson scoreline matrix.
+2. **Bracket Progression:** Automatically advances group leaders, runners-up, and the 8 highest-performing third-place qualifiers into the Round of 32 single-elimination tree.
+3. **Deterministic Seed Control:** Integrates a custom `mulberry32` pseudo-random number generator (PRNG) initialized via `RNG_SEED + simulation_index`, guaranteeing identical, reproducible simulation states across server restarts and container re-deployments.
+
+## Verified 2026 Tournament Results
+
+The system records verified match data for the 2026 World Cup lifecycle:
+
+- **Group & Knockout Stages**: Incorporates 72 group-stage matches, 16 Round of 32 matches, 8 Round of 16 matches, and 4 Quarterfinal matches.
+- **Semifinals**: France 0-2 Spain, England 1-2 Argentina.
+- **Third Place Playoff**: England 6-4 France.
+- **Final**: Spain 1-0 Argentina.
