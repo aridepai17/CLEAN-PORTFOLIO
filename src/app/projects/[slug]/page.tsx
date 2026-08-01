@@ -7,7 +7,6 @@ import { ProjectNavigation } from '@/components/projects/ProjectNavigation';
 import ArrowLeft from '@/components/svgs/ArrowLeft';
 import { buttonVariants } from '@/components/ui/button-variants';
 import { siteConfig } from '@/config/Meta';
-import { sfProDisplayBlack } from '@/lib/fonts';
 import {
     getProjectCaseStudyBySlug,
     getProjectCaseStudySlugs,
@@ -82,7 +81,7 @@ export default async function ProjectCaseStudyPage({
     const relatedProjects = await getRelatedProjectCaseStudies(slug, 2);
 
     return (
-        <main className={sfProDisplayBlack.variable}>
+        <main className="font-sfProDisplayBlack">
             {/* Viewport fixed tracker layer outside layouts */}
             <FloatingToC selector=".prose h2, .prose h3" />
             <Container className="py-16">
