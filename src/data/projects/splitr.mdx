@@ -1,0 +1,113 @@
+---
+title: 'SPLITR'
+description: 'A modern full-stack expense splitting and group financial management application featuring real-time synchronization, intelligent balance tracking, and AI-powered spending analytics.'
+image: '/project/splitr.png'
+isPublished: true
+status: 'completed'
+timeline: '2026'
+role: 'Full-Stack & Backend Engineer'
+github: 'https://github.com/aridepai17/splitr'
+live: 'https://splitr-psi-bay.vercel.app'
+technologies:
+    - 'Next.js'
+    - 'TypeScript'
+    - 'Tailwind CSS'
+    - 'Convex'
+    - 'Clerk'
+    - 'Inngest'
+    - 'Gemini AI'
+challenges:
+    - 'Implementing multi-party flexible debt splitting mechanics (equal, percentage-based, and custom amounts) with real-time balance propagation.'
+    - 'Orchestrating background job processing and automated payment reminder workflows via Inngest infrastructure.'
+    - 'Integrating Gemini AI to parse and synthesize unstructured spending patterns into monthly analytical reports.'
+learnings:
+    - 'Mastered real-time database subscription paradigms and serverless backend mutations using Convex.'
+    - 'Deepened expertise in secure JWT session authentication and granular access controls with Clerk middleware.'
+    - 'Gained practical experience deploying asynchronous event-driven background processing pipelines.'
+---
+
+## The Shared Finance Challenge
+
+Managing shared group finances traditionally relies on fragmented spreadsheets, delayed manual settlements, and opaque transaction histories. Whether coordinating travel logistics, managing household utilities, or splitting dining tabs, users often face cognitive overhead when calculating exact debt allocations.
+
+**Splitr** is engineered to eliminate this friction. Designed as a real-time, unified financial ledger, the platform handles complex multi-party debt calculations instantly while providing intelligent insights into group spending behaviors.
+
+## Core Platform Capabilities
+
+Splitr leverages an event-driven architecture to ensure all group members see identical, synchronized ledgers without requiring manual page refreshes:
+
+- **Flexible Expense Engine:** Supports highly customizable splitting methodologies, including strict equal splits, exact percentage allocations, and custom manual amounts with category tracking.
+- **Granular Group Organization:** Allows users to create dedicated shared spaces (e.g., "Miami Trip 2026" or "Apartment Utilities"), complete with role-based member permissions and localized balance tracking.
+- **AI-Powered Spending Analytics:** Integrates **Google Gemini AI** to parse unstructured transaction data, synthesizing personalized monthly spending reports and smart budget recommendations.
+- **Automated Settlement Pipelines:** Tracks rolling group balances and utilizes background jobs to dispatch automated email reminders for outstanding obligations.
+
+## System Architecture & Event-Driven Data Flow
+
+Splitr implements a decoupled real-time data pipeline that maintains instant state synchronization across all connected clients while securely handling asynchronous background tasks.
+
+```text
+
+┌─────────────────────────────────────────────────────────────┐
+│                       User Interaction                      │
+│                  (Next.js Client Components)                │
+└──────────────┬──────────────────────────────┬───────────────┘
+               │                              │
+               ▼                              ▼
+┌──────────────────────────────┐┌─────────────────────────────┐
+│         Clerk Auth           ││       Convex Queries        │
+│   (JWT Session Validation)   ││        & Mutations          │
+└──────────────┬───────────────┘└──────────────┬──────────────┘
+               │                              │
+               ▼                              ▼
+┌──────────────────────────────┐┌─────────────────────────────┐
+│      Inngest Background      ││     Convex Real-Time        │
+│      Job Processing &        ││     Database & Subscriptions│
+│     Automated Reminders      │└─────────────────────────────┘
+└──────────────────────────────┘
+
+```
+
+- **Client Interaction Layer:** Built on **Next.js 15 (App Router)**, utilizing React Client Components for high-interactivity form states and Server Components for optimized, SEO-friendly initial page loads.
+- **Real-Time Backend-as-a-Service:** **Convex** serves as the primary persistence layer. It executes fully typed queries and mutations, immediately pushing reactive database updates to the client via WebSockets.
+- **Asynchronous Automation:** **Inngest** manages the background event queues, efficiently handling asynchronous workloads like AI report generation and scheduled settlement reminders without blocking the main runtime.
+
+## Component Topology & File Structure
+
+The monorepo is rigorously structured to enforce a clean separation of concerns between frontend routing, backend schema definitions, and serverless background workers:
+
+```text
+
+splitr/
+├── app/                  # Next.js App Router architecture
+│   ├── (auth)/           # Authentication layout routes
+│   ├── (main)/           # Core application dashboards & group ledgers
+│   ├── api/              # Secure API route handlers & webhooks
+│   └── globals.css       # Global styling configurations
+├── components/           # Reusable modular UI library
+│   └── ui/               # Shadcn/ui component primitives
+├── convex/               # Convex serverless backend environment
+│   └── schema.js         # Strongly typed database schema definitions
+├── hooks/                # Custom React data-fetching and subscription hooks
+├── lib/                  # Utility functions and shared helpers
+│   └── inngest/          # Background job event handlers and queue logic
+├── pics/                 # Architecture graphics & UI screenshots
+└── public/               # Static web assets
+
+```
+
+## Security, Authentication & Data Protection
+
+Financial data requires rigorous security boundaries. Splitr implements multi-tiered protection across all application layers:
+
+- **Zero-Trust Authentication:** Identity management is handled by **Clerk**, providing robust OAuth and email login flows secured by short-lived JSON Web Tokens (JWT).
+- **Database-Level Authorization:** Access control is enforced directly at the **Convex** database layer, ensuring that users can only query or mutate data within groups they explicitly belong to.
+- **Strict Payload Validation:** All incoming API requests and form submissions undergo comprehensive schema validation using **Zod** to prevent malformed injections.
+- **Transport & At-Rest Encryption:** Client-server communications operate exclusively over HTTPS, with all sensitive database clusters encrypted at rest.
+
+## Scalability Roadmap
+
+Future iterations of Splitr are positioned to expand its utility for international travel and automated ingestion:
+
+- **Multi-Currency Conversion Engine:** Real-time foreign exchange rate integrations to seamlessly settle cross-border group trips in a preferred home currency.
+- **OCR Receipt Parsing:** Computer vision capabilities allowing users to upload a physical receipt, automatically extracting itemized line items for instant assignment.
+- **Recurring Expense Webhooks:** Scheduled background mutations to automatically log and split fixed monthly costs like rent, utilities, and shared software subscriptions.

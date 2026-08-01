@@ -1,0 +1,136 @@
+---
+title: 'ROOMIFY'
+description: 'An AI-powered architectural visualization platform that transforms 2D floor plans into photorealistic 3D renders using Google Gemini 2.5 Flash and Puter.js.'
+image: '/project/roomify.png'
+isPublished: true
+status: 'completed'
+timeline: 'April 2026'
+role: 'Full-Stack & AI Engineer'
+github: 'https://github.com/aridepai17/ROOMIFY'
+live: 'https://roomify-virid-three.vercel.app'
+technologies:
+    - 'React'
+    - 'TypeScript'
+    - 'Tailwind CSS'
+    - 'React Router'
+    - 'Google Gemini'
+    - 'Puter.js'
+    - 'Docker'
+challenges:
+    - 'Bridging traditional architectural design workflows with real-time neural image generation using Google Gemini 2.5 Flash.'
+    - 'Implementing robust cloud file persistence and user session management entirely through Puter.js infrastructure.'
+    - 'Optimizing client-side base64 image encoding and transmission for high-resolution floor plan processing.'
+learnings:
+    - 'Mastered serverless cloud primitives including KV stores, isolated file systems, and worker scripts via Puter.js.'
+    - 'Deepened expertise in React Router v7 data loading patterns and interactive UI comparison components.'
+    - 'Gained production experience containerizing full-stack React applications with Docker.'
+---
+
+## The Spatial Design Challenge
+
+Traditional architectural visualization suffers from severe industry bottlenecks. Manual 3D modeling is exceptionally time-consuming, often taking days or weeks to complete. Furthermore, professional rendering software carries prohibitive costs running into thousands annually, while imposing steep technical barriers that require specialized expertise in tools like Blender, SketchUp, or AutoCAD. Crucially, the iterative design process introduces friction, where making minor changes means starting over from scratch.
+
+**Roomify** was architected to eliminate these barriers by providing an AI-first design environment that allows architects, interior designers, and homeowners to visualize, render, and transform 2D floor plans into photorealistic 3D environments instantly.
+
+## Core Capabilities & Spatial UX
+
+Roomify delivers an intuitive, high-performance interface optimized for rapid design iteration and seamless client presentations:
+
+- **Instant 2D-to-3D Conversion:** Upload any standard floor plan and receive a photorealistic render in seconds.
+- **Smart Geometry Detection:** The underlying AI accurately interprets complex structural layouts, including walls, doors, windows, and architectural constraints.
+- **Automated Furniture Mapping:** Intelligently translates 2D schematic icons into realistic 3D representations such as beds, sofas, dining sets, and kitchen fixtures.
+- **Interactive Before/After Comparison:** Integrates side-by-side comparison sliders to evaluate architectural transformations directly in the browser.
+- **Persistent Project Management:** Automatically saves rendered outputs, source files, and metadata within a unified project gallery.
+
+## Neural Rendering & Cloud Architecture
+
+Roomify leverages a decoupled, serverless architecture that pairs modern frontend reactivity with powerful decentralized cloud services and multimodal AI.
+
+```text
+
+┌─────────────────────────────────────────────────────────────┐
+│                        CLIENT                               │
+├─────────────────────────────────────────────────────────────┤
+│  ┌─────────────┐   ┌─────────────┐   ┌─────────────┐        │
+│  │  Home Page  │   │ Visualizer  │   │   Upload    │        │
+│  └──────┬──────┘   └──────┬──────┘   └──────┬──────┘        │
+│         └──────────────────┼──────────────────┘             │
+│                            ▼                                │
+│                     React Router (v7)                       │
+│                            │                                │
+│         ┌──────────────────┼──────────────────┐             │
+│         │                  │                  │             │
+│  ┌──────▼──────┐    ┌──────▼──────┐    ┌──────▼──────┐      │
+│  │ Puter.js    │    │ AI Action   │    │   Storage   │      │
+│  │   Auth      │    │  (Gemini)   │    │ (Puter FS)  │      │
+│  └──────┬──────┘    └──────┬──────┘    └──────┬──────┘      │
+└─────────┼──────────────────┼──────────────────┼─────────────┘
+          │                  │                  │
+          ▼                  ▼                  ▼
+┌─────────────────┐┌─────────────────┐┌──────────────────┐
+│ Puter Cloud Auth││ Google Gemini   ││ Puter File System│
+│ & KV Store      ││ 2.5 Flash (AI)  ││ & Hosting        │
+└─────────────────┘└─────────────────┘└──────────────────┘
+
+```
+
+- **Generative AI Engine:** Utilizes Google Gemini 2.5 Flash to execute high-fidelity image-to-image transformation based on customized architectural prompts.
+- **Serverless Cloud Infrastructure:** Powered entirely by Puter.js, handling user authentication, decentralized file storage, key-value metadata persistence, and background worker execution.
+
+## Component Topology & Data Pipeline
+
+The application is engineered on React Router v7, enforcing clean separation between public landing views and dynamic project visualizers.
+
+```text
+
+┌─────────────────────────────────────────────────────────────────┐
+│                         React Router v7                         │
+│  ┌──────────────────────┐          ┌──────────────────────────┐ │
+│  │       / (Home)       │          │     /visualizer/:id      │ │
+│  │  ┌────────────────┐  │          │  ┌────────────────────┐  │ │
+│  │  │     Navbar     │  │          │  │   VisualizerPage   │  │ │
+│  │  └────────────────┘  │          │  │  ┌──────────────┐  │  │ │
+│  │  ┌────────────────┐  │          │  │  │  RenderArea  │  │  │ │
+│  │  │     Upload     │──┼─────────▶│  │  │ (AI Output)  │  │  │ │
+│  │  │   Component    │  │          │  │  └──────────────┘  │  │ │
+│  │  └────────────────┘  │          │  │  ┌──────────────┐  │  │ │
+│  │  ┌────────────────┐  │          │  │  │CompareSlider │  │  │ │
+│  │  │  Projects Grid │  │          │  │  │(Before/After)│  │  │ │
+│  │  └────────────────┘  │          │  │  └──────────────┘  │  │ │
+│  │                      │          │  └────────────────────┘  │ │
+│  └──────────────────────┘          └──────────────────────────┘ │
+└─────────────────────────────────────────────────────────────────┘
+
+```
+
+The execution lifecycle follows a streamlined, asynchronous pipeline:
+
+1. **Upload Phase:** Users upload high-resolution floor plan images (supporting JPG and PNG formats up to 10MB).
+2. **Processing Phase:** Images are parsed and encoded locally into Base64 data streams within the client environment.
+3. **Generative Phase:** The payload is routed to the Gemini AI action handler, where spatial prompts and image data are synthesized.
+4. **Persistence Phase:** Resulting 3D renders are committed directly to the Puter File System along with project metadata.
+5. **Presentation Phase:** The UI instantly mounts the generated render alongside interactive comparison tools.
+
+## Security, Isolation & KV Storage
+
+To safeguard intellectual property and personal design data, Roomify implements multi-layered security protocols:
+
+- **Secure OAuth & JWT Handling:** User identity and authorization tokens are managed seamlessly via Puter.js secure authentication flows.
+- **Encrypted Key-Value Storage:** All project configurations and metadata are persisted within encrypted KV stores.
+- **Strict File System Isolation:** User assets are sandboxed into private directory partitions, ensuring total isolation between accounts.
+- **Client-Side Pre-Processing:** Raw floor plan files undergo local validation and processing before network transmission.
+
+## Deployment & Containerization
+
+Roomify is fully containerized with Docker, ensuring reproducible builds and flexible deployment options across modern cloud platforms:
+
+- **Container Runtime:** Multi-stage Docker definitions optimize image size for production environments.
+- **Cloud-Agnostic Hosting:** Ready for seamless integration with AWS ECS, Google Cloud Run, Azure Container Apps, and platform-as-a-service providers like Railway and Render.
+
+## Scalability Roadmap
+
+Future iterations of Roomify are positioned to expand advanced spatial capabilities, including:
+
+- **Real-Time 3D Material Swapping:** Live texture and lighting adjustments directly on the rendered output.
+- **Multi-User Collaboration:** Shared workspace rooms for real-time design reviews between clients and architects.
+- **CAD File Support:** Direct native parsing for vector-based architectural blueprints (DWG/DXF formats).

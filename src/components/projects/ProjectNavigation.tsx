@@ -15,16 +15,13 @@ export function ProjectNavigation({ previous, next }: ProjectNavigationProps) {
         return null;
     }
 
-    const hasBoth = previous && next;
-    const gridCols = hasBoth ? 'md:grid-cols-2' : 'grid-cols-1';
-
     return (
-        <div className="space-y-6">
+        <div className="space-y-8">
             <Separator />
 
-            <div className={`grid gap-4 ${gridCols}`}>
+            <div className="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6">
                 {/* Previous Project */}
-                {previous && (
+                {previous ? (
                     <TrackedLink
                         href={`/projects/${previous.slug}`}
                         track={{
@@ -35,24 +32,26 @@ export function ProjectNavigation({ previous, next }: ProjectNavigationProps) {
                                 action: previous.slug,
                             },
                         }}
-                        className={` ${buttonVariants({ variant: 'outline' })} group h-auto w-full justify-start p-4 text-left`}
+                        className={` ${buttonVariants({ variant: 'outline' })} group hover:bg-muted/40 h-auto w-full justify-start rounded-xl p-6 text-left transition-colors`}
                     >
-                        <div className="flex items-center gap-3">
-                            <ArrowLeft className="size-4 transition-transform group-hover:-translate-x-1" />
+                        <div className="flex items-center gap-4">
+                            <ArrowLeft className="text-muted-foreground size-5 transition-transform group-hover:-translate-x-1" />
                             <div>
-                                <div className="text-muted-foreground text-xs">
-                                    Previous Project
+                                <div className="text-muted-foreground mb-1 text-xs font-semibold tracking-widest uppercase">
+                                    Previous
                                 </div>
-                                <div className="font-medium">
+                                <div className="font-sfProDisplayBlack text-lg tracking-tight">
                                     {previous.title}
                                 </div>
                             </div>
                         </div>
                     </TrackedLink>
+                ) : (
+                    <div className="hidden md:block" />
                 )}
 
                 {/* Next Project */}
-                {next && (
+                {next ? (
                     <TrackedLink
                         href={`/projects/${next.slug}`}
                         track={{
@@ -63,18 +62,22 @@ export function ProjectNavigation({ previous, next }: ProjectNavigationProps) {
                                 action: next.slug,
                             },
                         }}
-                        className={` ${buttonVariants({ variant: 'outline' })} group h-auto w-full justify-end p-4 text-right`}
+                        className={` ${buttonVariants({ variant: 'outline' })} group hover:bg-muted/40 h-auto w-full justify-end rounded-xl p-6 text-right transition-colors`}
                     >
-                        <div className="flex items-center gap-3">
+                        <div className="flex items-center gap-4">
                             <div>
-                                <div className="text-muted-foreground text-xs">
-                                    Next Project
+                                <div className="text-muted-foreground mb-1 text-xs font-semibold tracking-widest uppercase">
+                                    Next
                                 </div>
-                                <div className="font-medium">{next.title}</div>
+                                <div className="font-sfProDisplayBlack text-lg tracking-tight">
+                                    {next.title}
+                                </div>
                             </div>
-                            <ArrowUUpRight className="size-4 transition-transform group-hover:translate-x-1" />
+                            <ArrowUUpRight className="text-muted-foreground size-5 transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" />
                         </div>
                     </TrackedLink>
+                ) : (
+                    <div className="hidden md:block" />
                 )}
             </div>
         </div>

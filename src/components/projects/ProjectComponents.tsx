@@ -97,8 +97,8 @@ const ProjectMeta = ({
                             status === 'completed'
                                 ? 'default'
                                 : status === 'in-progress'
-                                  ? 'secondary'
-                                  : 'outline'
+                                  ? 'outline'
+                                  : 'secondary'
                         }
                     >
                         {status.charAt(0).toUpperCase() + status.slice(1)}
@@ -151,6 +151,32 @@ const Learnings = ({ learnings }: { learnings: string[] }) => {
     );
 };
 
+const FormulaCard = ({
+    title,
+    children,
+}: {
+    title: string;
+    children: React.ReactNode;
+}) => {
+    return (
+        <div className="group glass-panel hover:border-border relative my-6 overflow-hidden p-5 transition-all">
+            {/* Glowing left accent border */}
+            <div className="bg-primary/80 group-hover:bg-primary absolute top-0 left-0 h-full w-1 transition-colors" />
+
+            {/* Header label */}
+            <h5 className="text-muted-foreground mb-3 flex items-center gap-2 font-mono text-xs font-semibold tracking-wider uppercase">
+                <span className="bg-primary size-2 animate-pulse rounded-full" />
+                {title}
+            </h5>
+
+            {/* Formula content container */}
+            <div className="text-foreground overflow-x-auto overflow-y-hidden py-1 font-mono text-sm leading-relaxed">
+                {children}
+            </div>
+        </div>
+    );
+};
+
 export const ProjectComponents = {
     img: ({
         src,
@@ -162,11 +188,11 @@ export const ProjectComponents = {
         [key: string]: unknown;
     }) => (
         <Image
-            src={src}
             alt={alt}
-            width={800}
-            height={400}
             className="rounded-lg"
+            height={400}
+            src={src}
+            width={800}
             {...props}
         />
     ),
@@ -279,9 +305,9 @@ export const ProjectComponents = {
         const codeText = getTextContent(children);
 
         return (
-            <div className="group relative mb-4">
+            <div className="group glass-panel relative mb-6 overflow-hidden p-7">
                 <pre
-                    className="bg-muted/30 overflow-x-auto rounded-lg border p-4 text-sm [&>code]:bg-transparent [&>code]:p-0"
+                    className="overflow-x-auto overflow-y-hidden bg-transparent p-5 text-sm leading-relaxed [&>code]:bg-transparent [&>code]:p-0"
                     {...props}
                 >
                     {children}
@@ -333,4 +359,5 @@ export const ProjectComponents = {
     ProjectMeta,
     Challenges,
     Learnings,
+    FormulaCard,
 };
