@@ -18,6 +18,7 @@ import { useUmami } from '@/hooks/use-umami';
 import { cn } from '@/lib/utils';
 import { createParser } from 'eventsource-parser';
 import { Trash2 } from 'lucide-react';
+import { usePathname } from 'next/navigation';
 import React, { useEffect, useRef, useState } from 'react';
 import ReactMarkdown from 'react-markdown';
 
@@ -54,6 +55,7 @@ const ChatBubble: React.FC = () => {
     const { triggerHaptic, isMobile } = useHapticFeedback();
     const { trackEvent } = useUmami();
     const justLoaded = useRef(true);
+    const pathname = usePathname();
 
     // Load chat history from local storage on mount
     useEffect(() => {
@@ -117,6 +119,11 @@ const ChatBubble: React.FC = () => {
         }
     }, [messages]);
 
+    // Only render on the homepage
+    if (pathname !== '/') {
+        return null;
+    }
+
     const clearChat = () => {
         if (isMobile()) triggerHaptic('medium');
         setMessages(initialMessages);
@@ -134,7 +141,6 @@ const ChatBubble: React.FC = () => {
             data: { message: messageText, sender: 'user' },
         });
 
-        // 2. Use crypto.randomUUID() for guaranteed unique React keys
         const userMessage: Message = {
             id: crypto.randomUUID(),
             text: messageText,
@@ -213,7 +219,6 @@ const ChatBubble: React.FC = () => {
     const sendMessage = async (messageText: string, botMessageId: string) => {
         try {
             const history = messages
-                // 3. Update filter to match the new string ID
                 .filter((msg) => msg.id !== 'initial-msg-1')
                 .slice(-10)
                 .map((msg) => ({

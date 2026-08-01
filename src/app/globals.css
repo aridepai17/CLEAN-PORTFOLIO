@@ -24,9 +24,16 @@ html.lenis body {
 }
 
 @theme {
-    --font-sfProDisplayBlack: var(--next-font-sf-pro-display-black), serif;
+    --font-sfProDisplayBlack: 'SF Pro Display Black', serif;
 }
 
+@font-face {
+    font-family: 'SF Pro Display Black';
+    src: url('/fonts/SF-Pro-Display-Black.otf') format('opentype');
+    font-weight: 900;
+    font-style: normal;
+    font-display: swap;
+}
 
 @font-face {
     font-family: 'Better VCR';
