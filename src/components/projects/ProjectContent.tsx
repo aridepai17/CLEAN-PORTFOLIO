@@ -1,10 +1,10 @@
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Separator } from '@/components/ui/separator';
 import { ProjectCaseStudyFrontmatter } from '@/types/project';
 import rehypeHighlight from '@shikijs/rehype';
 import { MDXRemote } from 'next-mdx-remote/rsc';
 import Image from 'next/image';
+import rehypeSlug from 'rehype-slug';
 
 import { TrackedLink } from '../common/TrackedLink';
 import GitHubIcon from '../svgs/GitHubIcon';
@@ -40,10 +40,38 @@ export function ProjectContent({ frontmatter, content }: ProjectContentProps) {
               : 'outline';
 
     return (
-        <article className="mx-auto max-w-4xl">
-            {/* Hero Section */}
-            <header className="mb-8 space-y-6">
-                <div className="relative aspect-video overflow-hidden rounded-lg">
+        <article className="font-sfProDisplayBlack mx-auto max-w-3xl">
+            <header className="mb-12 space-y-8">
+                <div className="space-y-4 text-center md:text-left">
+                    {/* Status and All Tech Badges (No truncation) */}
+                    <div className="flex flex-wrap items-center justify-center gap-3 md:justify-start">
+                        <Badge
+                            variant={statusVariant}
+                            className="text-xs font-bold tracking-widest uppercase"
+                        >
+                            {status}
+                        </Badge>
+                        {technologies.map((tech) => (
+                            <Badge
+                                key={tech}
+                                variant="outline"
+                                className="text-xs font-bold"
+                            >
+                                {tech}
+                            </Badge>
+                        ))}
+                    </div>
+
+                    <h1 className="font-sfProDisplayBlack text-4xl leading-tight tracking-tight lg:text-5xl">
+                        {title}
+                    </h1>
+
+                    <p className="text-muted-foreground text-xl leading-relaxed md:text-2xl">
+                        {description}
+                    </p>
+                </div>
+
+                <div className="border-border/50 relative aspect-video overflow-hidden rounded-xl border shadow-2xl">
                     <Image
                         src={image}
                         alt={title}
@@ -53,73 +81,38 @@ export function ProjectContent({ frontmatter, content }: ProjectContentProps) {
                     />
                 </div>
 
-                <div className="space-y-4">
-                    {/* Project Status and Technologies */}
-                    <div className="flex flex-wrap items-center gap-3">
-                        <Badge variant={statusVariant} className="text-sm">
-                            {status.charAt(0).toUpperCase() + status.slice(1)}
-                        </Badge>
-                        {technologies.slice(0, 3).map((tech) => (
-                            <Badge
-                                key={tech}
-                                variant="outline"
-                                className="text-xs"
-                            >
-                                {tech}
-                            </Badge>
-                        ))}
-                        {technologies.length > 3 && (
-                            <Badge variant="outline" className="text-xs">
-                                +{technologies.length - 3} more
-                            </Badge>
-                        )}
-                    </div>
-
-                    <h1 className="text-4xl leading-tight font-bold lg:text-5xl">
-                        {title}
-                    </h1>
-
-                    <p className="text-muted-foreground text-xl">
-                        {description}
-                    </p>
-
-                    {/* Project Meta Information */}
-                    <div className="bg-muted/20 grid gap-4 rounded-lg border p-4 sm:grid-cols-2 lg:grid-cols-4">
-                        <div>
-                            <h5 className="text-muted-foreground text-sm font-semibold">
+                {/* Separated Metadata & Isolated Action Buttons */}
+                <div className="border-border/40 flex flex-col gap-6 border-y py-6 sm:flex-row sm:items-center sm:justify-between">
+                    <div className="flex flex-wrap gap-8 md:gap-12">
+                        <div className="border-primary/20 flex flex-col gap-1 border-l-2 pl-4">
+                            <span className="text-muted-foreground text-xs font-semibold tracking-wider uppercase">
                                 Timeline
-                            </h5>
-                            <p className="text-sm">{timeline}</p>
+                            </span>
+                            <span className="text-sm font-medium">
+                                {timeline}
+                            </span>
                         </div>
-                        <div>
-                            <h5 className="text-muted-foreground text-sm font-semibold">
+                        <div className="border-primary/20 flex flex-col gap-1 border-l-2 pl-4">
+                            <span className="text-muted-foreground text-xs font-semibold tracking-wider uppercase">
                                 Role
-                            </h5>
-                            <p className="text-sm">{role}</p>
+                            </span>
+                            <span className="text-sm font-medium">{role}</span>
                         </div>
                         {team && (
-                            <div>
-                                <h5 className="text-muted-foreground text-sm font-semibold">
+                            <div className="border-primary/20 flex flex-col gap-1 border-l-2 pl-4">
+                                <span className="text-muted-foreground text-xs font-semibold tracking-wider uppercase">
                                     Team
-                                </h5>
-                                <p className="text-sm">{team}</p>
+                                </span>
+                                <span className="text-sm font-medium">
+                                    {team}
+                                </span>
                             </div>
                         )}
-                        <div>
-                            <h5 className="text-muted-foreground text-sm font-semibold">
-                                Status
-                            </h5>
-                            <Badge variant={statusVariant} className="text-xs">
-                                {status.charAt(0).toUpperCase() +
-                                    status.slice(1)}
-                            </Badge>
-                        </div>
                     </div>
 
-                    {/* Action Buttons */}
-                    <div className="flex flex-wrap gap-3">
+                    <div className="flex shrink-0 items-center gap-3 pl-4 sm:justify-end sm:pl-0">
                         {live && (
-                            <Button asChild>
+                            <Button size="sm" asChild>
                                 <TrackedLink
                                     href={live}
                                     target="_blank"
@@ -132,15 +125,13 @@ export function ProjectContent({ frontmatter, content }: ProjectContentProps) {
                                             location: 'project_detail',
                                         },
                                     }}
-                                    className="flex items-center gap-2"
                                 >
-                                    <Website className="size-4" />
-                                    Live Demo
+                                    <Website className="mr-2 size-4" /> Live
                                 </TrackedLink>
                             </Button>
                         )}
                         {github && (
-                            <Button variant="outline" asChild>
+                            <Button size="sm" variant="outline" asChild>
                                 <TrackedLink
                                     href={github}
                                     target="_blank"
@@ -153,53 +144,30 @@ export function ProjectContent({ frontmatter, content }: ProjectContentProps) {
                                             location: 'project_detail',
                                         },
                                     }}
-                                    className="flex items-center gap-2"
                                 >
-                                    <GitHubIcon className="size-4" />
-                                    Source Code
+                                    <GitHubIcon className="mr-2 size-4" />{' '}
+                                    Source
                                 </TrackedLink>
                             </Button>
                         )}
                     </div>
                 </div>
-
-                <Separator />
             </header>
 
-            {/* Technology Stack */}
-            <div className="mb-8">
-                <div className="bg-muted/20 rounded-lg border p-4">
-                    <h3 className="mb-3 text-lg font-semibold">
-                        Technology Stack
-                    </h3>
-                    <div className="flex flex-wrap gap-2">
-                        {technologies.map((tech) => (
-                            <div
-                                key={tech}
-                                className="bg-muted/50 inline-flex items-center gap-2 rounded-full px-3 py-1.5 text-sm font-medium"
-                            >
-                                <span>{tech}</span>
-                            </div>
-                        ))}
-                    </div>
-                </div>
-            </div>
-
-            {/* Challenges and Learnings */}
             {(challenges?.length || learnings?.length) && (
-                <div className="mb-8 grid gap-6 md:grid-cols-2">
+                <div className="mb-12 grid gap-6 md:grid-cols-2">
                     {challenges && challenges.length > 0 && (
-                        <div className="rounded-lg border border-yellow-200 bg-yellow-50 p-4 dark:border-yellow-800 dark:bg-yellow-950/20">
-                            <h3 className="mb-3 text-lg font-semibold text-yellow-800 dark:text-yellow-200">
-                                Key Challenges
+                        <div className="glass-panel p-6">
+                            <h3 className="font-sfProDisplayBlack mb-4 flex items-center gap-2 text-lg">
+                                The Challenge
                             </h3>
-                            <ul className="space-y-2">
+                            <ul className="space-y-3">
                                 {challenges.map((challenge, index) => (
                                     <li
                                         key={index}
-                                        className="flex items-start gap-2 text-sm text-yellow-700 dark:text-yellow-300"
+                                        className="text-muted-foreground flex items-start gap-3 text-sm leading-relaxed"
                                     >
-                                        <span className="mt-1 block size-1.5 rounded-full bg-yellow-500 dark:bg-yellow-400" />
+                                        <span className="bg-primary/50 mt-1.5 flex size-1.5 shrink-0 rounded-full" />
                                         {challenge}
                                     </li>
                                 ))}
@@ -208,17 +176,17 @@ export function ProjectContent({ frontmatter, content }: ProjectContentProps) {
                     )}
 
                     {learnings && learnings.length > 0 && (
-                        <div className="rounded-lg border border-green-200 bg-green-50 p-4 dark:border-green-800 dark:bg-green-950/20">
-                            <h3 className="mb-3 text-lg font-semibold text-green-800 dark:text-green-200">
+                        <div className="glass-panel p-6">
+                            <h3 className="font-sfProDisplayBlack mb-4 flex items-center gap-2 text-lg">
                                 Key Learnings
                             </h3>
-                            <ul className="space-y-2">
+                            <ul className="space-y-3">
                                 {learnings.map((learning, index) => (
                                     <li
                                         key={index}
-                                        className="flex items-start gap-2 text-sm text-green-700 dark:text-green-300"
+                                        className="text-muted-foreground flex items-start gap-3 text-sm leading-relaxed"
                                     >
-                                        <span className="mt-1 block size-1.5 rounded-full bg-green-500 dark:bg-green-400" />
+                                        <span className="bg-primary/50 mt-1.5 flex size-1.5 shrink-0 rounded-full" />
                                         {learning}
                                     </li>
                                 ))}
@@ -228,18 +196,21 @@ export function ProjectContent({ frontmatter, content }: ProjectContentProps) {
                 </div>
             )}
 
-            {/* Content */}
-            <div className="prose prose-neutral dark:prose-invert max-w-none">
+            <div className="prose prose-neutral dark:prose-invert max-w-none text-lg leading-relaxed">
                 <MDXRemote
                     source={content}
                     components={ProjectComponents}
                     options={{
                         mdxOptions: {
                             rehypePlugins: [
+                                rehypeSlug,
                                 [
                                     rehypeHighlight,
                                     {
-                                        theme: 'github-dark',
+                                        themes: {
+                                            dark: 'github-dark',
+                                            light: 'github-light',
+                                        },
                                     },
                                 ],
                             ],
