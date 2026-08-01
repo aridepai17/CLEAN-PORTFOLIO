@@ -7,6 +7,6 @@ export const sfProRounded = localFont({
 
 export const sfProDisplayBlack = localFont({
     src: '../../public/fonts/SF-Pro-Display-Black.otf',
-    variable: '--font-sfProDisplayBlack',
+    variable: '--next-font-sf-pro-display-black',
     display: 'swap',
 });

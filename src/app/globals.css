@@ -24,7 +24,7 @@ html.lenis body {
 }
 
 @theme {
-    --font-sfProDisplayBlack: var(--font-sfProDisplayBlack), serif;
+    --font-sfProDisplayBlack: var(--next-font-sf-pro-display-black), serif;
 }
 
 
