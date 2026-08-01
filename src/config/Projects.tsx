@@ -11,7 +11,7 @@ export const projects: Project[] = [
     {
         title: 'SELECTRA',
         description:
-            'ATS resume optimization tool that analyzes and rewrites resumes to improve applicant-tracking-system scores.',
+            'An AI-powered ATS resume optimization platform that performs client-side PDF rasterization and LLM-driven keyword analysis to improve job application success rates.',
         image: '/project/selectra.png',
         link: 'https://selectra-nine.vercel.app',
         technologies: [
@@ -60,9 +60,9 @@ export const projects: Project[] = [
         isWorking: true,
     },
     {
-        title: 'World Cup Oracle',
+        title: 'WORLD CUP ORACLE',
         description:
-            'Full-stack sports analytics platform that predicts the 2026 FIFA World Cup using Elo ratings, Poisson goal models, and 10,000 Monte Carlo simulations with interactive tournament and match visualizations.',
+            'A full-stack sports analytics platform for the 2026 FIFA World Cup featuring historical Elo ratings, Poisson-based match modeling, and Monte Carlo simulations',
         image: '/project/worldcuporacle.png',
         link: 'https://worldcuporacle-eight.vercel.app/',
         technologies: [
@@ -77,7 +77,7 @@ export const projects: Project[] = [
         isWorking: true,
     },
     {
-        title: 'Splitr',
+        title: 'SPLITR',
         description:
             'Full-stack expense splitting platform with real-time group expense tracking, automated balance calculations, settlement management, and AI-powered spending insights.',
         image: '/project/splitr.png',
@@ -94,7 +94,7 @@ export const projects: Project[] = [
         isWorking: true,
     },
     {
-        title: 'Signalist',
+        title: 'SIGNALIST',
         description:
             'Full-stack stock market intelligence platform featuring real-time market dashboards, personalized watchlists, AI-powered news summaries, and live financial analytics.',
         image: '/project/signalist.png',
@@ -112,7 +112,7 @@ export const projects: Project[] = [
         isWorking: true,
     },
     {
-        title: 'MacOS Portfolio',
+        title: 'MacOS PORTFOLIO',
         description:
             'Interactive portfolio that recreates the macOS desktop experience with draggable windows, a functional dock, smooth animations, and desktop-inspired navigation.',
         image: '/project/macosportfolio.png',
