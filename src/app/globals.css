@@ -2,24 +2,38 @@
 @import 'tw-animate-css';
 @plugin "@tailwindcss/typography";
 
-html.lenis, html.lenis body {
-  height: auto;
+html.lenis,
+html.lenis body {
+    height: auto;
 }
 
 .lenis.lenis-smooth {
-  scroll-behavior: auto !important;
+    scroll-behavior: auto !important;
 }
 
 .lenis.lenis-smooth [data-lenis-prevent] {
-  overscroll-behavior: contain;
+    overscroll-behavior: contain;
 }
 
 .lenis.lenis-stopped {
-  overflow: hidden;
+    overflow: hidden;
 }
 
 .lenis.lenis-scrolling iframe {
-  pointer-events: none;
+    pointer-events: none;
+}
+
+@theme {
+    --font-sfProDisplayBlack: var(--font-sfProDisplayBlack), serif;
+}
+
+
+@font-face {
+    font-family: 'Better VCR';
+    src: url('/fonts/Better-VCR.ttf') format('truetype');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
 }
 
 @font-face {
@@ -159,9 +173,23 @@ html.lenis, html.lenis body {
     .dark body {
         background-color: #000000;
         background-image:
-            linear-gradient(to right, rgba(75, 85, 99, 0.4) 1px, transparent 1px),
-            linear-gradient(to bottom, rgba(75, 85, 99, 0.4) 1px, transparent 1px);
+            linear-gradient(
+                to right,
+                rgba(75, 85, 99, 0.4) 1px,
+                transparent 1px
+            ),
+            linear-gradient(
+                to bottom,
+                rgba(75, 85, 99, 0.4) 1px,
+                transparent 1px
+            );
         background-size: 40px 40px;
+    }
+}
+
+@layer components {
+    .glass-panel {
+        @apply relative overflow-hidden rounded-xl border border-border/50 bg-white/80 shadow-sm backdrop-blur-md dark:border-white/10 dark:bg-black/60;
     }
 }
 
@@ -295,4 +323,76 @@ html.lenis, html.lenis body {
 
 .prose h4 {
     font-size: calc(var(--blog-font-size) * 1.25);
+}
+
+.prose pre,
+.prose code,
+.prose kbd,
+.prose samp,
+.shiki,
+.shiki span {
+    font-family: 'Better VCR', monospace !important;
+}
+
+html.dark .shiki,
+html.dark .shiki span {
+    color: var(--shiki-dark) !important;
+    background-color: var(--shiki-dark-bg) !important;
+    font-style: var(--shiki-dark-font-style) !important;
+    font-weight: var(--shiki-dark-font-weight) !important;
+    text-decoration: var(--shiki-dark-text-decoration) !important;
+}
+
+/* --- SHIKI & MDX CODE BLOCK OVERRIDES ---  */
+
+/* Clear out default prose pre styles so the outer glass-panel container handles borders/backgrounds */
+.prose pre {
+    background-color: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* LIGHT MODE TEXT OVERRIDE */
+html:not(.dark) .prose pre code,
+html:not(.dark) .prose pre span,
+html:not(.dark) .shiki,
+html:not(.dark) .shiki span {
+    color: var(--shiki-light, #24292f) !important;
+    font-weight: 600 !important;
+    background-color: transparent !important;
+}
+
+/* DARK MODE TEXT OVERRIDE */
+html.dark .prose pre code,
+html.dark .prose pre span,
+html.dark .shiki,
+html.dark .shiki span {
+    color: var(--shiki-dark, #dedede) !important;
+    background-color: transparent !important;
+    font-weight: 500 !important;
+    font-style: var(--shiki-dark-font-style, normal) !important;
+}
+
+/* --- SLEEK HORIZONTAL-ONLY SCROLLBARS ---- */
+
+.glass-panel pre::-webkit-scrollbar {
+    height: 5px;  /* Slim horizontal scrollbar */
+    width: 0px;   /* Completely hide vertical scrollbars */
+}
+
+.glass-panel pre::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.glass-panel pre::-webkit-scrollbar-thumb {
+    background: rgba(150, 150, 150, 0.25);
+    border-radius: 9999px;
+}
+
+.glass-panel pre::-webkit-scrollbar-thumb:hover {
+    background: rgba(150, 150, 150, 0.5);
 }
