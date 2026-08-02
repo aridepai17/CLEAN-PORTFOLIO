@@ -110,8 +110,8 @@ export const BlogComponents = {
         <a
             className="text-primary underline-offset-4 hover:underline"
             href={href}
-            target={href ? '_blank' : undefined}
-            rel={href ? 'noopener noreferrer' : undefined}
+            target={href?.startsWith('http') ? '_blank' : undefined}
+            rel={href?.startsWith('http') ? 'noopener noreferrer' : undefined}
             {...props}
         >
             {children}
