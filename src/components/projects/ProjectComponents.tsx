@@ -1,3 +1,4 @@
+import Reveal from '@/components/common/Reveal';
 import GSAP from '@/components/technologies/GSAP';
 import MongoDB from '@/components/technologies/MongoDB';
 import NextJs from '@/components/technologies/NextJs';
@@ -187,14 +188,16 @@ export const ProjectComponents = {
         alt: string;
         [key: string]: unknown;
     }) => (
-        <Image
-            alt={alt}
-            className="rounded-lg"
-            height={400}
-            src={src}
-            width={800}
-            {...props}
-        />
+        <Reveal>
+            <Image
+                alt={alt}
+                className="rounded-lg"
+                height={400}
+                src={src}
+                width={800}
+                {...props}
+            />
+        </Reveal>
     ),
     h1: ({
         children,
@@ -214,9 +217,11 @@ export const ProjectComponents = {
         children: React.ReactNode;
         [key: string]: unknown;
     }) => (
-        <h2 className="mt-8 mb-4 text-3xl font-semibold" {...props}>
-            {children}
-        </h2>
+        <Reveal>
+            <h2 className="mt-8 mb-4 text-3xl font-semibold" {...props}>
+                {children}
+            </h2>
+        </Reveal>
     ),
     h3: ({
         children,
@@ -225,9 +230,11 @@ export const ProjectComponents = {
         children: React.ReactNode;
         [key: string]: unknown;
     }) => (
-        <h3 className="mt-6 mb-3 text-2xl font-medium" {...props}>
-            {children}
-        </h3>
+        <Reveal>
+            <h3 className="mt-6 mb-3 text-2xl font-medium" {...props}>
+                {children}
+            </h3>
+        </Reveal>
     ),
     p: ({
         children,
@@ -236,9 +243,11 @@ export const ProjectComponents = {
         children: React.ReactNode;
         [key: string]: unknown;
     }) => (
-        <p className="text-muted-foreground mb-4 leading-7" {...props}>
-            {children}
-        </p>
+        <Reveal>
+            <p className="text-muted-foreground mb-4 leading-7" {...props}>
+                {children}
+            </p>
+        </Reveal>
     ),
     ul: ({
         children,
@@ -247,9 +256,11 @@ export const ProjectComponents = {
         children: React.ReactNode;
         [key: string]: unknown;
     }) => (
-        <ul className="mb-4 ml-6 list-disc space-y-2" {...props}>
-            {children}
-        </ul>
+        <Reveal>
+            <ul className="mb-4 ml-6 list-disc space-y-2" {...props}>
+                {children}
+            </ul>
+        </Reveal>
     ),
     ol: ({
         children,
@@ -258,9 +269,11 @@ export const ProjectComponents = {
         children: React.ReactNode;
         [key: string]: unknown;
     }) => (
-        <ol className="mb-4 ml-6 list-decimal space-y-2" {...props}>
-            {children}
-        </ol>
+        <Reveal>
+            <ol className="mb-4 ml-6 list-decimal space-y-2" {...props}>
+                {children}
+            </ol>
+        </Reveal>
     ),
     li: ({
         children,
@@ -305,15 +318,17 @@ export const ProjectComponents = {
         const codeText = getTextContent(children);
 
         return (
-            <div className="group glass-panel relative mb-6 overflow-hidden p-7">
-                <pre
-                    className="overflow-x-auto overflow-y-hidden bg-transparent p-5 text-sm leading-relaxed [&>code]:bg-transparent [&>code]:p-0"
-                    {...props}
-                >
-                    {children}
-                </pre>
-                <CodeCopyButton code={codeText} />
-            </div>
+            <Reveal>
+                <div className="group glass-panel relative mb-6 overflow-hidden p-7">
+                    <pre
+                        className="overflow-x-auto overflow-y-hidden bg-transparent p-5 text-sm leading-relaxed [&>code]:bg-transparent [&>code]:p-0"
+                        {...props}
+                    >
+                        {children}
+                    </pre>
+                    <CodeCopyButton code={codeText} />
+                </div>
+            </Reveal>
         );
     },
     code: ({
@@ -346,12 +361,14 @@ export const ProjectComponents = {
         children: React.ReactNode;
         [key: string]: unknown;
     }) => (
-        <blockquote
-            className="border-primary text-muted-foreground mb-4 border-l-4 pl-4 italic"
-            {...props}
-        >
-            {children}
-        </blockquote>
+        <Reveal>
+            <blockquote
+                className="border-primary text-muted-foreground mb-4 border-l-4 pl-4 italic"
+                {...props}
+            >
+                {children}
+            </blockquote>
+        </Reveal>
     ),
 
     Technology,
