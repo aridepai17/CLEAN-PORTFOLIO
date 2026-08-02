@@ -38,9 +38,17 @@ html.lenis body {
 
 @font-face {
     font-family: 'Instrument Serif';
-    src: url('/font/InstrumentSerif-Regular.ttf') format('truetype');
-    font-weight: 10;
+    src: url('/fonts/InstrumentSerif-Regular.ttf') format('truetype');
+    font-weight: 400;
     font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Instrument Serif';
+    src: url('/fonts/InstrumentSerif-Italic.ttf') format('truetype');
+    font-weight: 400;
+    font-style: italic;
     font-display: swap;
 }
 
