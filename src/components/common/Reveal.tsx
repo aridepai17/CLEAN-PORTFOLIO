@@ -10,15 +10,17 @@ interface RevealProps {
     duration?: number;
     once?: boolean;
     margin?: string;
+    yOffset?: number;
 }
 
 export default function Reveal({
     children,
     className = '',
     delay = 0,
-    duration = 0.7,
+    duration = 0.6,
     once = false,
     margin = '-40px',
+    yOffset = 17,
 }: RevealProps) {
     const prefersReducedMotion = useReducedMotion();
 
@@ -33,19 +35,21 @@ export default function Reveal({
         : {
               hidden: {
                   opacity: 0,
-                  y: 32,
+                  y: yOffset,
+                  filter: 'blur(4px)',
                   transition: {
-                      duration: duration * 0.6, // exit settles faster than it enters
+                      duration: duration * 0.6,
                       ease: [0.4, 0, 1, 1],
                   },
               },
               visible: {
                   opacity: 1,
                   y: 0,
+                  filter: 'blur(0px)',
                   transition: {
                       duration,
                       delay,
-                      ease: [0.25, 0.46, 0.45, 0.94],
+                      ease: [0.21, 0.47, 0.32, 0.98],
                   },
               },
           };
@@ -57,6 +61,7 @@ export default function Reveal({
             whileInView="visible"
             viewport={{ once, margin, amount: 0.1 }}
             className={className}
+            style={{ willChange: 'opacity, transform, filter' }}
         >
             {children}
         </motion.div>
