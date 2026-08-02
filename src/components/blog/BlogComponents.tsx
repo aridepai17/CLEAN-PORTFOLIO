@@ -1,10 +1,31 @@
+import Reveal from '@/components/common/Reveal';
+import katex from 'katex';
 import Image from 'next/image';
 import React from 'react';
 
 import { CodeCopyButton } from './CodeCopyButton';
 
+const Math = ({
+    formula,
+    inline = false,
+}: {
+    formula: string;
+    inline?: boolean;
+}) => {
+    const html = katex.renderToString(formula, {
+        throwOnError: false,
+        displayMode: !inline,
+    });
+    return (
+        <span
+            dangerouslySetInnerHTML={{ __html: html }}
+            className={inline ? '' : 'my-4 block'}
+        />
+    );
+};
+
 export const BlogComponents = {
-    // Override default image component
+    Math,
     img: ({
         src,
         alt,
@@ -14,27 +35,18 @@ export const BlogComponents = {
         alt: string;
         [key: string]: unknown;
     }) => (
-        <Image
-            src={src}
-            alt={alt}
-            width={800}
-            height={400}
-            className="rounded-lg"
-            {...props}
-        />
+        <Reveal>
+            <Image
+                alt={alt}
+                className="my-6 h-auto w-full rounded-lg object-cover md:my-8"
+                height={400}
+                src={src}
+                width={800}
+                {...props}
+            />
+        </Reveal>
     ),
-    // Custom heading with better styling
-    h1: ({
-        children,
-        ...props
-    }: {
-        children: React.ReactNode;
-        [key: string]: unknown;
-    }) => (
-        <h1 className="mb-6 text-4xl font-bold" {...props}>
-            {children}
-        </h1>
-    ),
+
     h2: ({
         children,
         ...props
@@ -42,10 +54,16 @@ export const BlogComponents = {
         children: React.ReactNode;
         [key: string]: unknown;
     }) => (
-        <h2 className="mt-8 mb-4 text-3xl font-semibold" {...props}>
-            {children}
-        </h2>
+        <Reveal>
+            <h2
+                className="mt-8 mb-4 text-2xl font-bold tracking-tight md:mt-12 md:mb-6 md:text-3xl"
+                {...props}
+            >
+                {children}
+            </h2>
+        </Reveal>
     ),
+
     h3: ({
         children,
         ...props
@@ -53,11 +71,16 @@ export const BlogComponents = {
         children: React.ReactNode;
         [key: string]: unknown;
     }) => (
-        <h3 className="mt-6 mb-3 text-2xl font-medium" {...props}>
-            {children}
-        </h3>
+        <Reveal>
+            <h3
+                className="mt-6 mb-3 text-xl font-normal tracking-tight md:mt-8 md:mb-4 md:text-2xl"
+                {...props}
+            >
+                {children}
+            </h3>
+        </Reveal>
     ),
-    // Custom paragraph styling
+
     p: ({
         children,
         ...props
@@ -65,11 +88,36 @@ export const BlogComponents = {
         children: React.ReactNode;
         [key: string]: unknown;
     }) => (
-        <p className="text-muted-foreground mb-4 leading-7" {...props}>
-            {children}
-        </p>
+        <Reveal>
+            <p
+                className="text-muted-foreground mb-5 leading-relaxed md:mb-6"
+                {...props}
+            >
+                {children}
+            </p>
+        </Reveal>
     ),
-    // Custom list styling
+
+    a: ({
+        children,
+        href,
+        ...props
+    }: {
+        children: React.ReactNode;
+        href?: string;
+        [key: string]: unknown;
+    }) => (
+        <a
+            className="text-primary underline-offset-4 hover:underline"
+            href={href}
+            target={href ? '_blank' : undefined}
+            rel={href ? 'noopener noreferrer' : undefined}
+            {...props}
+        >
+            {children}
+        </a>
+    ),
+
     ul: ({
         children,
         ...props
@@ -77,10 +125,16 @@ export const BlogComponents = {
         children: React.ReactNode;
         [key: string]: unknown;
     }) => (
-        <ul className="mb-4 ml-6 list-disc space-y-2" {...props}>
-            {children}
-        </ul>
+        <Reveal>
+            <ul
+                className="mb-5 ml-4 list-disc space-y-2 md:mb-6 md:ml-6"
+                {...props}
+            >
+                {children}
+            </ul>
+        </Reveal>
     ),
+
     ol: ({
         children,
         ...props
@@ -88,10 +142,16 @@ export const BlogComponents = {
         children: React.ReactNode;
         [key: string]: unknown;
     }) => (
-        <ol className="mb-4 ml-6 list-decimal space-y-2" {...props}>
-            {children}
-        </ol>
+        <Reveal>
+            <ol
+                className="mb-5 ml-4 list-decimal space-y-2 md:mb-6 md:ml-6"
+                {...props}
+            >
+                {children}
+            </ol>
+        </Reveal>
     ),
+
     li: ({
         children,
         ...props
@@ -99,10 +159,11 @@ export const BlogComponents = {
         children: React.ReactNode;
         [key: string]: unknown;
     }) => (
-        <li className="text-muted-foreground leading-7" {...props}>
+        <li className="text-muted-foreground leading-relaxed" {...props}>
             {children}
         </li>
     ),
+
     pre: ({
         children,
         ...props
@@ -111,12 +172,8 @@ export const BlogComponents = {
         [key: string]: unknown;
     }) => {
         const getTextContent = (node: React.ReactNode): string => {
-            if (typeof node === 'string') {
-                return node;
-            }
-            if (typeof node === 'number') {
-                return String(node);
-            }
+            if (typeof node === 'string') return node;
+            if (typeof node === 'number') return String(node);
             if (
                 React.isValidElement(node) &&
                 node.props &&
@@ -126,27 +183,31 @@ export const BlogComponents = {
                     (node.props as { children?: React.ReactNode }).children,
                 );
             }
-            if (Array.isArray(node)) {
-                return node.map(getTextContent).join('');
-            }
+            if (Array.isArray(node)) return node.map(getTextContent).join('');
             return '';
         };
 
         const codeText = getTextContent(children);
 
         return (
-            <div className="group relative mb-4">
-                <pre
-                    className="bg-muted/30 overflow-x-auto rounded-lg border p-4 text-sm [&>code]:bg-transparent [&>code]:p-0"
-                    {...props}
-                >
-                    {children}
-                </pre>
-                <CodeCopyButton code={codeText} />
-            </div>
+            <Reveal>
+                <div className="not-prose group md:glass-panel border-border/30 md:border-border/50 bg-background/30 md:bg-background/50 text-foreground relative my-6 overflow-hidden rounded-xl border backdrop-blur-sm md:my-8">
+                    <pre
+                        className="[&::-webkit-scrollbar-thumb]:bg-muted-foreground/20 hover:[&::-webkit-scrollbar-thumb]:bg-muted-foreground/40 !m-0 max-h-[50vh] [scrollbar-width:thin] overflow-x-auto overflow-y-auto !bg-transparent !p-5 font-mono text-sm leading-relaxed transition-colors md:max-h-[70vh] md:!p-8 [&::-webkit-scrollbar]:h-2 [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:bg-transparent"
+                        {...props}
+                    >
+                        {children}
+                    </pre>
+                    <div className="absolute top-5 right-5 z-20 opacity-100 transition-opacity md:top-8 md:right-8 md:opacity-0 md:group-hover:opacity-100">
+                        <div className="bg-background/80 border-border/50 hover:bg-background rounded-md border shadow-sm backdrop-blur-md transition-colors">
+                            <CodeCopyButton code={codeText} />
+                        </div>
+                    </div>
+                </div>
+            </Reveal>
         );
     },
-    // Inline code styling (not affected by syntax highlighting)
+
     code: ({
         children,
         className,
@@ -156,23 +217,28 @@ export const BlogComponents = {
         className?: string;
         [key: string]: unknown;
     }) => {
-        // If it's part of a pre block (syntax highlighted), don't apply inline styling
         if (className?.includes('language-')) {
             return (
-                <code className={className} {...props}>
+                <code
+                    className={`!m-0 !bg-transparent !p-0 text-inherit ${className}`}
+                    {...props}
+                >
                     {children}
                 </code>
             );
         }
 
-        // Inline code styling
+        // This handles simple inline code (`like this`)
         return (
-            <code className="rounded px-2 py-1 font-mono text-sm" {...props}>
+            <code
+                className="bg-muted text-foreground rounded-md px-1.5 py-0.5 font-mono text-[0.875em] font-medium break-words"
+                {...props}
+            >
                 {children}
             </code>
         );
     },
-    // Custom blockquote styling
+
     blockquote: ({
         children,
         ...props
@@ -180,11 +246,101 @@ export const BlogComponents = {
         children: React.ReactNode;
         [key: string]: unknown;
     }) => (
-        <blockquote
-            className="border-primary text-muted-foreground mb-4 border-l-4 pl-4 italic"
+        <Reveal>
+            <blockquote
+                className="border-primary bg-muted/20 text-muted-foreground my-6 rounded-r-lg border-l-4 p-4 italic md:my-8 md:p-6"
+                {...props}
+            >
+                {children}
+            </blockquote>
+        </Reveal>
+    ),
+
+    table: ({
+        children,
+        ...props
+    }: {
+        children: React.ReactNode;
+        [key: string]: unknown;
+    }) => (
+        <Reveal>
+            <div className="not-prose border-border/50 bg-background/60 [&::-webkit-scrollbar-thumb]:bg-muted-foreground/20 hover:[&::-webkit-scrollbar-thumb]:bg-muted-foreground/40 my-6 w-full [scrollbar-width:thin] overflow-x-auto rounded-xl border shadow-sm backdrop-blur-md md:my-8 [&::-webkit-scrollbar]:h-2 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:bg-transparent">
+                <table
+                    className="font-better w-full border-collapse text-left text-sm md:text-base"
+                    {...props}
+                >
+                    {children}
+                </table>
+            </div>
+        </Reveal>
+    ),
+
+    thead: ({
+        children,
+        ...props
+    }: {
+        children: React.ReactNode;
+        [key: string]: unknown;
+    }) => (
+        <thead
+            className="font-better border-border/50 bg-muted/50 border-b"
             {...props}
         >
             {children}
-        </blockquote>
+        </thead>
+    ),
+
+    tbody: ({
+        children,
+        ...props
+    }: {
+        children: React.ReactNode;
+        [key: string]: unknown;
+    }) => (
+        <tbody className="divide-border/50 divide-y bg-transparent" {...props}>
+            {children}
+        </tbody>
+    ),
+
+    tr: ({
+        children,
+        ...props
+    }: {
+        children: React.ReactNode;
+        [key: string]: unknown;
+    }) => (
+        <tr className="hover:bg-muted/30 transition-colors" {...props}>
+            {children}
+        </tr>
+    ),
+
+    th: ({
+        children,
+        ...props
+    }: {
+        children: React.ReactNode;
+        [key: string]: unknown;
+    }) => (
+        <th
+            className="text-muted-foreground px-4 py-3 text-xs font-semibold tracking-wider whitespace-nowrap uppercase md:px-6 md:py-4 md:text-sm"
+            {...props}
+        >
+            {children}
+        </th>
+    ),
+
+    td: ({
+        children,
+        ...props
+    }: {
+        children: React.ReactNode;
+        [key: string]: unknown;
+    }) => (
+        <td
+            className="font-better text-foreground/90 min-w-[150px] px-4 py-3 leading-relaxed md:px-6 md:py-4"
+            {...props}
+        >
+            {children}
+        </td>
     ),
 };
