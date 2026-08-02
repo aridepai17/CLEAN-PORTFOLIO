@@ -1,0 +1,118 @@
+---
+title: 'How Touch Typing S(h)aved Years Off My Life!'
+description: 'A data-driven breakdown of how switching from hunt-and-peck to touch typing reclaims hundreds of hours a year, reduces physical strain, and frees up cognitive bandwidth for actual engineering work.'
+date: '2026-08-01'
+image: '/blog/touchtyping.png'
+tags: ['Productivity', 'Ergonomics', 'Developer Tools']
+isPublished: true
+---
+
+Every engineer has a blind spot. Mine was my hands.
+
+I spent four years writing production code, drafting design docs, and living in Slack - all while glancing down at my keyboard every few seconds like it owed me money. I didn't think much of it. Then I timed myself. Forty words per minute. A trained touch typist clears ninety without blinking. That gap isn't a quirk. It's a tax, compounding daily, silently, for years.
+
+## The Cost of Looking Down
+
+Every time your eyes drop from the screen to the keys, you trigger what I call a **cognitive switching loop**: your visual system disengages from the problem you're solving, re-targets your fingers, confirms the keystroke, and then re-acquires your place in the code or document. Each loop costs a few hundred milliseconds. That sounds trivial - until you multiply it by the thousands of keystrokes in a single workday.
+
+The real damage isn't the lost seconds. It's the fractured attention. You don't just lose time typing; you lose the thread of the logic you were holding in your head. For anyone doing knowledge work-debugging a race condition, structuring an argument, modeling a system - that thread is the actual product. Breaking it repeatedly is far more expensive than the stopwatch suggests.
+
+## The Math of Time Saved
+
+Let's put a number on it. Coding is inherently "bursty" - you might think for ten minutes, then type furiously for two. But regardless of the cadence, the time spent in active output phases scales inversely with your speed.
+
+The time spent typing a fixed volume of words is dictated by this formula:
+
+<Math formula="T = \frac{W}{S \times 60}" />
+
+Where:
+* **T** = Time in hours
+* **W** = Total words typed
+* **S** = Speed in words per minute (WPM)
+
+Assume a moderately typing-heavy knowledge worker spends **3 active hours a day** producing text (code, comments, pull requests, documentation, emails, and chat) across **250 working days a year**.
+
+At a hunt-and-peck baseline of **40 WPM**, that person produces:
+
+* **Words/day:** 40 WPM × 180 minutes = 7,200 words/day
+* **Annual volume:** 7,200 × 250 = 1,800,000 words/year
+
+That annual word volume is fixed-it's dictated by the job, not the typist. What changes is how long it takes to produce it.
+
+* <Math formula="T_{40} = 1,800,000 / (40 \times 60) = 750.0" inline /> hours/year
+* <Math formula="T_{90} = 1,800,000 / (90 \times 60) = 333.3" inline /> hours/year
+
+**Time saved:** 750.0 − 333.3 = **416.7 hours/year** (roughly 17.4 full 24-hour days, every single year).
+
+Stretch that across a 20-year career and you reclaim roughly **8,333 hours** - nearly a full year of continuous time you'd otherwise spend staring at your own hands instead of shipping, thinking, or logging off on schedule. That's the "s(h)aved" in the title: it's not hyperbole, it's arithmetic.
+
+## Ergonomics & Health: The "Saved" Life
+
+The hours are the headline number, but the physical toll is where "saved" becomes literal.
+
+* **Cervical spine strain:** Hunt-and-peck typing pulls your neck into a forward, downward tilt for extended stretches. That posture increases load on the cervical spine well beyond its neutral-position tolerance, contributing heavily to chronic neck and upper-back pain.
+* **Carpal Tunnel Syndrome (CTS) risk:** Looking down forces awkward wrist angles as your hands search for keys. Repeated wrist flexion and ulnar deviation are core risk factors for CTS. Touch typing keeps wrists neutral and stationary on the home row, which meaningfully reduces cumulative strain.
+* **Ocular fatigue:** Constantly refocusing between a near keyboard and a farther screen forces your eyes' ciliary muscles to repeatedly adjust focal length. This refocusing cycle is a direct contributor to digital eye strain-independent of screen brightness.
+
+None of these are dramatic on their own. They're attritional. That's exactly why they matter: an 8-hour-a-day habit compounds over a career, not a week.
+
+## Technical Muscle Memory: Freeing Up RAM
+
+Here's the part that matters most for engineers.
+
+Hunt-and-peck typing is **visually targeted**-every keystroke requires conscious visual confirmation. That process runs through your brain's working memory, the same limited-capacity system you use to hold a call stack, a data model, or an argument's structure in your head.
+
+Touch typing shifts keystrokes into **tactile automation**. Once typing becomes automatic, it stops competing for working memory bandwidth. Practically, that means:
+
+* You can think in code while you type it, instead of translating:  
+  `thought` → `visual target` → `keystroke` → `thought`.
+* You hold more context in your head during debugging sessions because none of it is being displaced by keyboard-hunting.
+* **Workflow Synergy:** When you touch type, jumping around a file with Vim motions (like `ciw` or `f{`) or complex IDE hotkeys becomes a subconscious reflex rather than a deliberate, multi-step puzzle.
+
+This is the difference between typing being a task and typing being invisible. 
+
+## The Data: Hunt-and-Peck vs. Touch Typing
+
+| Metric | Hunt-and-Peck | Touch Typing |
+| :--- | :--- | :--- |
+| **Speed** | 30–45 WPM | 70–100+ WPM |
+| **Error Rate** | Higher (backtracking) | Lower (consistent paths) |
+| **Cognitive Load** | High (visual targeting) | Low (motor automation) |
+| **Physical Strain** | Elevated (downward tilt) | Reduced (neutral posture) |
+| **Eye Refocus Cycles**| Very High | Minimal |
+| **Flow Interruption** | Frequent | Rare |
+
+> Analysis: Touch typing yields a 2.2x speed multiplier with significantly lower hardware (ergonomic) degradation and CPU (cognitive) overhead.*
+
+## Actionable Implementation Framework
+
+You don't need to sacrifice a sprint to fix this. Touch typing is trainable in focused, incremental sessions without tanking your output.
+
+### Phase 1: Baseline (Day 1)
+* Take a typing test. Use standard tools like Monkeytype for prose, or developer-centric tools like [typing.io](https://typing.io) or [SpeedCoder](https://www.speedcoder.net) to test your speed on raw syntax.
+* Record your WPM and error rate. This is your control metric.
+
+### Phase 2: Home Row Lock-In (Days 2 - 7)
+* Practice 15 minutes a day exclusively on home-row drills (`ASDFGHJKL`).
+* Cover your hands physically with a towel or a piece of paper if you catch yourself peeking.
+* Prioritize accuracy over speed. Speed is just a byproduct of accuracy.
+
+### Phase 3: Full Keyboard & Syntax Integration (Weeks 2 - 4)
+* Expand drills to the full alphabet and numbers.
+* **Focus on Syntax:** Explicitly train your pinky and ring fingers to map to curly braces `{}`, parentheses `()`, semicolons `;`, and common operators `!=`, `=>`. 
+* Type real work at 70% of your normal speed, keeping your hands blind. Expect WPM dips before gains.
+
+### Phase 4: Muscle Memory Consolidation (Weeks 5 - 8)
+* Return to a normal work pace.
+* Use a mechanical or tactile keyboard to reinforce physical feedback on actuation.
+* Re-test monthly until you confidently plateau above 70 WPM.
+
+Expect a temporary productivity dip in weeks one and two. That's the investment. The 416-hour annual return starts accruing the moment the dip ends.
+
+## Conclusion: Audit Your Speed
+
+You already track your code's performance. You profile it, benchmark it, and optimize the hot paths. Your own typing speed is a hot path-one that runs every single working hour of your career, and one that most engineers have never profiled.
+
+Open a typing test right now. Time yourself for sixty seconds. Whatever number comes back, run it through the formula above. That number is not a curiosity-it's hours of your life, every year, for as long as you keep typing the way you do today.
+
+Fix the input method. Everything downstream gets faster.
