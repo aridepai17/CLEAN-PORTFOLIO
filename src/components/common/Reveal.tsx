@@ -28,7 +28,7 @@ export default function Reveal({
 
     const variants: Variants = prefersReducedMotion
         ? {
-              hidden: { opacity: 0 },
+              hidden: { opacity: 0.01 },
               visible: {
                   opacity: 1,
                   transition: { duration: Math.min(duration, 0.3), delay },
@@ -36,7 +36,7 @@ export default function Reveal({
           }
         : {
               hidden: {
-                  opacity: 0,
+                  opacity: 0.01,
                   y: yOffset,
                   filter: 'blur(4px)',
                   transition: {
@@ -61,7 +61,11 @@ export default function Reveal({
             variants={variants}
             initial="hidden"
             whileInView="visible"
-            viewport={{ once, margin, amount: 0.1 }}
+            viewport={{
+                once: prefersReducedMotion || once,
+                margin,
+                amount: 0.1,
+            }}
             className={className}
             style={{
                 willChange: isComplete ? 'auto' : 'opacity, transform, filter',
