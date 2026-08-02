@@ -1,5 +1,6 @@
 @import 'tailwindcss';
 @import 'tw-animate-css';
+@import 'katex/dist/katex.min.css';
 @plugin "@tailwindcss/typography";
 
 html.lenis,
@@ -25,6 +26,30 @@ html.lenis body {
 
 @theme {
     --font-sfProDisplayBlack: 'SF Pro Display Black', serif;
+}
+
+@theme {
+    --font-instrument: 'Instrument Serif', serif;
+}
+
+@theme {
+    --font-better: 'Better VCR', serif;
+}
+
+@font-face {
+    font-family: 'Instrument Serif';
+    src: url('/fonts/InstrumentSerif-Regular.ttf') format('truetype');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Instrument Serif';
+    src: url('/fonts/InstrumentSerif-Italic.ttf') format('truetype');
+    font-weight: 400;
+    font-style: italic;
+    font-display: swap;
 }
 
 @font-face {
@@ -387,8 +412,8 @@ html.dark .shiki span {
 /* --- SLEEK HORIZONTAL-ONLY SCROLLBARS ---- */
 
 .glass-panel pre::-webkit-scrollbar {
-    height: 5px;  /* Slim horizontal scrollbar */
-    width: 0px;   /* Completely hide vertical scrollbars */
+    height: 5px; /* Slim horizontal scrollbar */
+    width: 0px; /* Completely hide vertical scrollbars */
 }
 
 .glass-panel pre::-webkit-scrollbar-track {

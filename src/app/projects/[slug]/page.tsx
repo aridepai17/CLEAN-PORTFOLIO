@@ -82,8 +82,10 @@ export default async function ProjectCaseStudyPage({
 
     return (
         <main className="font-sfProDisplayBlack">
-            {/* Viewport fixed tracker layer outside layouts */}
-            <FloatingToC selector=".prose h2, .prose h3" />
+            <FloatingToC
+                selector=".prose h2, .prose h3"
+                className="font-sfProDisplayBlack tracking-tight"
+            />
             <Container className="py-16">
                 <div className="space-y-16">
                     {/* Back button link zone */}
@@ -111,7 +113,7 @@ export default async function ProjectCaseStudyPage({
                     />
 
                     {/* Integrated next/prev modular navigation card tier */}
-                    <Reveal>
+                    <Reveal once={true}>
                         <ProjectNavigation
                             previous={navigation.previous}
                             next={navigation.next}

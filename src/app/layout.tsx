@@ -5,6 +5,7 @@ import Footer from '@/components/common/Footer';
 import LenisProvider from '@/components/common/LenisProvider';
 import Navbar from '@/components/common/Navbar';
 import { Quote } from '@/components/common/Quote';
+import { ScrollToTop } from '@/components/common/ScrollToTop';
 import { ThemeProvider } from '@/components/common/ThemeProviders';
 import { Toaster } from '@/components/ui/sonner';
 import { TooltipProvider } from '@/components/ui/tooltip';
@@ -31,6 +32,7 @@ export default function RootLayout({
                         disableTransitionOnChange
                     >
                         <LenisProvider>
+                            <ScrollToTop />
                             <Navbar />
                             <TooltipProvider delayDuration={0}>
                                 {children}

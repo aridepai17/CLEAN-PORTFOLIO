@@ -2,6 +2,7 @@
 
 import { motion, useReducedMotion } from 'motion/react';
 import type { Variants } from 'motion/react';
+import { useState } from 'react';
 
 interface RevealProps {
     children: React.ReactNode;
@@ -10,21 +11,24 @@ interface RevealProps {
     duration?: number;
     once?: boolean;
     margin?: string;
+    yOffset?: number;
 }
 
 export default function Reveal({
     children,
     className = '',
     delay = 0,
-    duration = 0.7,
+    duration = 0.6,
     once = false,
     margin = '-40px',
+    yOffset = 17,
 }: RevealProps) {
     const prefersReducedMotion = useReducedMotion();
+    const [isComplete, setIsComplete] = useState(false);
 
     const variants: Variants = prefersReducedMotion
         ? {
-              hidden: { opacity: 0 },
+              hidden: { opacity: 0.01 },
               visible: {
                   opacity: 1,
                   transition: { duration: Math.min(duration, 0.3), delay },
@@ -32,20 +36,22 @@ export default function Reveal({
           }
         : {
               hidden: {
-                  opacity: 0,
-                  y: 32,
+                  opacity: 0.01,
+                  y: yOffset,
+                  filter: 'blur(4px)',
                   transition: {
-                      duration: duration * 0.6, // exit settles faster than it enters
+                      duration: duration * 0.6,
                       ease: [0.4, 0, 1, 1],
                   },
               },
               visible: {
                   opacity: 1,
                   y: 0,
+                  filter: 'blur(0px)',
                   transition: {
                       duration,
                       delay,
-                      ease: [0.25, 0.46, 0.45, 0.94],
+                      ease: [0.21, 0.47, 0.32, 0.98],
                   },
               },
           };
@@ -55,8 +61,17 @@ export default function Reveal({
             variants={variants}
             initial="hidden"
             whileInView="visible"
-            viewport={{ once, margin, amount: 0.1 }}
+            viewport={{
+                once: prefersReducedMotion || once,
+                margin,
+                amount: 0.1,
+            }}
             className={className}
+            style={{
+                willChange: isComplete ? 'auto' : 'opacity, transform, filter',
+            }}
+            onAnimationStart={() => setIsComplete(false)}
+            onAnimationComplete={() => setIsComplete(true)}
         >
             {children}
         </motion.div>
