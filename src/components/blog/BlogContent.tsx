@@ -45,10 +45,9 @@ export function BlogContent({ frontmatter, content }: BlogContentProps) {
                         ))}
                     </div>
 
-                    <h1
-                        className="font-instrument text-4xl leading-tight font-normal tracking-tight lg:text-5xl"
-                        dangerouslySetInnerHTML={{ __html: title }}
-                    />
+                    <h1 className="font-instrument text-4xl leading-tight font-normal tracking-tight lg:text-5xl">
+                        {title}
+                    </h1>
 
                     <p className="text-muted-foreground legacy-serif-style text-xl italic">
                         {description}
