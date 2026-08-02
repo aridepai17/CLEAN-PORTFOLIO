@@ -2,6 +2,7 @@
 
 import { motion, useReducedMotion } from 'motion/react';
 import type { Variants } from 'motion/react';
+import { useState } from 'react';
 
 interface RevealProps {
     children: React.ReactNode;
@@ -23,6 +24,7 @@ export default function Reveal({
     yOffset = 17,
 }: RevealProps) {
     const prefersReducedMotion = useReducedMotion();
+    const [isComplete, setIsComplete] = useState(false);
 
     const variants: Variants = prefersReducedMotion
         ? {
@@ -61,7 +63,11 @@ export default function Reveal({
             whileInView="visible"
             viewport={{ once, margin, amount: 0.1 }}
             className={className}
-            style={{ willChange: 'opacity, transform, filter' }}
+            style={{
+                willChange: isComplete ? 'auto' : 'opacity, transform, filter',
+            }}
+            onAnimationStart={() => setIsComplete(false)}
+            onAnimationComplete={() => setIsComplete(true)}
         >
             {children}
         </motion.div>
