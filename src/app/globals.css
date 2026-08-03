@@ -433,7 +433,15 @@ html.dark .shiki span {
 .prose b {
     font-family: 'Instrument Serif', serif !important;
     font-weight: 400 !important;
-    -webkit-text-stroke: 0.6px currentColor;
+    text-shadow: 0.5px 0 0 currentColor;
     letter-spacing: 0.02em;
     color: var(--foreground);
+}
+
+@supports (-webkit-text-stroke: 0.6px currentColor) {
+    .prose strong,
+    .prose b {
+        text-shadow: none;
+        -webkit-text-stroke: 0.6px currentColor;
+    }
 }
