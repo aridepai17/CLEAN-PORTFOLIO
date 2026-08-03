@@ -2,7 +2,6 @@ import { BlogContent } from '@/components/blog/BlogContent';
 import { BlogList } from '@/components/blog/BlogList';
 import Container from '@/components/common/Container';
 import { FloatingToC } from '@/components/common/FloatingToC';
-import FontSizeControls from '@/components/common/FontSizeControls';
 import ArrowLeft from '@/components/svgs/ArrowLeft';
 import { buttonVariants } from '@/components/ui/button-variants';
 import { Separator } from '@/components/ui/separator';
@@ -121,7 +120,6 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
                     </div>
                 </div>
             </Container>
-            <FontSizeControls />
         </>
     );
 }
