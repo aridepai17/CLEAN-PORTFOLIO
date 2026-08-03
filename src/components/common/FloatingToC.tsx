@@ -276,6 +276,7 @@ export function FloatingToC({
                                             onClick={handleDecrease}
                                             disabled={fontSize <= 10}
                                             className="h-12 w-12 p-0"
+                                            aria-label="Decrease font size"
                                         >
                                             <Minus size={20} />
                                         </Button>
@@ -284,6 +285,7 @@ export function FloatingToC({
                                             size="lg"
                                             onClick={handleReset}
                                             className="hover:bg-accent h-12 px-4 font-mono text-sm whitespace-nowrap"
+                                            aria-label="Reset font size"
                                         >
                                             Reset
                                         </Button>
@@ -293,6 +295,7 @@ export function FloatingToC({
                                             onClick={handleIncrease}
                                             disabled={fontSize >= 32}
                                             className="h-12 w-12 p-0"
+                                            aria-label="Increase font size"
                                         >
                                             <Plus size={20} />
                                         </Button>
