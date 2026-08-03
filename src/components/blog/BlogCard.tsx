@@ -22,16 +22,18 @@ export function BlogCard({ post }: BlogCardProps) {
 
     const formattedDate = new Date(date).toLocaleDateString('en-US', {
         year: 'numeric',
-        month: 'long',
+        month: 'short',
         day: 'numeric',
     });
 
     return (
-        <Card className="group h-full w-full overflow-hidden border-gray-100 p-0 shadow-none transition-all dark:border-gray-800">
+        <Card className="group border-border/50 bg-card hover:border-border h-full w-full overflow-hidden rounded-xl border p-0 shadow-sm transition-all duration-300 hover:shadow-md">
             <CardHeader className="p-0">
                 <div className="relative aspect-video overflow-hidden">
                     <TrackedLink
                         href={`/blog/${slug}`}
+                        /* 💡 THE FIX: Make the link relative and block so the image can fill it */
+                        className="relative block h-full w-full"
                         track={{
                             name: 'button_click',
                             data: {
@@ -45,13 +47,13 @@ export function BlogCard({ post }: BlogCardProps) {
                             src={image}
                             alt={title}
                             fill
-                            className="object-cover"
+                            className="object-cover transition-transform duration-500 group-hover:scale-105"
                         />
                     </TrackedLink>
                 </div>
             </CardHeader>
-            <CardContent>
-                <div className="space-y-3">
+            <CardContent className="pt-6">
+                <div className="space-y-4">
                     <TrackedLink
                         href={`/blog/${slug}`}
                         track={{
@@ -63,43 +65,48 @@ export function BlogCard({ post }: BlogCardProps) {
                             },
                         }}
                     >
-                        <h3 className="group-hover:text-primary line-clamp-2 text-xl leading-tight font-semibold">
+                        <h3 className="font-instrument text-foreground group-hover:text-primary line-clamp-2 text-3xl leading-[1.1] font-normal tracking-tight transition-colors">
                             {title}
                         </h3>
                     </TrackedLink>
-                    <p className="text-secondary mt-4 line-clamp-3">
+                    <p className="text-muted-foreground line-clamp-2 text-sm leading-relaxed">
                         {description}
                     </p>
                 </div>
             </CardContent>
             <CardFooter className="p-6 pt-0">
-                <div className="flex w-full flex-col space-y-3">
+                <div className="flex w-full flex-col space-y-4">
                     <div className="flex flex-wrap gap-2">
                         {tags.slice(0, 3).map((tag) => (
                             <Badge
                                 key={tag}
                                 variant="secondary"
-                                className="text-xs"
+                                className="font-mono text-[10px] tracking-wider uppercase"
                             >
                                 {tag}
                             </Badge>
                         ))}
                         {tags.length > 3 && (
-                            <Badge variant="outline" className="text-xs">
-                                +{tags.length - 3} more
+                            <Badge
+                                variant="outline"
+                                className="font-mono text-[10px] tracking-wider uppercase"
+                            >
+                                +{tags.length - 3}
                             </Badge>
                         )}
                     </div>
-                    <div className="mt-4 flex items-center justify-between gap-2">
+
+                    <div className="border-border/50 flex items-center justify-between gap-2 border-t pt-4">
                         <time
-                            className="text-secondary flex items-center gap-2 text-sm"
+                            className="text-muted-foreground flex items-center gap-2 font-mono text-xs tracking-wider uppercase"
                             dateTime={date}
                         >
-                            <Calender className="size-4" /> {formattedDate}
+                            <Calender className="size-3.5" /> {formattedDate}
                         </time>
+
                         <TrackedLink
                             href={`/blog/${slug}`}
-                            className="text-secondary flex items-center justify-end gap-2 underline-offset-4 hover:underline"
+                            className="font-hanken-grotesk text-foreground group/link hover:text-primary flex items-center justify-end gap-1.5 text-sm font-semibold transition-colors"
                             track={{
                                 name: 'button_click',
                                 data: {
@@ -109,7 +116,8 @@ export function BlogCard({ post }: BlogCardProps) {
                                 },
                             }}
                         >
-                            Read More <ArrowRight className="size-4" />
+                            Read
+                            <ArrowRight className="size-3.5 transition-transform group-hover/link:translate-x-1" />
                         </TrackedLink>
                     </div>
                 </div>

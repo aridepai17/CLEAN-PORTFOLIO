@@ -33,7 +33,7 @@ html.lenis body {
 }
 
 @theme {
-    --font-better: 'Better VCR', serif;
+    --font-monoheavy: 'SF Mono Heavy', serif;
 }
 
 @font-face {
@@ -61,8 +61,8 @@ html.lenis body {
 }
 
 @font-face {
-    font-family: 'Better VCR';
-    src: url('/fonts/Better-VCR.ttf') format('truetype');
+    font-family: 'SF Mono Heavy';
+    src: url('/fonts/SFMonoHeavy.otf') format('opentype');
     font-weight: 400;
     font-style: normal;
     font-display: swap;
@@ -363,7 +363,7 @@ html.lenis body {
 .prose samp,
 .shiki,
 .shiki span {
-    font-family: 'Better VCR', monospace !important;
+    font-family: 'SF Mono Heavy', monospace !important;
 }
 
 html.dark .shiki,
@@ -427,4 +427,21 @@ html.dark .shiki span {
 
 .glass-panel pre::-webkit-scrollbar-thumb:hover {
     background: rgba(150, 150, 150, 0.5);
+}
+
+.prose strong,
+.prose b {
+    font-family: 'Instrument Serif', serif !important;
+    font-weight: 400 !important;
+    text-shadow: 0.5px 0 0 currentColor;
+    letter-spacing: 0.02em;
+    color: var(--foreground);
+}
+
+@supports (-webkit-text-stroke: 0.6px currentColor) {
+    .prose strong,
+    .prose b {
+        text-shadow: none;
+        -webkit-text-stroke: 0.6px currentColor;
+    }
 }

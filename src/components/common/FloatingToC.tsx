@@ -1,8 +1,21 @@
 'use client';
 
 import { getLenis } from '@/components/common/LenisProvider';
+import { useHapticFeedback } from '@/hooks/use-haptic-feedback';
+import { useUmami } from '@/hooks/use-umami';
 import { AnimatePresence, motion, useScroll, useSpring } from 'framer-motion';
+import { Minus, Plus, Type } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
+
+// Adjust these relative imports based on your exact folder structure
+import { Button } from '../ui/button';
+import {
+    Drawer,
+    DrawerContent,
+    DrawerHeader,
+    DrawerTitle,
+    DrawerTrigger,
+} from '../ui/drawer';
 
 interface Heading {
     id: string;
@@ -24,12 +37,68 @@ export function FloatingToC({
     const [isOpen, setIsOpen] = useState(false);
     const containerRef = useRef<HTMLDivElement>(null);
 
+    const [fontSize, setFontSize] = useState<number>(16);
+    const { triggerHaptic, isMobile } = useHapticFeedback();
+    const { trackEvent } = useUmami();
+
     const { scrollYProgress } = useScroll();
     const smoothProgress = useSpring(scrollYProgress, {
         stiffness: 100,
         damping: 50,
         restDelta: 0.001,
     });
+
+    useEffect(() => {
+        const savedFontSize = localStorage.getItem('blog-font-size');
+        if (savedFontSize) {
+            const size = parseInt(savedFontSize, 10);
+            setFontSize(size);
+            applyFontSize(size);
+        }
+    }, []);
+
+    const applyFontSize = (size: number) => {
+        if (typeof window !== 'undefined') {
+            document.documentElement.style.setProperty(
+                '--blog-font-size',
+                `${size}px`,
+            );
+        }
+    };
+
+    const updateFontSize = (newSize: number) => {
+        const clampedSize = Math.max(10, Math.min(32, newSize));
+        setFontSize(clampedSize);
+        applyFontSize(clampedSize);
+        localStorage.setItem('blog-font-size', clampedSize.toString());
+    };
+
+    const handleIncrease = () => {
+        if (isMobile()) triggerHaptic('light');
+        trackEvent({
+            name: 'button_click',
+            data: { buttonId: 'font_size_increase' },
+        });
+        updateFontSize(fontSize + 1);
+    };
+
+    const handleDecrease = () => {
+        if (isMobile()) triggerHaptic('light');
+        trackEvent({
+            name: 'button_click',
+            data: { buttonId: 'font_size_decrease' },
+        });
+        updateFontSize(fontSize - 1);
+    };
+
+    const handleReset = () => {
+        if (isMobile()) triggerHaptic('medium');
+        trackEvent({
+            name: 'button_click',
+            data: { buttonId: 'font_size_reset' },
+        });
+        updateFontSize(16);
+    };
 
     useEffect(() => {
         const elements = Array.from(document.querySelectorAll(selector));
@@ -60,7 +129,6 @@ export function FloatingToC({
         );
 
         elements.forEach((el) => observer.observe(el));
-
         return () => observer.disconnect();
     }, [selector]);
 
@@ -74,36 +142,23 @@ export function FloatingToC({
                 setIsOpen(false);
             }
         };
-
-        if (isOpen) {
-            document.addEventListener('mousedown', handleClickOutside);
-        }
-
-        return () => {
+        if (isOpen) document.addEventListener('mousedown', handleClickOutside);
+        return () =>
             document.removeEventListener('mousedown', handleClickOutside);
-        };
     }, [isOpen]);
 
     useEffect(() => {
         const lenis = getLenis();
         if (!lenis) return;
-
-        if (isOpen) {
-            lenis.stop();
-        } else {
-            lenis.start();
-        }
-
-        return () => {
-            lenis.start();
-        };
+        if (isOpen) lenis.stop();
+        else lenis.start();
+        return () => lenis.start();
     }, [isOpen]);
 
     const scrollToHeading = (id: string) => {
         const element = document.getElementById(id);
         if (element) {
             const lenis = getLenis();
-
             if (lenis) {
                 lenis.start();
                 lenis.scrollTo(element, { offset: -100, duration: 1.2 });
@@ -112,7 +167,6 @@ export function FloatingToC({
                     element.getBoundingClientRect().top + window.scrollY - 100;
                 window.scrollTo({ top: y, behavior: 'smooth' });
             }
-
             setIsOpen(false);
         }
     };
@@ -190,45 +244,106 @@ export function FloatingToC({
                     )}
                 </AnimatePresence>
 
-                <motion.button
+                <motion.div
                     layout
-                    onClick={() => setIsOpen(!isOpen)}
-                    className="group border-border/50 bg-background/95 hover:bg-muted/50 relative flex h-12 max-w-[calc(100vw-4rem)] items-center gap-3 overflow-hidden rounded-full border pr-16 pl-4 shadow-lg backdrop-blur-xl transition-colors"
+                    className="border-border/50 bg-background/95 relative flex h-12 max-w-[calc(100vw-2rem)] items-center overflow-hidden rounded-full border shadow-lg backdrop-blur-xl transition-colors"
                 >
-                    <div className="bg-foreground size-1.5 shrink-0 rounded-full" />
+                    <Drawer>
+                        <DrawerTrigger asChild>
+                            <button
+                                className="hover:bg-muted/50 flex h-full w-14 shrink-0 items-center justify-center rounded-l-full transition-colors focus:outline-none"
+                                aria-label="Text settings"
+                            >
+                                <Type size={16} className="text-foreground" />
+                            </button>
+                        </DrawerTrigger>
 
-                    <span className="overflow-hidden text-sm font-medium text-ellipsis whitespace-nowrap">
-                        {displayText}
-                    </span>
+                        <DrawerContent className="z-[60] max-h-[60vh]">
+                            <DrawerHeader className="text-center">
+                                <DrawerTitle>Typography</DrawerTitle>
+                            </DrawerHeader>
+                            <div className="px-4 pt-2 pb-10">
+                                <div className="flex flex-col items-center gap-6">
+                                    <div className="text-center">
+                                        <div className="text-foreground mb-2 font-mono text-3xl font-bold">
+                                            {fontSize}px
+                                        </div>
+                                    </div>
+                                    <div className="flex items-center gap-4">
+                                        <Button
+                                            variant="outline"
+                                            size="lg"
+                                            onClick={handleDecrease}
+                                            disabled={fontSize <= 10}
+                                            className="h-12 w-12 p-0"
+                                            aria-label="Decrease font size"
+                                        >
+                                            <Minus size={20} />
+                                        </Button>
+                                        <Button
+                                            variant="outline"
+                                            size="lg"
+                                            onClick={handleReset}
+                                            className="hover:bg-accent h-12 px-4 font-mono text-sm whitespace-nowrap"
+                                            aria-label="Reset font size"
+                                        >
+                                            Reset
+                                        </Button>
+                                        <Button
+                                            variant="outline"
+                                            size="lg"
+                                            onClick={handleIncrease}
+                                            disabled={fontSize >= 32}
+                                            className="h-12 w-12 p-0"
+                                            aria-label="Increase font size"
+                                        >
+                                            <Plus size={20} />
+                                        </Button>
+                                    </div>
+                                </div>
+                            </div>
+                        </DrawerContent>
+                    </Drawer>
 
-                    <div className="absolute right-2 flex size-10 items-center justify-center">
-                        <svg
-                            className="size-8 -rotate-90 overflow-visible"
-                            viewBox="0 0 100 100"
-                        >
-                            <circle
-                                cx="50"
-                                cy="50"
-                                r="38"
-                                fill="transparent"
-                                stroke="currentColor"
-                                strokeWidth="14"
-                                className="text-muted/30"
-                            />
-                            <motion.circle
-                                cx="50"
-                                cy="50"
-                                r="38"
-                                fill="transparent"
-                                stroke="currentColor"
-                                strokeWidth="14"
-                                className="text-foreground"
-                                strokeLinecap="round"
-                                style={{ pathLength: smoothProgress }}
-                            />
-                        </svg>
-                    </div>
-                </motion.button>
+                    <div className="bg-border/50 h-5 w-px shrink-0" />
+
+                    <button
+                        onClick={() => setIsOpen(!isOpen)}
+                        className="hover:bg-muted/50 relative flex h-full flex-1 items-center overflow-hidden rounded-r-full pr-14 pl-4 text-left transition-colors focus:outline-none"
+                    >
+                        <span className="overflow-hidden text-sm font-medium text-ellipsis whitespace-nowrap">
+                            {displayText}
+                        </span>
+
+                        <div className="absolute right-1.5 flex size-9 items-center justify-center">
+                            <svg
+                                className="size-8 -rotate-90 overflow-visible"
+                                viewBox="0 0 100 100"
+                            >
+                                <circle
+                                    cx="50"
+                                    cy="50"
+                                    r="38"
+                                    fill="transparent"
+                                    stroke="currentColor"
+                                    strokeWidth="14"
+                                    className="text-muted/30"
+                                />
+                                <motion.circle
+                                    cx="50"
+                                    cy="50"
+                                    r="38"
+                                    fill="transparent"
+                                    stroke="currentColor"
+                                    strokeWidth="14"
+                                    className="text-foreground"
+                                    strokeLinecap="round"
+                                    style={{ pathLength: smoothProgress }}
+                                />
+                            </svg>
+                        </div>
+                    </button>
+                </motion.div>
             </div>
         </>
     );

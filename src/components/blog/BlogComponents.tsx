@@ -266,7 +266,7 @@ export const BlogComponents = {
         <Reveal>
             <div className="not-prose border-border/50 bg-background/60 [&::-webkit-scrollbar-thumb]:bg-muted-foreground/20 hover:[&::-webkit-scrollbar-thumb]:bg-muted-foreground/40 my-6 w-full [scrollbar-width:thin] overflow-x-auto rounded-xl border shadow-sm backdrop-blur-md md:my-8 [&::-webkit-scrollbar]:h-2 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:bg-transparent">
                 <table
-                    className="font-better w-full border-collapse text-left text-sm md:text-base"
+                    className="font-monoheavy w-full border-collapse text-left text-sm md:text-base"
                     {...props}
                 >
                     {children}
@@ -283,7 +283,7 @@ export const BlogComponents = {
         [key: string]: unknown;
     }) => (
         <thead
-            className="font-better border-border/50 bg-muted/50 border-b"
+            className="font-monoheavy border-border/50 bg-muted/50 border-b"
             {...props}
         >
             {children}
@@ -337,7 +337,7 @@ export const BlogComponents = {
         [key: string]: unknown;
     }) => (
         <td
-            className="font-better text-foreground/90 min-w-[150px] px-4 py-3 leading-relaxed md:px-6 md:py-4"
+            className="font-monoheavy text-foreground/90 min-w-[150px] px-4 py-3 leading-relaxed md:px-6 md:py-4"
             {...props}
         >
             {children}
