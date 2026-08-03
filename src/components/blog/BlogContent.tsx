@@ -30,6 +30,8 @@ export function BlogContent({ frontmatter, content }: BlogContentProps) {
                     <img
                         src={image}
                         alt={title}
+                        width={1920}
+                        height={1080}
                         className="h-auto w-full object-contain"
                     />
                 </div>
