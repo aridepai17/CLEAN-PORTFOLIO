@@ -20,7 +20,7 @@ export default function Reveal({
     delay = 0,
     duration = 0.6,
     once = false,
-    margin = '-40px',
+    margin = '0px 0px -100px 0px',
     yOffset = 17,
 }: RevealProps) {
     const prefersReducedMotion = useReducedMotion();
@@ -64,7 +64,7 @@ export default function Reveal({
             viewport={{
                 once: prefersReducedMotion || once,
                 margin,
-                amount: 0.1,
+                amount: 0.05,
             }}
             className={className}
             style={{
