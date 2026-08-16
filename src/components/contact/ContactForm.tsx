@@ -2,13 +2,6 @@
 
 import { Button } from '@/components/ui/button';
 import {
-    Card,
-    CardContent,
-    CardDescription,
-    CardHeader,
-    CardTitle,
-} from '@/components/ui/card';
-import {
     Form,
     FormControl,
     FormField,
@@ -93,112 +86,124 @@ export default function ContactForm() {
     };
 
     return (
-        <Card className="rounded-md border border-dashed border-black/20 bg-white/80 py-8 backdrop-blur-sm dark:border-white/10 dark:bg-black/60">
-            <CardHeader>
-                <CardTitle>Send me a message</CardTitle>
-                <CardDescription>
+        <div className="glass-panel p-6 md:p-10">
+            <div className="mb-8 space-y-3">
+                <h3 className="font-display text-foreground text-4xl font-normal tracking-tight md:text-5xl">
+                    Send me a message
+                </h3>
+                <p className="text-muted-foreground font-sans text-base md:text-lg">
                     Fill out the form below and I will get back to you as soon
                     as possible.
-                </CardDescription>
-            </CardHeader>
-            <CardContent>
-                <Form {...form}>
-                    <form
-                        onSubmit={form.handleSubmit(onSubmit)}
-                        className="space-y-6"
-                    >
-                        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
-                            <FormField
-                                control={form.control}
-                                name="name"
-                                render={({ field }) => (
-                                    <FormItem>
-                                        <FormLabel>Name *</FormLabel>
-                                        <FormControl>
-                                            <Input
-                                                placeholder="Your full name"
-                                                {...field}
-                                            />
-                                        </FormControl>
-                                        <FormMessage />
-                                    </FormItem>
-                                )}
-                            />
-                            <FormField
-                                control={form.control}
-                                name="phone"
-                                render={({ field }) => (
-                                    <FormItem>
-                                        <FormLabel>Phone *</FormLabel>
-                                        <FormControl>
-                                            <Input
-                                                placeholder="+1 (123) xxx-xxxx"
-                                                type="tel"
-                                                {...field}
-                                            />
-                                        </FormControl>
-                                        <FormMessage />
-                                    </FormItem>
-                                )}
-                            />
-                        </div>
+                </p>
+            </div>
 
+            <Form {...form}>
+                <form
+                    onSubmit={form.handleSubmit(onSubmit)}
+                    className="space-y-6"
+                >
+                    <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
                         <FormField
                             control={form.control}
-                            name="email"
+                            name="name"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>Email *</FormLabel>
+                                    <FormLabel className="text-muted-foreground font-sans text-xs font-semibold tracking-wider uppercase">
+                                        Name *
+                                    </FormLabel>
                                     <FormControl>
                                         <Input
-                                            placeholder="your.email@example.com"
-                                            type="email"
+                                            className="bg-background/50 focus:bg-background h-11 font-sans transition-colors"
+                                            placeholder="Your full name"
                                             {...field}
                                         />
                                     </FormControl>
-                                    <FormMessage />
+                                    <FormMessage className="font-sans text-xs" />
                                 </FormItem>
                             )}
                         />
-
                         <FormField
                             control={form.control}
-                            name="message"
+                            name="phone"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>Message *</FormLabel>
+                                    <FormLabel className="text-muted-foreground font-sans text-xs font-semibold tracking-wider uppercase">
+                                        Phone *
+                                    </FormLabel>
                                     <FormControl>
-                                        <Textarea
-                                            placeholder="Tell me about your project or just say hello..."
-                                            className="min-h-30 resize-none"
+                                        <Input
+                                            className="bg-background/50 focus:bg-background h-11 font-sans transition-colors"
+                                            placeholder="+1 (123) xxx-xxxx"
+                                            type="tel"
                                             {...field}
                                         />
                                     </FormControl>
-                                    <FormMessage />
+                                    <FormMessage className="font-sans text-xs" />
                                 </FormItem>
                             )}
                         />
+                    </div>
 
-                        <Button
-                            type="submit"
-                            className="w-fit"
-                            disabled={isSubmitting}
-                        >
-                            {isSubmitting ? (
-                                <>
-                                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                                    Sending your message...
-                                </>
-                            ) : (
-                                <>
-                                    <Chat className="mr-2 h-4 w-4" />
-                                    Send Message
-                                </>
-                            )}
-                        </Button>
-                    </form>
-                </Form>
-            </CardContent>
-        </Card>
+                    <FormField
+                        control={form.control}
+                        name="email"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel className="text-muted-foreground font-sans text-xs font-semibold tracking-wider uppercase">
+                                    Email *
+                                </FormLabel>
+                                <FormControl>
+                                    <Input
+                                        className="bg-background/50 focus:bg-background h-11 font-sans transition-colors"
+                                        placeholder="your.email@example.com"
+                                        type="email"
+                                        {...field}
+                                    />
+                                </FormControl>
+                                <FormMessage className="font-sans text-xs" />
+                            </FormItem>
+                        )}
+                    />
+
+                    <FormField
+                        control={form.control}
+                        name="message"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel className="text-muted-foreground font-sans text-xs font-semibold tracking-wider uppercase">
+                                    Message *
+                                </FormLabel>
+                                <FormControl>
+                                    <Textarea
+                                        placeholder="Tell me about your project or just say hello..."
+                                        className="bg-background/50 focus:bg-background min-h-32 resize-none font-sans transition-colors"
+                                        {...field}
+                                    />
+                                </FormControl>
+                                <FormMessage className="font-sans text-xs" />
+                            </FormItem>
+                        )}
+                    />
+
+                    <Button
+                        type="submit"
+                        className="w-fit font-sans font-semibold"
+                        disabled={isSubmitting}
+                    >
+                        {isSubmitting ? (
+                            <>
+                                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                                Sending your message...
+                            </>
+                        ) : (
+                            <>
+                                <Chat className="mr-2 h-4 w-4" />
+                                Send Message
+                            </>
+                        )}
+                    </Button>
+                </form>
+            </Form>
+        </div>
     );
 }

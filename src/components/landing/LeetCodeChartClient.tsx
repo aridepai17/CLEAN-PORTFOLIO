@@ -1,6 +1,5 @@
 'use client';
 
-import { sfProRounded } from '@/lib/fonts';
 import { useEffect, useState } from 'react';
 
 interface LeetCodeChartClientProps {
@@ -161,7 +160,8 @@ export default function LeetCodeChartClient({
                                     r="38"
                                     fill="transparent"
                                     stroke="currentColor"
-                                    className={`cursor-pointer ${textClass} transition-all duration-500 ease-out ${
+                                    /* 💡 Removed cursor-pointer and hover/click events here */
+                                    className={`${textClass} transition-all duration-500 ease-out ${
                                         isDimmed ? 'opacity-30' : 'opacity-100'
                                     }`}
                                     strokeWidth={isFocused ? '20' : '16'}
@@ -172,9 +172,6 @@ export default function LeetCodeChartClient({
                                     }
                                     strokeDashoffset={offset}
                                     pathLength="100"
-                                    onMouseEnter={() => setHovered(level)}
-                                    onMouseLeave={() => setHovered(null)}
-                                    onClick={() => handleCardInteraction(level)}
                                 />
                             );
                         },
@@ -183,16 +180,14 @@ export default function LeetCodeChartClient({
 
                 {/* Center Text Overlay */}
                 <div className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center px-4 text-center">
-                    <span
-                        className={`${sfProRounded.className} text-foreground text-3xl tracking-tight transition-all duration-300 sm:text-4xl`}
-                    >
+                    <span className="font-display text-foreground text-4xl font-normal tracking-tight transition-all duration-300 sm:text-5xl">
                         {displayCount.toLocaleString()}
                     </span>
-                    <span className="text-muted-foreground mt-0.5 text-xs font-semibold tracking-wider uppercase sm:text-sm">
+                    <span className="text-muted-foreground mt-1 font-sans text-xs font-semibold tracking-wider uppercase sm:text-sm">
                         {displayLabel}
                     </span>
                     {activeState && (
-                        <span className="text-muted-foreground animate-fade-in mt-0.5 font-mono text-xs">
+                        <span className="text-muted-foreground animate-fade-in mt-1 font-sans text-xs font-medium">
                             {displayPct}% of profile
                         </span>
                     )}
@@ -244,19 +239,15 @@ export default function LeetCodeChartClient({
                                 <div
                                     className={`h-4 w-4 rounded-full ${config.bgClass} shadow-md ${config.dotShadow}`}
                                 />
-                                <span
-                                    className={`${sfProRounded.className} text-base`}
-                                >
+                                <span className="font-sans text-base font-medium">
                                     {level}
                                 </span>
                             </div>
                             <div className="text-right">
-                                <span
-                                    className={`${sfProRounded.className} text-base font-bold`}
-                                >
+                                <span className="font-sans text-lg font-bold">
                                     {count.toLocaleString()}
                                 </span>
-                                <span className="text-muted-foreground ml-2.5 text-sm font-medium">
+                                <span className="text-muted-foreground ml-2.5 font-sans text-sm font-medium">
                                     ({Math.round(pct)}%)
                                 </span>
                             </div>

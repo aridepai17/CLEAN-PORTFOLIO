@@ -42,7 +42,7 @@ export const experiences: Experience[] = [
         ],
         startDate: 'Sept 2025',
         endDate: 'Oct 2025',
-        website: 'https://www.npol.drdo.gov.in/',
+        website: 'https://drdo.gov.in/drdo/en/',
         technologies: [
             {
                 name: 'Python',

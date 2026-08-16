@@ -53,12 +53,12 @@ export function ProjectCard({ project }: ProjectCardProps) {
         });
 
     return (
-        <Card className="group h-full w-full overflow-hidden border-gray-100 p-0 shadow-none transition-all dark:border-gray-800">
+        <Card className="group border-border/50 bg-card hover:border-border h-full w-full overflow-hidden rounded-xl border p-0 shadow-sm transition-all duration-300 hover:shadow-md">
             <CardHeader className="p-0">
                 <div className="group bg-muted relative aspect-video overflow-hidden">
                     <Image
                         className={cn(
-                            'h-full w-full object-cover transition-all duration-700 ease-in-out',
+                            'h-full w-full object-cover transition-all duration-700 ease-in-out group-hover:scale-105',
                             isImageLoaded
                                 ? 'blur-0 scale-100 grayscale-0'
                                 : 'scale-105 blur-xl grayscale',
@@ -112,7 +112,7 @@ export function ProjectCard({ project }: ProjectCardProps) {
                             onClick={() => trackProject('view_details')}
                             className="focus-visible:ring-primary min-w-0 rounded-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-black"
                         >
-                            <h3 className="group-hover:text-primary text-xl leading-tight font-semibold transition-colors hover:cursor-pointer">
+                            <h3 className="font-display text-foreground group-hover:text-primary text-3xl leading-tight font-normal transition-colors hover:cursor-pointer">
                                 {project.title}
                             </h3>
                         </Link>
@@ -158,12 +158,12 @@ export function ProjectCard({ project }: ProjectCardProps) {
                         </div>
                     </div>
 
-                    <p className="text-secondary line-clamp-3 text-sm">
+                    <p className="text-muted-foreground line-clamp-3 text-sm leading-relaxed">
                         {project.description}
                     </p>
 
-                    <div>
-                        <h4 className="text-secondary mb-2 text-sm font-medium">
+                    <div className="pt-2">
+                        <h4 className="text-muted-foreground mb-3 font-sans text-xs font-semibold tracking-wider uppercase">
                             Technologies
                         </h4>
                         <div className="flex flex-wrap gap-2">
@@ -175,7 +175,9 @@ export function ProjectCard({ project }: ProjectCardProps) {
                                         </div>
                                     </TooltipTrigger>
                                     <TooltipContent>
-                                        <p>{technology.name}</p>
+                                        <p className="font-sans text-xs font-medium">
+                                            {technology.name}
+                                        </p>
                                     </TooltipContent>
                                 </Tooltip>
                             ))}
@@ -185,10 +187,10 @@ export function ProjectCard({ project }: ProjectCardProps) {
             </CardContent>
 
             {project.details && (
-                <CardFooter className="flex justify-between p-6 pt-0">
+                <CardFooter className="flex items-center justify-between p-6 pt-4">
                     <div
                         className={cn(
-                            'flex items-center gap-1.5 rounded-md border px-2 py-1 text-xs',
+                            'flex items-center gap-1.5 rounded-md border px-2 py-1 font-sans text-[11px] font-semibold tracking-wide uppercase',
                             project.isWorking
                                 ? 'border-green-300/50 bg-green-500/10 text-green-600 dark:text-green-400'
                                 : 'border-red-300/50 bg-red-500/10 text-red-600 dark:text-red-400',
@@ -196,22 +198,21 @@ export function ProjectCard({ project }: ProjectCardProps) {
                     >
                         <div
                             className={cn(
-                                'size-2 animate-pulse rounded-full',
+                                'size-1.5 animate-pulse rounded-full',
                                 project.isWorking
                                     ? 'bg-green-500'
                                     : 'bg-red-500',
                             )}
                         />
-                        {project.isWorking
-                            ? 'All Systems Operational'
-                            : 'Building'}
+                        {project.isWorking ? 'Operational' : 'Building'}
                     </div>
                     <Link
                         href={project.projectDetailsPageSlug}
-                        className="text-secondary hover:text-primary focus-visible:ring-primary flex items-center gap-2 rounded-sm text-sm underline-offset-4 transition-colors hover:underline focus:outline-none focus-visible:ring-2"
+                        className="text-foreground group/link hover:text-primary flex items-center gap-1.5 font-sans text-sm font-semibold transition-colors focus:outline-none"
                         onClick={() => trackProject('view_details')}
                     >
-                        View Details <ArrowRight className="size-4" />
+                        View Details
+                        <ArrowRight className="size-3.5 transition-transform group-hover/link:translate-x-1" />
                     </Link>
                 </CardFooter>
             )}

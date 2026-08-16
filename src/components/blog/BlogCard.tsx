@@ -65,7 +65,7 @@ export function BlogCard({ post }: BlogCardProps) {
                             },
                         }}
                     >
-                        <h3 className="font-instrument text-foreground group-hover:text-primary line-clamp-2 text-3xl leading-[1.1] font-normal tracking-tight transition-colors">
+                        <h3 className="font-display text-foreground group-hover:text-primary line-clamp-2 text-3xl leading-[1.1] font-normal tracking-tight transition-colors">
                             {title}
                         </h3>
                     </TrackedLink>
@@ -81,7 +81,7 @@ export function BlogCard({ post }: BlogCardProps) {
                             <Badge
                                 key={tag}
                                 variant="secondary"
-                                className="font-mono text-[10px] tracking-wider uppercase"
+                                className="font-sans text-[10px] tracking-wider uppercase"
                             >
                                 {tag}
                             </Badge>
@@ -89,7 +89,7 @@ export function BlogCard({ post }: BlogCardProps) {
                         {tags.length > 3 && (
                             <Badge
                                 variant="outline"
-                                className="font-mono text-[10px] tracking-wider uppercase"
+                                className="font-sans text-[10px] tracking-wider uppercase"
                             >
                                 +{tags.length - 3}
                             </Badge>
@@ -98,7 +98,7 @@ export function BlogCard({ post }: BlogCardProps) {
 
                     <div className="border-border/50 flex items-center justify-between gap-2 border-t pt-4">
                         <time
-                            className="text-muted-foreground flex items-center gap-2 font-mono text-xs tracking-wider uppercase"
+                            className="text-muted-foreground flex items-center gap-2 font-sans text-xs tracking-wider uppercase"
                             dateTime={date}
                         >
                             <Calender className="size-3.5" /> {formattedDate}
@@ -106,7 +106,7 @@ export function BlogCard({ post }: BlogCardProps) {
 
                         <TrackedLink
                             href={`/blog/${slug}`}
-                            className="font-hanken-grotesk text-foreground group/link hover:text-primary flex items-center justify-end gap-1.5 text-sm font-semibold transition-colors"
+                            className="text-foreground group/link hover:text-primary flex items-center justify-end gap-1.5 font-sans text-sm font-semibold transition-colors"
                             track={{
                                 name: 'button_click',
                                 data: {

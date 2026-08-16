@@ -10,11 +10,15 @@ interface BlogListProps {
 export function BlogList({ posts, className = '' }: BlogListProps) {
     if (posts.length === 0) {
         return (
-            <div className="flex min-h-100 flex-col items-center justify-center space-y-4 text-center">
-                <h2 className="text-2xl font-semibold">No blog posts found</h2>
-                <p className="text-muted-foreground">
-                    Check back later for new content!
-                </p>
+            <div className="glass-panel flex min-h-[40vh] flex-col items-center justify-center p-8 text-center md:p-12">
+                <div className="space-y-3">
+                    <h2 className="font-display text-foreground text-3xl font-normal tracking-tight md:text-4xl">
+                        No blog posts found
+                    </h2>
+                    <p className="text-muted-foreground font-sans text-base md:text-lg">
+                        Check back later for new content!
+                    </p>
+                </div>
             </div>
         );
     }

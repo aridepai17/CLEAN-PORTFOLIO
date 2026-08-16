@@ -36,10 +36,10 @@ export function ProjectNavigation({ previous, next }: ProjectNavigationProps) {
                             <div className="flex items-center gap-4">
                                 <ArrowLeft className="text-muted-foreground size-5 transition-transform group-hover:-translate-x-1" />
                                 <div>
-                                    <div className="text-muted-foreground mb-1 text-xs font-semibold tracking-widest uppercase">
+                                    <div className="text-muted-foreground mb-1 font-sans text-xs font-semibold tracking-wider uppercase">
                                         Previous
                                     </div>
-                                    <div className="font-sfProDisplayBlack text-lg tracking-tight">
+                                    <div className="font-display text-2xl font-normal tracking-tight">
                                         {previous.title}
                                     </div>
                                 </div>
@@ -65,10 +65,10 @@ export function ProjectNavigation({ previous, next }: ProjectNavigationProps) {
                         >
                             <div className="flex items-center gap-4">
                                 <div>
-                                    <div className="text-muted-foreground mb-1 text-xs font-semibold tracking-widest uppercase">
+                                    <div className="text-muted-foreground mb-1 font-sans text-xs font-semibold tracking-wider uppercase">
                                         Next
                                     </div>
-                                    <div className="font-sfProDisplayBlack text-lg tracking-tight">
+                                    <div className="font-display text-2xl font-normal tracking-tight">
                                         {next.title}
                                     </div>
                                 </div>

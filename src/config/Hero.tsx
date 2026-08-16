@@ -12,6 +12,7 @@ import Python from '@/components/technologies/Python';
 import React from '@/components/technologies/ReactIcon';
 import Supabase from '@/components/technologies/Supabase';
 import TailwindCSS from '@/components/technologies/Tailwindcss';
+import TensorFlow from '@/components/technologies/TensorFlow';
 import TypeScript from '@/components/technologies/TypeScript';
 import Vercel from '@/components/technologies/Vercel';
 
@@ -48,6 +49,7 @@ export const skillComponents = {
     Vercel,
     Supabase,
     GSAP,
+    TensorFlow,
 };
 
 export const heroConfig: HeroConfig = {
@@ -116,11 +118,16 @@ export const heroConfig: HeroConfig = {
             href: 'https://gsap.com/',
             component: 'GSAP',
         },
+        {
+            name: 'TensorFlow',
+            href: 'https://www.tensorflow.org/',
+            component: 'TensorFlow',
+        },
     ],
 
     description: {
         template:
-            "I'm a Software Engineer who builds AI-powered, full-stack applications with {skills:0}, {skills:1}, {skills:7}, {skills:8}, and {skills:9}",
+            "I'm a Software Engineer who builds AI-powered, full-stack applications with {skills:0}, {skills:12}, {skills:7}, {skills:8} and {skills:1} ",
     },
 
     buttons: [
