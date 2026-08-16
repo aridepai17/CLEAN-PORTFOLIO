@@ -23,48 +23,54 @@ export function BlogContent({ frontmatter, content }: BlogContentProps) {
     });
 
     return (
-        <article className="font-instrument mx-auto max-w-4xl">
-            <header className="mb-12 space-y-8">
-                <div className="border-border/50 w-full overflow-hidden rounded-lg border">
+        <article className="mx-auto max-w-4xl font-sans">
+            <header className="mb-12 space-y-8 md:mb-16 md:space-y-10">
+                {/* Hero Image Container */}
+                <div className="border-border/50 w-full overflow-hidden rounded-xl border shadow-sm">
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img
                         src={image}
                         alt={title}
                         width={1920}
                         height={1080}
-                        className="h-auto w-full object-contain"
+                        className="h-auto w-full object-cover"
                     />
                 </div>
 
-                <div className="space-y-6">
+                <div className="space-y-6 md:space-y-8">
+                    {/* Tags */}
                     <div className="flex flex-wrap gap-2">
                         {tags.map((tag) => (
                             <Badge
                                 key={tag}
                                 variant="secondary"
-                                className="font-mono text-xs tracking-wider uppercase"
+                                className="font-sans text-xs font-semibold tracking-wider uppercase"
                             >
                                 {tag}
                             </Badge>
                         ))}
                     </div>
 
-                    <h1 className="font-instrument text-foreground text-5xl leading-[1.1] font-normal tracking-tight lg:text-7xl">
+                    {/* Main Title */}
+                    <h1 className="font-display text-foreground text-5xl leading-[1.1] font-normal tracking-tight lg:text-7xl">
                         {title}
                     </h1>
 
-                    <p className="font-instrument text-muted-foreground text-xl leading-relaxed italic lg:text-2xl">
+                    {/* Subtitle / Description */}
+                    <p className="text-muted-foreground text-xl leading-relaxed md:text-2xl">
                         {description}
                     </p>
 
-                    <div className="text-muted-foreground flex items-center gap-2 font-mono text-sm tracking-wider uppercase">
-                        <Calender className="size-4" />
+                    {/* Date Metadata */}
+                    <div className="text-muted-foreground flex items-center gap-2 font-sans text-sm font-semibold tracking-wider uppercase">
+                        <Calender className="size-4 shrink-0" />
                         <time dateTime={date}>{formattedDate}</time>
                     </div>
                 </div>
             </header>
 
-            <div className="prose prose-neutral dark:prose-invert prose-lg font-instrument prose-p:text-foreground/80 prose-p:leading-[1.8] prose-headings:font-instrument prose-headings:font-bold prose-h2:tracking-normal prose-h2:text-4xl prose-h2:mt-12 prose-h3:text-3xl prose-blockquote:font-instrument prose-blockquote:text-xl prose-blockquote:italic prose-li:leading-[1.8] prose-strong:font-semibold prose-strong:text-foreground max-w-none">
+            {/* MDX Body - Delegating specific typography rules to BlogComponents.tsx */}
+            <div className="prose prose-neutral dark:prose-invert prose-lg max-w-none">
                 <MDXRemote
                     source={content}
                     components={BlogComponents}
