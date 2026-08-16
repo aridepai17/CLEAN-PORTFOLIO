@@ -26,6 +26,8 @@ const Math = ({
 
 export const BlogComponents = {
     Math,
+
+    // 💡 Styled as a framed figure with captions
     img: ({
         src,
         alt,
@@ -36,14 +38,23 @@ export const BlogComponents = {
         [key: string]: unknown;
     }) => (
         <Reveal>
-            <Image
-                alt={alt}
-                className="my-6 h-auto w-full rounded-lg object-cover md:my-8"
-                height={400}
-                src={src}
-                width={800}
-                {...props}
-            />
+            <figure className="border-border/50 bg-muted/10 my-10 overflow-hidden rounded-xl border shadow-sm">
+                <div className="relative w-full">
+                    <Image
+                        alt={alt || 'Blog image'}
+                        className="h-auto w-full object-cover"
+                        height={600}
+                        src={src}
+                        width={1200}
+                        {...props}
+                    />
+                </div>
+                {alt && (
+                    <figcaption className="border-border/50 text-muted-foreground border-t p-3 text-center text-sm font-medium">
+                        {alt}
+                    </figcaption>
+                )}
+            </figure>
         </Reveal>
     ),
 
@@ -56,7 +67,7 @@ export const BlogComponents = {
     }) => (
         <Reveal>
             <h2
-                className="mt-8 mb-4 text-2xl font-bold tracking-tight md:mt-12 md:mb-6 md:text-3xl"
+                className="font-display mt-12 mb-6 text-3xl font-normal tracking-tight md:text-4xl"
                 {...props}
             >
                 {children}
@@ -73,7 +84,7 @@ export const BlogComponents = {
     }) => (
         <Reveal>
             <h3
-                className="mt-6 mb-3 text-xl font-normal tracking-tight md:mt-8 md:mb-4 md:text-2xl"
+                className="font-display mt-8 mb-4 text-2xl font-normal tracking-tight md:text-3xl"
                 {...props}
             >
                 {children}
@@ -90,7 +101,7 @@ export const BlogComponents = {
     }) => (
         <Reveal>
             <p
-                className="text-muted-foreground mb-5 leading-relaxed md:mb-6"
+                className="text-muted-foreground mb-6 leading-relaxed"
                 {...props}
             >
                 {children}
@@ -108,7 +119,7 @@ export const BlogComponents = {
         [key: string]: unknown;
     }) => (
         <a
-            className="text-primary underline-offset-4 hover:underline"
+            className="text-foreground hover:text-primary decoration-primary/50 hover:decoration-primary underline underline-offset-4 transition-colors"
             href={href}
             target={href?.startsWith('http') ? '_blank' : undefined}
             rel={href?.startsWith('http') ? 'noopener noreferrer' : undefined}
@@ -126,10 +137,7 @@ export const BlogComponents = {
         [key: string]: unknown;
     }) => (
         <Reveal>
-            <ul
-                className="mb-5 ml-4 list-disc space-y-2 md:mb-6 md:ml-6"
-                {...props}
-            >
+            <ul className="mb-6 ml-6 list-disc space-y-2" {...props}>
                 {children}
             </ul>
         </Reveal>
@@ -143,10 +151,7 @@ export const BlogComponents = {
         [key: string]: unknown;
     }) => (
         <Reveal>
-            <ol
-                className="mb-5 ml-4 list-decimal space-y-2 md:mb-6 md:ml-6"
-                {...props}
-            >
+            <ol className="mb-6 ml-6 list-decimal space-y-2" {...props}>
                 {children}
             </ol>
         </Reveal>
@@ -191,14 +196,14 @@ export const BlogComponents = {
 
         return (
             <Reveal>
-                <div className="not-prose group md:glass-panel border-border/30 md:border-border/50 bg-background/30 md:bg-background/50 text-foreground relative my-6 overflow-hidden rounded-xl border backdrop-blur-sm md:my-8">
+                <div className="not-prose group glass-panel relative my-8 overflow-hidden">
                     <pre
-                        className="[&::-webkit-scrollbar-thumb]:bg-muted-foreground/20 hover:[&::-webkit-scrollbar-thumb]:bg-muted-foreground/40 !m-0 max-h-[50vh] [scrollbar-width:thin] overflow-x-auto overflow-y-auto !bg-transparent !p-5 font-mono text-sm leading-relaxed transition-colors md:max-h-[70vh] md:!p-8 [&::-webkit-scrollbar]:h-2 [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:bg-transparent"
+                        className="[&::-webkit-scrollbar-thumb]:bg-muted-foreground/20 hover:[&::-webkit-scrollbar-thumb]:bg-muted-foreground/40 !m-0 max-h-[60vh] [scrollbar-width:thin] overflow-x-auto overflow-y-auto !bg-transparent !p-6 font-mono text-sm leading-relaxed transition-colors md:max-h-[70vh] md:!p-8 [&::-webkit-scrollbar]:h-2 [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:bg-transparent"
                         {...props}
                     >
                         {children}
                     </pre>
-                    <div className="absolute top-5 right-5 z-20 opacity-100 transition-opacity md:top-8 md:right-8 md:opacity-0 md:group-hover:opacity-100">
+                    <div className="absolute top-4 right-4 z-20 opacity-100 transition-opacity md:top-6 md:right-6 md:opacity-0 md:group-hover:opacity-100">
                         <div className="bg-background/80 border-border/50 hover:bg-background rounded-md border shadow-sm backdrop-blur-md transition-colors">
                             <CodeCopyButton code={codeText} />
                         </div>
@@ -228,10 +233,10 @@ export const BlogComponents = {
             );
         }
 
-        // This handles simple inline code (`like this`)
+        // Handles simple inline code (`like this`)
         return (
             <code
-                className="bg-muted text-foreground rounded-md px-1.5 py-0.5 font-mono text-[0.875em] font-medium break-words"
+                className="bg-muted text-foreground rounded px-1.5 py-0.5 font-mono text-[0.875em] font-medium break-words"
                 {...props}
             >
                 {children}
@@ -248,7 +253,7 @@ export const BlogComponents = {
     }) => (
         <Reveal>
             <blockquote
-                className="border-primary bg-muted/20 text-muted-foreground my-6 rounded-r-lg border-l-4 p-4 italic md:my-8 md:p-6"
+                className="border-primary/50 text-foreground/90 bg-muted/20 my-8 border-l-4 py-4 pr-4 pl-6 italic"
                 {...props}
             >
                 {children}
@@ -264,9 +269,9 @@ export const BlogComponents = {
         [key: string]: unknown;
     }) => (
         <Reveal>
-            <div className="not-prose border-border/50 bg-background/60 [&::-webkit-scrollbar-thumb]:bg-muted-foreground/20 hover:[&::-webkit-scrollbar-thumb]:bg-muted-foreground/40 my-6 w-full [scrollbar-width:thin] overflow-x-auto rounded-xl border shadow-sm backdrop-blur-md md:my-8 [&::-webkit-scrollbar]:h-2 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:bg-transparent">
+            <div className="not-prose glass-panel [&::-webkit-scrollbar-thumb]:bg-muted-foreground/20 hover:[&::-webkit-scrollbar-thumb]:bg-muted-foreground/40 my-8 w-full [scrollbar-width:thin] overflow-x-auto md:my-10 [&::-webkit-scrollbar]:h-2 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:bg-transparent">
                 <table
-                    className="font-monoheavy w-full border-collapse text-left text-sm md:text-base"
+                    className="w-full border-collapse text-left font-sans text-sm md:text-base"
                     {...props}
                 >
                     {children}
@@ -283,7 +288,7 @@ export const BlogComponents = {
         [key: string]: unknown;
     }) => (
         <thead
-            className="font-monoheavy border-border/50 bg-muted/50 border-b"
+            className="border-border/50 bg-muted/30 border-b font-sans"
             {...props}
         >
             {children}
@@ -309,7 +314,7 @@ export const BlogComponents = {
         children: React.ReactNode;
         [key: string]: unknown;
     }) => (
-        <tr className="hover:bg-muted/30 transition-colors" {...props}>
+        <tr className="hover:bg-muted/20 transition-colors" {...props}>
             {children}
         </tr>
     ),
@@ -322,13 +327,14 @@ export const BlogComponents = {
         [key: string]: unknown;
     }) => (
         <th
-            className="text-muted-foreground px-4 py-3 text-xs font-semibold tracking-wider whitespace-nowrap uppercase md:px-6 md:py-4 md:text-sm"
+            className="text-muted-foreground px-4 py-4 text-xs font-semibold tracking-wider whitespace-nowrap uppercase md:px-6 md:text-sm"
             {...props}
         >
             {children}
         </th>
     ),
 
+    // 💡 THE FIX: Removed monoheavy entirely from table data
     td: ({
         children,
         ...props
@@ -337,7 +343,7 @@ export const BlogComponents = {
         [key: string]: unknown;
     }) => (
         <td
-            className="font-monoheavy text-foreground/90 min-w-[150px] px-4 py-3 leading-relaxed md:px-6 md:py-4"
+            className="text-foreground/90 min-w-[150px] px-4 py-4 font-sans leading-relaxed md:px-6"
             {...props}
         >
             {children}
