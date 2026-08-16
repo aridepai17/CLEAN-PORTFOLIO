@@ -27,35 +27,30 @@ const Math = ({
 export const BlogComponents = {
     Math,
 
-    // 💡 Styled as a framed figure with captions
     img: ({
         src,
         alt,
         ...props
     }: {
-        src: string;
-        alt: string;
+        src?: string;
+        alt?: string;
         [key: string]: unknown;
     }) => (
-        <Reveal>
-            <figure className="border-border/50 bg-muted/10 my-10 overflow-hidden rounded-xl border shadow-sm">
-                <div className="relative w-full">
-                    <Image
-                        alt={alt || 'Blog image'}
-                        className="h-auto w-full object-cover"
-                        height={600}
-                        src={src}
-                        width={1200}
-                        {...props}
-                    />
-                </div>
-                {alt && (
-                    <figcaption className="border-border/50 text-muted-foreground border-t p-3 text-center text-sm font-medium">
-                        {alt}
-                    </figcaption>
-                )}
-            </figure>
-        </Reveal>
+        <span className="my-4 inline-block overflow-hidden rounded-xl align-middle">
+            <Image
+                alt={alt || 'Blog image'}
+                className="h-auto max-w-full rounded-xl object-cover"
+                height={600}
+                src={src as string}
+                width={1200}
+                {...props}
+            />
+            {alt && (
+                <span className="text-muted-foreground mt-2 block text-center text-xs font-medium">
+                    {alt}
+                </span>
+            )}
+        </span>
     ),
 
     h2: ({
