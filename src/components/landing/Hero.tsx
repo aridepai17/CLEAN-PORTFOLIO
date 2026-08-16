@@ -43,7 +43,7 @@ export default function Hero() {
                 return (
                     <b
                         key={part.key}
-                        className="text-primary whitespace-pre-wrap"
+                        className="text-foreground font-sans font-semibold whitespace-pre-wrap"
                     >
                         {part.text}
                     </b>
@@ -62,29 +62,35 @@ export default function Hero() {
     return (
         <div className="animate-in fade-in slide-in-from-bottom-4 fill-mode-both duration-1000 ease-out">
             <Container className="mx-auto max-w-5xl">
-                {/* Image */}
-                <Image
-                    src={avatar}
-                    alt="hero"
-                    width={100}
-                    height={100}
-                    className="size-24 rounded-full bg-blue-300 dark:bg-yellow-300"
-                />
+                {/* Profile Header Row */}
+                <div className="flex items-center gap-6 md:gap-8">
+                    <Image
+                        src={avatar}
+                        alt="hero"
+                        width={128}
+                        height={128}
+                        className="border-border/50 size-24 shrink-0 rounded-full border object-cover shadow-sm md:size-32"
+                    />
 
-                {/* Text Area */}
-                <div className="mt-8 flex flex-col gap-2">
-                    <h1 className="text-4xl font-bold">
-                        Hi, I&apos;m {name} -{' '}
-                        <span className="text-secondary">{title}</span>
-                    </h1>
+                    <div className="flex flex-col justify-center">
+                        <h1 className="font-display text-foreground text-5xl leading-tight font-normal tracking-tight md:text-6xl lg:text-7xl">
+                            {name}
+                        </h1>
+                        <p className="text-muted-foreground mt-2 font-sans text-lg md:text-xl">
+                            {title}
+                        </p>
+                    </div>
+                </div>
 
-                    <div className="mt-4 flex flex-wrap items-center gap-x-1.5 gap-y-2 text-base whitespace-pre-wrap text-neutral-500 md:text-lg">
+                {/* Bio Description Area */}
+                <div className="mt-10 md:mt-12">
+                    <div className="text-muted-foreground flex max-w-3xl flex-wrap items-center gap-x-1.5 gap-y-2 font-sans text-lg leading-relaxed md:text-xl">
                         {renderDescription()}
                     </div>
                 </div>
 
-                {/* Buttons */}
-                <div className="mt-8 flex gap-4">
+                {/* Action Buttons */}
+                <div className="mt-10 flex gap-4">
                     {buttons.map((button, index) => {
                         const IconComponent =
                             buttonIcons[
@@ -106,7 +112,9 @@ export default function Hero() {
                                         'outline' | 'default',
                                 })}
                             >
-                                {IconComponent && <IconComponent />}
+                                {IconComponent && (
+                                    <IconComponent className="mr-2 size-4" />
+                                )}
                                 {button.text}
                             </TrackedLink>
                         );
@@ -114,7 +122,7 @@ export default function Hero() {
                 </div>
 
                 {/* Social Links */}
-                <div className="mt-8 flex gap-2">
+                <div className="mt-10 flex items-center gap-4">
                     {socialLinks.map((link) => (
                         <Tooltip key={link.name} delayDuration={0}>
                             <TooltipTrigger asChild>
@@ -123,7 +131,7 @@ export default function Hero() {
                                     key={link.name}
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    className="text-secondary flex items-center gap-2"
+                                    className="text-muted-foreground hover:text-foreground flex items-center justify-center transition-all duration-300 hover:scale-110 focus:outline-none"
                                     track={{
                                         name: 'external_link_click',
                                         data: {
@@ -133,10 +141,13 @@ export default function Hero() {
                                         },
                                     }}
                                 >
-                                    <span className="size-6">{link.icon}</span>
+                                    <span className="flex size-6 items-center justify-center">
+                                        {link.icon}
+                                    </span>
+                                    <span className="sr-only">{link.name}</span>
                                 </TrackedLink>
                             </TooltipTrigger>
-                            <TooltipContent>
+                            <TooltipContent className="font-sans text-xs font-medium">
                                 <p>{link.name}</p>
                             </TooltipContent>
                         </Tooltip>
