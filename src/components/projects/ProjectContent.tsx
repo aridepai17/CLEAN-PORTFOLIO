@@ -41,7 +41,7 @@ export function ProjectContent({ frontmatter, content }: ProjectContentProps) {
               : 'outline';
 
     return (
-        <article className="font-sfProDisplayBlack mx-auto max-w-3xl">
+        <article className="mx-auto max-w-3xl font-sans">
             <Reveal>
                 <header className="mb-12 space-y-8">
                     <div className="space-y-4 text-center md:text-left">
@@ -64,7 +64,7 @@ export function ProjectContent({ frontmatter, content }: ProjectContentProps) {
                             ))}
                         </div>
 
-                        <h1 className="font-sfProDisplayBlack text-4xl leading-tight tracking-tight lg:text-5xl">
+                        <h1 className="font-display text-5xl leading-tight font-normal tracking-tight lg:text-7xl">
                             {title}
                         </h1>
 
@@ -164,7 +164,7 @@ export function ProjectContent({ frontmatter, content }: ProjectContentProps) {
                     <div className="mb-12 grid gap-6 md:grid-cols-2">
                         {challenges && challenges.length > 0 && (
                             <div className="glass-panel p-6">
-                                <h3 className="font-sfProDisplayBlack mb-4 flex items-center gap-2 text-lg">
+                                <h3 className="font-display mb-4 flex items-center gap-2 text-2xl font-normal">
                                     The Challenge
                                 </h3>
                                 <ul className="space-y-3">
@@ -183,7 +183,7 @@ export function ProjectContent({ frontmatter, content }: ProjectContentProps) {
 
                         {learnings && learnings.length > 0 && (
                             <div className="glass-panel p-6">
-                                <h3 className="font-sfProDisplayBlack mb-4 flex items-center gap-2 text-lg">
+                                <h3 className="font-display mb-4 flex items-center gap-2 text-2xl font-normal">
                                     Key Learnings
                                 </h3>
                                 <ul className="space-y-3">
