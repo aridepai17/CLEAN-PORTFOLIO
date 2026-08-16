@@ -79,49 +79,56 @@ export default function GitHub() {
     }, []);
 
     return (
-        <Container className="mt-20">
+        <Container className="mt-32">
             <div className="space-y-6">
                 {/* Header */}
-                <div className="flex items-center justify-between">
-                    <div>
-                        <h2 className="text-foreground text-2xl font-bold">
+                <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+                    <div className="space-y-2">
+                        <h2 className="font-display text-foreground text-4xl font-normal tracking-tight lg:text-5xl">
                             {githubConfig.title}
                         </h2>
-                        <p className="text-muted-foreground text-sm">
-                            <b>{githubConfig.username}</b>&apos;s{' '}
-                            {githubConfig.subtitle}
+                        <p className="text-muted-foreground font-sans text-lg">
+                            <span className="text-foreground font-semibold">
+                                Advaith&apos;s
+                            </span>
+                            &apos;s {githubConfig.subtitle}
                         </p>
-                        {!isLoading && !hasError && totalContributions > 0 && (
-                            <p className="text-primary mt-1 text-sm font-medium">
-                                Past year:{' '}
-                                <span className="font-black">
-                                    {totalContributions.toLocaleString()}
-                                </span>{' '}
-                                contributions
-                            </p>
-                        )}
                     </div>
+
+                    {!isLoading && !hasError && totalContributions > 0 && (
+                        <div className="border-primary/20 bg-primary/5 text-primary inline-flex shrink-0 items-center gap-2 rounded-full border px-3 py-1.5 font-sans text-sm font-medium shadow-sm">
+                            <div className="relative flex size-2">
+                                <span className="bg-primary absolute inline-flex h-full w-full animate-ping rounded-full opacity-75"></span>
+                                <span className="bg-primary relative inline-flex size-2 rounded-full"></span>
+                            </div>
+                            Past year:{' '}
+                            <span className="font-bold">
+                                {totalContributions.toLocaleString()}
+                            </span>{' '}
+                            contributions
+                        </div>
+                    )}
                 </div>
 
                 {/* Content */}
                 {isLoading ? (
-                    <div className="flex items-center justify-center py-16">
+                    <div className="glass-panel mt-8 flex items-center justify-center py-20">
                         <div className="text-center">
                             <div className="border-primary mx-auto mb-4 h-8 w-8 animate-spin rounded-full border-2 border-t-transparent"></div>
-                            <p className="text-muted-foreground text-sm">
+                            <p className="text-muted-foreground font-sans text-sm">
                                 {githubConfig.loadingState.description}
                             </p>
                         </div>
                     </div>
                 ) : hasError || contributions.length === 0 ? (
-                    <div className="text-muted-foreground relative mt-8 rounded-xl border bg-white/80 p-8 text-center backdrop-blur-sm dark:border-white/20 dark:bg-black/60">
-                        <div className="bg-muted mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full">
+                    <div className="glass-panel text-muted-foreground relative mt-8 p-12 text-center">
+                        <div className="bg-muted mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-full">
                             <GithubIcon className="h-8 w-8" />
                         </div>
-                        <p className="mb-2 font-medium">
+                        <h3 className="font-display text-foreground mb-2 text-2xl font-normal">
                             {githubConfig.errorState.title}
-                        </p>
-                        <p className="mb-4 text-sm">
+                        </h3>
+                        <p className="mb-6 font-sans text-sm">
                             {githubConfig.errorState.description}
                         </p>
                         <TrackedLink
@@ -136,14 +143,14 @@ export default function GitHub() {
                                     location: 'github_section',
                                 },
                             }}
-                            className={buttonVariants({ variant: 'outline' })}
+                            className={buttonVariants({ variant: 'default' })}
                         >
-                            <GithubIcon className="h-4 w-4" />
+                            <GithubIcon className="mr-2 h-4 w-4" />
                             {githubConfig.errorState.buttonText}
                         </TrackedLink>
                     </div>
                 ) : (
-                    <div className="relative mt-8 overflow-hidden rounded-xl border bg-white/80 p-6 backdrop-blur-sm dark:border-white/20 dark:bg-black/60">
+                    <div className="glass-panel relative mt-8 p-6 md:p-8">
                         {/* The new client component takes over rendering and theme detection */}
                         <GitHubCalendarClient contributions={contributions} />
                     </div>
