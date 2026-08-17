@@ -4,7 +4,7 @@ export const githubConfig = {
 
     // Display settings
     title: 'GitHub Activity',
-    subtitle: 'My coding journey over the past year',
+    subtitle: 'coding journey over the past year',
 
     // Chart settings
     blockSize: 11,

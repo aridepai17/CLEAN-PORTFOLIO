@@ -90,8 +90,8 @@ export default function GitHub() {
                         <p className="text-muted-foreground font-sans text-lg">
                             <span className="text-foreground font-semibold">
                                 Advaith&apos;s
-                            </span>
-                            &apos;s {githubConfig.subtitle}
+                            </span>{' '}
+                            {githubConfig.subtitle}
                         </p>
                     </div>
 

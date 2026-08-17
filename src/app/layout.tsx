@@ -7,6 +7,7 @@ import Navbar from '@/components/common/Navbar';
 import { Quote } from '@/components/common/Quote';
 import { ScrollToTop } from '@/components/common/ScrollToTop';
 import { ThemeProvider } from '@/components/common/ThemeProviders';
+import JsonLd from '@/components/seo/JsonLd';
 import { Toaster } from '@/components/ui/sonner';
 import { TooltipProvider } from '@/components/ui/tooltip';
 import { generateMetadata as getMetaData } from '@/config/Meta';
@@ -25,6 +26,7 @@ export default function RootLayout({
         <ViewTransitions>
             <html lang="en" suppressHydrationWarning>
                 <body className={`font-hanken-grotesk antialiased`}>
+                    <JsonLd />
                     <ThemeProvider
                         attribute="class"
                         defaultTheme="system"
