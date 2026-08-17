@@ -14,10 +14,8 @@ export const siteConfig = {
     title: 'Advaith R Pai | Software Engineer',
     description:
         'Software Engineer building AI-powered, full-stack applications with modern web technologies.',
-    url:
-        process.env.NEXT_PUBLIC_URL ??
-        'https://advaithrpai-portfolio.vercel.app',
-    ogImage: '/meta/opengraph-image.png',
+    url: process.env.NEXT_PUBLIC_URL ?? 'https://advaithrpai.tech',
+    ogImage: '/assets/logo.jpg',
     author: {
         name: about.name,
         twitter: '@rpaiv17',
@@ -29,17 +27,21 @@ export const siteConfig = {
         'Advaith R Pai',
         'Software Engineer',
         'Full Stack Developer',
+        'AI Engineer',
         'Artificial Intelligence',
         'Machine Learning',
-        'Portfolio',
+        'Deep Learning',
+        'CNN-Transformers',
         'Next.js',
         'React',
         'TypeScript',
         'Python',
-        'JavaScript',
-        'Node.js',
-        'MongoDB',
-        'Tailwind CSS',
+        'Kerala',
+        'Muthoot Institute of Technology and Science',
+        'Kochi',
+        'Thripunithura',
+        'Vadakkekotta',
+        'Ernakulam',
     ],
 };
 
@@ -56,7 +58,7 @@ export const pageMetadata: Record<string, PageMeta> = {
             'Artificial Intelligence',
             'Projects',
         ],
-        ogImage: '/meta/hero.png',
+        ogImage: '/assets/about.jpg',
         twitterCard: 'summary_large_image',
     },
 
@@ -65,7 +67,6 @@ export const pageMetadata: Record<string, PageMeta> = {
         description:
             'Get in touch for software engineering opportunities, collaborations, internships, or project discussions.',
         keywords: ['contact', 'hire', 'collaboration', 'software engineer'],
-        ogImage: '/assets/logo.jpg',
         twitterCard: 'summary',
     },
 
@@ -79,7 +80,6 @@ export const pageMetadata: Record<string, PageMeta> = {
             'DRDO',
             'software engineer',
         ],
-        ogImage: '/meta/work.png',
         twitterCard: 'summary_large_image',
     },
 
@@ -95,7 +95,6 @@ export const pageMetadata: Record<string, PageMeta> = {
             'React',
             'portfolio',
         ],
-        ogImage: '/meta/projects.png',
         twitterCard: 'summary_large_image',
     },
 
@@ -104,7 +103,6 @@ export const pageMetadata: Record<string, PageMeta> = {
         description:
             'Technical articles, development notes, tutorials, and engineering insights.',
         keywords: ['blog', 'software engineering', 'AI', 'web development'],
-        ogImage: '/meta/blogs.png',
         twitterCard: 'summary_large_image',
     },
 
@@ -112,7 +110,6 @@ export const pageMetadata: Record<string, PageMeta> = {
         title: 'Resume | Advaith R Pai',
         description: `View and download ${heroConfig.name}'s resume and professional CV.`,
         keywords: ['resume', 'CV', 'software engineer', 'skills'],
-        ogImage: '/meta/resume.png',
         twitterCard: 'summary',
     },
 };
