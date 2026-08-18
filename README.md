@@ -14,7 +14,7 @@
 
 This is my personal portfolio - a living engineering showcase rather than a static resume. It demonstrates full-stack capability through real integrations: an AI assistant that can discuss my work, live GitHub contribution data, LeetCode problem-solving stats, and a contact form that routes to Telegram.
 
-Unlike template portfolios, every section is wired to live data or server-side logic. The chat runs on Groq’s `llama-3.3-70b-versatile` with prompt-injection defenses. The GitHub section uses authenticated GraphQL instead of scraping. MDX powers the blog and project case studies so I can embed interactive components inside markdown.
+Unlike template portfolios, every section is wired to live data or server-side logic. The chat runs on Groq’s `gpt-oss-120b` with prompt-injection defenses. The GitHub section uses authenticated GraphQL instead of scraping. MDX powers the blog and project case studies so I can embed interactive components inside markdown.
 
 I built this to reflect how I actually work: iterative, data-aware, and focused on edge cases like rate limiting, error states, and responsive accessibility.
 
@@ -71,13 +71,13 @@ I built this to reflect how I actually work: iterative, data-aware, and focused 
 
 ### _Backend / APIs_
 
-| Technology                               | Purpose                                     |
-| ---------------------------------------- | ------------------------------------------- |
-| **Groq API (`llama-3.3-70b-versatile`)** | LLM inference for chat assistant            |
-| **GitHub GraphQL**                       | Authenticated contribution calendar fetch   |
-| **LeetCode GraphQL**                     | Scraped stats for problem-solving dashboard |
-| **Telegram Bot API**                     | Serverless contact form delivery            |
-| **Umami**                                | Self-hostable analytics with WAF protection |
+| Technology                    | Purpose                                     |
+| ----------------------------- | ------------------------------------------- |
+| **Groq API (`gpt-oss-120b`)** | LLM inference for chat assistant            |
+| **GitHub GraphQL**            | Authenticated contribution calendar fetch   |
+| **LeetCode GraphQL**          | Scraped stats for problem-solving dashboard |
+| **Telegram Bot API**          | Serverless contact form delivery            |
+| **Umami**                     | Self-hostable analytics with WAF protection |
 
 ### _Tooling_
 
