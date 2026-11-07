@@ -13,6 +13,7 @@ export interface Technology {
 }
 
 export interface Experience {
+    id: string;
     company: string;
     position: string;
     location: string;
@@ -31,17 +32,66 @@ export interface Experience {
 
 export const experiences: Experience[] = [
     {
+        id: 'drdo-npol-2026',
         company: 'DRDO - Naval Physical & Oceanographic Laboratory (NPOL)',
         position: 'Research Intern',
         location: 'Kochi, India',
         image: '/company/drdo-npol.png',
         description: [
-            'Worked on naval applications research, focused on acoustic signal processing.',
-            'Explored signal-processing techniques applied to underwater acoustic data relevant to naval systems.',
-            'Gained exposure to a defense-research environment, translating theoretical signal-processing concepts into applied analysis.',
+            "Architected a scalable deep learning framework for automated passive sonar classification, directly enabling NPOL's underwater acoustics surveillance capabilities.",
+            'Engineered a memory-efficient data pipeline to systematically chunk high-resolution audio files into compressed .npz tensors, mitigating cloud Out-of-Memory (OOM) bottlenecks during scale-up.',
+            'Scaled the DWSTr deep learning framework to process the massive 47-hour DeepShip real-world acoustic dataset, targeting the classification of 265 distinct vessels across 4 commercial categories.',
+            'Presented the model to senior leadership, facilitating high engagement Q&A to gather actionable feedback for iterative model enhancements',
         ],
-        startDate: 'Sept 2025',
-        endDate: 'Oct 2025',
+        startDate: 'June 2026',
+        endDate: 'Present',
+        website: 'https://drdo.gov.in/drdo/en/',
+        technologies: [
+            {
+                name: 'Python',
+                href: 'https://python.org/',
+                icon: <Python />,
+            },
+            {
+                name: 'TensorFlow',
+                href: 'https://www.tensorflow.org/',
+                icon: <TensorFlow />,
+            },
+            {
+                name: 'NumPy',
+                href: 'https://numpy.org/',
+                icon: <NumPy />,
+            },
+            {
+                name: 'Scikit-learn',
+                href: 'https://scikit-learn.org/',
+                icon: <ScikitLearn />,
+            },
+            {
+                name: 'Librosa',
+                href: 'https://librosa.org/',
+                icon: <Librosa />,
+            },
+            {
+                name: 'Matplotlib',
+                href: 'https://matplotlib.org/',
+                icon: <Matplotlib />,
+            },
+        ],
+        isCurrent: true,
+    },
+    {
+        id: 'drdo-npol-2025',
+        company: 'DRDO - Naval Physical & Oceanographic Laboratory (NPOL)',
+        position: 'Research Intern',
+        location: 'Kochi, India',
+        image: '/company/drdo-npol.png',
+        description: [
+            'Built the initial end-to-end audio pipeline processing 10,000+ sonar samples into Mel-spectrograms, reducing preprocessing latency by 35%.',
+            'Developed the foundational hybrid DWSTr (Depthwise Separable CNN + Transformer) model, achieving a benchmark 97.17% accuracy across 12 vessel categories by implementing square root class-weight smoothing to resolve severe dataset imbalances.',
+        ],
+        startDate: 'September 2025',
+        endDate: 'December 2025',
         website: 'https://drdo.gov.in/drdo/en/',
         technologies: [
             {

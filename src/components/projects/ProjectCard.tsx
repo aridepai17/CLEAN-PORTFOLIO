@@ -117,24 +117,26 @@ export function ProjectCard({ project }: ProjectCardProps) {
                             </h3>
                         </Link>
                         <div className="flex shrink-0 items-center gap-2">
-                            <Tooltip>
-                                <TooltipTrigger asChild>
-                                    <Link
-                                        className="text-secondary hover:text-primary focus-visible:ring-primary inline-flex size-6 shrink-0 items-center justify-center rounded-sm transition-colors focus:outline-none focus-visible:ring-2 [&>svg]:h-5 [&>svg]:w-5 [&>svg]:shrink-0"
-                                        href={project.link}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        onClick={() =>
-                                            trackProject('visit_website')
-                                        }
-                                    >
-                                        <Website />
-                                    </Link>
-                                </TooltipTrigger>
-                                <TooltipContent>
-                                    <p>View Website</p>
-                                </TooltipContent>
-                            </Tooltip>
+                            {project.link && (
+                                <Tooltip>
+                                    <TooltipTrigger asChild>
+                                        <Link
+                                            className="text-secondary hover:text-primary focus-visible:ring-primary inline-flex size-6 shrink-0 items-center justify-center rounded-sm transition-colors focus:outline-none focus-visible:ring-2 [&>svg]:h-5 [&>svg]:w-5 [&>svg]:shrink-0"
+                                            href={project.link}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            onClick={() =>
+                                                trackProject('visit_website')
+                                            }
+                                        >
+                                            <Website />
+                                        </Link>
+                                    </TooltipTrigger>
+                                    <TooltipContent>
+                                        <p>View Website</p>
+                                    </TooltipContent>
+                                </Tooltip>
+                            )}
                             {project.github && (
                                 <Tooltip>
                                     <TooltipTrigger asChild>
