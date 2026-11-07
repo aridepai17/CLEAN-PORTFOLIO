@@ -20,7 +20,7 @@ export default function Experience() {
             <div className="mt-4 flex flex-col gap-8">
                 {experiences.slice(0, 2).map((experience: Experience) => (
                     <ExperienceCard
-                        key={experience.company}
+                        key={experience.id}
                         experience={experience}
                     />
                 ))}
