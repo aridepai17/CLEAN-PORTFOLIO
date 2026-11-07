@@ -127,7 +127,7 @@ export const heroConfig: HeroConfig = {
 
     description: {
         template:
-            "I'm a Software Engineer who builds AI-powered, full-stack applications with {skills:0}, {skills:12}, {skills:7}, {skills:8} and {skills:1} ",
+            "I'm a Software Engineer who builds AI-powered, full-stack applications.",
     },
 
     buttons: [

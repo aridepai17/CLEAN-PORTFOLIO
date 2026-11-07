@@ -84,8 +84,25 @@ export default function Hero() {
 
                 {/* Bio Description Area */}
                 <div className="mt-10 md:mt-12">
-                    <div className="text-muted-foreground flex max-w-3xl flex-wrap items-center gap-x-1.5 gap-y-2 font-sans text-lg leading-relaxed md:text-xl">
+                    <div className="text-muted-foreground max-w-3xl font-sans text-lg leading-relaxed md:text-xl">
                         {renderDescription()}
+                    </div>
+                    <div className="mt-4 flex max-w-3xl flex-wrap items-center gap-2">
+                        {skills.map((skill) => {
+                            const SkillComponent =
+                                skillComponents[
+                                    skill.component as keyof typeof skillComponents
+                                ];
+                            return (
+                                <Skill
+                                    key={skill.name}
+                                    name={skill.name}
+                                    href={skill.href}
+                                >
+                                    {SkillComponent && <SkillComponent />}
+                                </Skill>
+                            );
+                        })}
                     </div>
                 </div>
 
