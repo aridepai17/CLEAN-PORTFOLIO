@@ -136,13 +136,11 @@ export const projects: Project[] = [
         description:
             'A spider crawls down arXiv ML papers, marking up the words it walks over while Gemini explains each section in plain English. Add a paper from the library drawer, jump to any section, switch reading levels, and pick up where you left off.',
         image: '/project/papercrawler.png',
-        link: 'https://github.com/aridepai17/PAPER-CRAWLER',
         technologies: [
             { name: 'Python', icon: <Python key="python" /> },
             { name: 'JavaScript', icon: <JavaScript key="javascript" /> },
         ],
         github: 'https://github.com/aridepai17/PAPER-CRAWLER',
-        live: 'https://github.com/aridepai17/PAPER-CRAWLER',
         details: true,
         projectDetailsPageSlug: '/projects/papercrawler',
         isWorking: true,
