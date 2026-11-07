@@ -1,6 +1,8 @@
 import GSAP from '@/components/technologies/GSAP';
+import JavaScript from '@/components/technologies/JavaScript';
 import MongoDB from '@/components/technologies/MongoDB';
 import NextJs from '@/components/technologies/NextJs';
+import Python from '@/components/technologies/Python';
 import ReactIcon from '@/components/technologies/ReactIcon';
 import TailwindCSS from '@/components/technologies/Tailwindcss';
 import TypeScript from '@/components/technologies/TypeScript';
@@ -127,6 +129,22 @@ export const projects: Project[] = [
         live: 'https://advaithrpai-portfolio.vercel.app/',
         details: true,
         projectDetailsPageSlug: '/projects/macosportfolio',
+        isWorking: true,
+    },
+    {
+        title: 'PAPER CRAWLER',
+        description:
+            'A spider crawls down arXiv ML papers, marking up the words it walks over while Gemini explains each section in plain English. Add a paper from the library drawer, jump to any section, switch reading levels, and pick up where you left off.',
+        image: '/project/papercrawler.png',
+        link: 'https://github.com/aridepai17/PAPER-CRAWLER',
+        technologies: [
+            { name: 'Python', icon: <Python key="python" /> },
+            { name: 'JavaScript', icon: <JavaScript key="javascript" /> },
+        ],
+        github: 'https://github.com/aridepai17/PAPER-CRAWLER',
+        live: 'https://github.com/aridepai17/PAPER-CRAWLER',
+        details: true,
+        projectDetailsPageSlug: '/projects/papercrawler',
         isWorking: true,
     },
 ];
