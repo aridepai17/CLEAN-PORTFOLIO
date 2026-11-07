@@ -13,6 +13,7 @@ export interface Technology {
 }
 
 export interface Experience {
+    id: string;
     company: string;
     position: string;
     location: string;
@@ -31,6 +32,7 @@ export interface Experience {
 
 export const experiences: Experience[] = [
     {
+        id: 'drdo-npol-2026',
         company: 'DRDO - Naval Physical & Oceanographic Laboratory (NPOL)',
         position: 'Research Intern',
         location: 'Kochi, India',
@@ -79,6 +81,7 @@ export const experiences: Experience[] = [
         isCurrent: true,
     },
     {
+        id: 'drdo-npol-2025',
         company: 'DRDO - Naval Physical & Oceanographic Laboratory (NPOL)',
         position: 'Research Intern',
         location: 'Kochi, India',
