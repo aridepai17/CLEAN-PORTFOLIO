@@ -36,32 +36,7 @@ Retail investors often suffer from platform fatigue—juggling multiple browser 
 
 Signalist is built on a highly decoupled, serverless architecture that optimizes for rapid data ingestion, seamless UI reactivity, and fault-tolerant background processing.
 
-```text
-
-┌─────────────────────────────────────────────────────────────┐
-│                       Client Interface                      │
-│                  (Next.js 15 App Router)                    │
-└──────────────┬──────────────────────────────┬───────────────┘
-               │                              │
-               ▼                              ▼
-┌──────────────────────────────┐┌─────────────────────────────┐
-│      Finnhub & TradingView   ││        Better Auth &        │
-│       (Live Market Data)     ││   MongoDB Atlas (State)     │
-└──────────────┬───────────────┘└──────────────┬──────────────┘
-               │                              │
-               ▼                              ▼
-┌─────────────────────────────────────────────────────────────┐
-│                 Inngest Event Orchestration                 │
-│                 (Background Jobs & CRON)                    │
-└──────────────┬──────────────────────────────┬───────────────┘
-               │                              │
-               ▼                              ▼
-┌──────────────────────────────┐┌─────────────────────────────┐
-│      Google Gemini 2.5       ││         Nodemailer          │
-│   (AI Context & Synthesis)   ││      (SMTP Delivery)        │
-└──────────────────────────────┘└─────────────────────────────┘
-
-```
+![Signalist system architecture](/project/diagrams/signalist-architecture.svg)
 
 ### 1. High-Frequency Data Ingestion & Caching
 
