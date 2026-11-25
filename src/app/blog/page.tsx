@@ -1,6 +1,5 @@
 import Container from '@/components/common/Container';
 import Reveal from '@/components/common/Reveal';
-import { Separator } from '@/components/ui/separator';
 import { Skeleton } from '@/components/ui/skeleton';
 import { generateMetadata as getMetadata } from '@/config/Meta';
 import { getAllTags, getPublishedBlogPosts } from '@/lib/blog';
@@ -36,8 +35,6 @@ function BlogPageLoading() {
                         <Skeleton className="mx-auto h-12 w-32" />
                         <Skeleton className="mx-auto h-6 w-96" />
                     </div>
-
-                    <Separator />
 
                     <div className="space-y-4">
                         <Skeleton className="h-6 w-32" />

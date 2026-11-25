@@ -1,11 +1,29 @@
+import CSS from '@/components/technologies/CSS';
+import Clerk from '@/components/technologies/Clerk';
+import Convex from '@/components/technologies/Convex';
+import Docker from '@/components/technologies/Docker';
+import ExpressJs from '@/components/technologies/ExpressJs';
+import FinnhubApi from '@/components/technologies/FinnhubApi';
 import GSAP from '@/components/technologies/GSAP';
+import Groq from '@/components/technologies/Groq';
+import Html from '@/components/technologies/Html';
+import Inngest from '@/components/technologies/Inngest';
 import JavaScript from '@/components/technologies/JavaScript';
 import MongoDB from '@/components/technologies/MongoDB';
 import NextJs from '@/components/technologies/NextJs';
+import PostgreSQL from '@/components/technologies/PostgreSQL';
+import PuterJs from '@/components/technologies/PuterJs';
 import Python from '@/components/technologies/Python';
+import Razorpay from '@/components/technologies/Razorpay';
 import ReactIcon from '@/components/technologies/ReactIcon';
+import ReactRouter from '@/components/technologies/ReactRouter';
+import Strapi from '@/components/technologies/Strapi';
 import TailwindCSS from '@/components/technologies/Tailwindcss';
+import TradingView from '@/components/technologies/TradingView';
 import TypeScript from '@/components/technologies/TypeScript';
+import Vite from '@/components/technologies/Vite';
+import Zod from '@/components/technologies/Zod';
+import Zustand from '@/components/technologies/Zustand';
 import type { Project } from '@/types/project';
 import type React from 'react';
 
@@ -15,14 +33,18 @@ export const projects: Project[] = [
         description:
             'An AI-powered ATS resume optimization platform that performs client-side PDF rasterization and LLM-driven keyword analysis to improve job application success rates.',
         image: '/project/selectra.png',
-        link: 'https://selectra-nine.vercel.app',
+        link: 'https://selectraresume.vercel.app',
         technologies: [
             { name: 'Next.js', icon: <NextJs key="nextjs" /> },
             { name: 'TypeScript', icon: <TypeScript key="typescript" /> },
             { name: 'Tailwind CSS', icon: <TailwindCSS key="tailwind" /> },
+            { name: 'Zustand', icon: <Zustand key="zustand" /> },
+            { name: 'Vite', icon: <Vite key="vite" /> },
+            { name: 'React Router', icon: <ReactRouter key="reactrouter" /> },
+            { name: 'Puter.js', icon: <PuterJs key="puterjs" /> },
         ],
         github: 'https://github.com/aridepai17/selectra',
-        live: 'https://selectra-nine.vercel.app/',
+        live: 'https://selectraresume.vercel.app/',
         details: true,
         projectDetailsPageSlug: '/projects/selectra',
         isWorking: true,
@@ -37,6 +59,11 @@ export const projects: Project[] = [
             { name: 'Next.js', icon: <NextJs key="nextjs" /> },
             { name: 'TypeScript', icon: <TypeScript key="typescript" /> },
             { name: 'Tailwind CSS', icon: <TailwindCSS key="tailwind" /> },
+            { name: 'Strapi', icon: <Strapi key="strapi" /> },
+            { name: 'PostgreSQL', icon: <PostgreSQL key="postgresql" /> },
+            { name: 'Groq', icon: <Groq key="groq" /> },
+            { name: 'Clerk', icon: <Clerk key="clerk" /> },
+            { name: 'Razorpay', icon: <Razorpay key="razorpay" /> },
         ],
         github: 'https://github.com/aridepai17/servd',
         live: 'https://servdai.vercel.app/',
@@ -54,6 +81,8 @@ export const projects: Project[] = [
             { name: 'Next.js', icon: <NextJs key="nextjs" /> },
             { name: 'TypeScript', icon: <TypeScript key="typescript" /> },
             { name: 'Tailwind CSS', icon: <TailwindCSS key="tailwind" /> },
+            { name: 'Docker', icon: <Docker key="docker" /> },
+            { name: 'Puter.js', icon: <PuterJs key="puterjs" /> },
         ],
         github: 'https://github.com/aridepai17/ROOMIFY',
         live: 'https://roomify-virid-three.vercel.app/',
@@ -71,6 +100,8 @@ export const projects: Project[] = [
             { name: 'Next.js', icon: <NextJs key="nextjs" /> },
             { name: 'TypeScript', icon: <TypeScript key="typescript" /> },
             { name: 'Tailwind CSS', icon: <TailwindCSS key="tailwind" /> },
+            { name: 'Express', icon: <ExpressJs key="express" /> },
+            { name: 'Zod', icon: <Zod key="zod" /> },
         ],
         github: 'https://github.com/aridepai17/worldcuporacle',
         live: 'https://worldcuporacle-eight.vercel.app/',
@@ -88,6 +119,9 @@ export const projects: Project[] = [
             { name: 'Next.js', icon: <NextJs key="nextjs" /> },
             { name: 'TypeScript', icon: <TypeScript key="typescript" /> },
             { name: 'Tailwind CSS', icon: <TailwindCSS key="tailwind" /> },
+            { name: 'Convex', icon: <Convex key="convex" /> },
+            { name: 'Clerk', icon: <Clerk key="clerk" /> },
+            { name: 'Inngest', icon: <Inngest key="inngest" /> },
         ],
         github: 'https://github.com/aridepai17/splitr',
         live: 'https://splitr-psi-bay.vercel.app/',
@@ -106,6 +140,9 @@ export const projects: Project[] = [
             { name: 'TypeScript', icon: <TypeScript key="typescript" /> },
             { name: 'Tailwind CSS', icon: <TailwindCSS key="tailwind" /> },
             { name: 'MongoDB', icon: <MongoDB key="mongodb" /> },
+            { name: 'Inngest', icon: <Inngest key="inngest" /> },
+            { name: 'Finnhub API', icon: <FinnhubApi key="finnhubapi" /> },
+            { name: 'TradingView', icon: <TradingView key="tradingview" /> },
         ],
         github: 'https://github.com/aridepai17/SIGNALIST',
         live: 'https://signalistrealtimestocks.vercel.app/',
@@ -124,6 +161,8 @@ export const projects: Project[] = [
             { name: 'TypeScript', icon: <TypeScript key="typescript" /> },
             { name: 'Tailwind CSS', icon: <TailwindCSS key="tailwind" /> },
             { name: 'GSAP', icon: <GSAP key="gsap" /> },
+            { name: 'Zustand', icon: <Zustand key="zustand" /> },
+            { name: 'Vite', icon: <Vite key="vite" /> },
         ],
         github: 'https://github.com/aridepai17/ADVAITH-R-PAI-PORTFOLIO',
         live: 'https://advaithrpai-portfolio.vercel.app/',
@@ -139,6 +178,8 @@ export const projects: Project[] = [
         technologies: [
             { name: 'Python', icon: <Python key="python" /> },
             { name: 'JavaScript', icon: <JavaScript key="javascript" /> },
+            { name: 'HTML', icon: <Html key="html" /> },
+            { name: 'CSS', icon: <CSS key="css" /> },
         ],
         github: 'https://github.com/aridepai17/PAPER-CRAWLER',
         details: true,

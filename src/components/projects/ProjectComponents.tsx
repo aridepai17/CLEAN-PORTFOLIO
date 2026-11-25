@@ -1,29 +1,109 @@
 import Reveal from '@/components/common/Reveal';
+import CSS from '@/components/technologies/CSS';
+import Clerk from '@/components/technologies/Clerk';
+import Convex from '@/components/technologies/Convex';
+import Docker from '@/components/technologies/Docker';
+import ExpressJs from '@/components/technologies/ExpressJs';
+import FinnhubApi from '@/components/technologies/FinnhubApi';
 import GSAP from '@/components/technologies/GSAP';
+import GoogleGemini from '@/components/technologies/GoogleGemini';
+import Groq from '@/components/technologies/Groq';
+import Html from '@/components/technologies/Html';
+import Inngest from '@/components/technologies/Inngest';
 import MongoDB from '@/components/technologies/MongoDB';
 import NextJs from '@/components/technologies/NextJs';
+import OpenAI from '@/components/technologies/OpenAI';
+import PdfJs from '@/components/technologies/PdfJs';
+import PostgreSQL from '@/components/technologies/PostgreSQL';
+import PuterJs from '@/components/technologies/PuterJs';
+import Razorpay from '@/components/technologies/Razorpay';
 import ReactIcon from '@/components/technologies/ReactIcon';
+import ReactRouter from '@/components/technologies/ReactRouter';
+import Recharts from '@/components/technologies/Recharts';
+import Strapi from '@/components/technologies/Strapi';
 import TailwindCSS from '@/components/technologies/Tailwindcss';
+import TradingView from '@/components/technologies/TradingView';
 import TypeScript from '@/components/technologies/TypeScript';
+import Vite from '@/components/technologies/Vite';
+import Zod from '@/components/technologies/Zod';
+import Zustand from '@/components/technologies/Zustand';
 import { Badge } from '@/components/ui/badge';
-import Image from 'next/image';
 import React from 'react';
 
 import { CodeCopyButton } from '../blog/CodeCopyButton';
+import { DiagramSection } from './DiagramSection';
 
 const TechnologyComponents: Record<string, React.ComponentType> = {
     'Next.js': NextJs,
     nextjs: NextJs,
+    'Next.js 15': NextJs,
+    'next.js 15': NextJs,
     TypeScript: TypeScript,
     typescript: TypeScript,
     'Tailwind CSS': TailwindCSS,
     tailwindcss: TailwindCSS,
+    'Tailwind CSS 4': TailwindCSS,
+    'tailwind css 4': TailwindCSS,
     React: ReactIcon,
     react: ReactIcon,
+    'React 19': ReactIcon,
+    'react 19': ReactIcon,
     GSAP: GSAP,
     gsap: GSAP,
     MongoDB: MongoDB,
     mongodb: MongoDB,
+    'MongoDB Atlas': MongoDB,
+    'mongodb atlas': MongoDB,
+    Zustand: Zustand,
+    zustand: Zustand,
+    Vite: Vite,
+    vite: Vite,
+    'Vite 7': Vite,
+    'vite 7': Vite,
+    'React Router': ReactRouter,
+    'react router': ReactRouter,
+    PuterJs: PuterJs,
+    puterjs: PuterJs,
+    OpenAI: OpenAI,
+    openai: OpenAI,
+    'PDF.js': PdfJs,
+    'pdf.js': PdfJs,
+    Strapi: Strapi,
+    strapi: Strapi,
+    PostgreSQL: PostgreSQL,
+    postgresql: PostgreSQL,
+    Groq: Groq,
+    groq: Groq,
+    GoogleGemini: GoogleGemini,
+    'google gemini': GoogleGemini,
+    'Gemini API': GoogleGemini,
+    'gemini api': GoogleGemini,
+    'Gemini AI': GoogleGemini,
+    'gemini ai': GoogleGemini,
+    Clerk: Clerk,
+    clerk: Clerk,
+    Razorpay: Razorpay,
+    razorpay: Razorpay,
+    Convex: Convex,
+    convex: Convex,
+    Inngest: Inngest,
+    inngest: Inngest,
+    Express: ExpressJs,
+    express: ExpressJs,
+    Docker: Docker,
+    docker: Docker,
+    Zod: Zod,
+    zod: Zod,
+    Recharts: Recharts,
+    recharts: Recharts,
+    Html: Html,
+    html: Html,
+    CSS: CSS,
+    css: CSS,
+    FinnhubApi: FinnhubApi,
+    finnhubapi: FinnhubApi,
+    TradingView: TradingView,
+    tradingview: TradingView,
 };
 
 const Technology = ({ name }: { name: string }) => {
@@ -40,7 +120,7 @@ const Technology = ({ name }: { name: string }) => {
 
 const TechStack = ({ technologies }: { technologies: string[] }) => {
     return (
-        <div className="bg-muted/20 my-6 rounded-lg border p-4">
+        <div className="glass-panel my-6 rounded-lg border p-4">
             <h4 className="font-display mb-3 text-2xl font-normal">
                 Technology Stack
             </h4>
@@ -65,7 +145,7 @@ const ProjectMeta = ({
     status?: string;
 }) => {
     return (
-        <div className="bg-muted/20 my-6 grid gap-4 rounded-lg border p-4 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="glass-panel my-6 grid gap-4 rounded-lg border p-4 sm:grid-cols-2 lg:grid-cols-4">
             {timeline && (
                 <div>
                     <h5 className="text-muted-foreground text-sm font-semibold tracking-wide uppercase">
@@ -114,7 +194,7 @@ const ProjectMeta = ({
 
 const Challenges = ({ challenges }: { challenges: string[] }) => {
     return (
-        <div className="my-6 rounded-lg border border-yellow-200 bg-yellow-50 p-6 dark:border-yellow-800/50 dark:bg-yellow-950/20">
+        <div className="glass-panel border-primary/50 my-6 p-6">
             <h4 className="font-display mb-4 text-2xl font-normal text-yellow-900 dark:text-yellow-200">
                 Key Challenges
             </h4>
@@ -135,7 +215,7 @@ const Challenges = ({ challenges }: { challenges: string[] }) => {
 
 const Learnings = ({ learnings }: { learnings: string[] }) => {
     return (
-        <div className="my-6 rounded-lg border border-green-200 bg-green-50 p-6 dark:border-green-800/50 dark:bg-green-950/20">
+        <div className="glass-panel border-primary/50 my-6 p-6">
             <h4 className="font-display mb-4 text-2xl font-normal text-green-900 dark:text-green-200">
                 Key Learnings
             </h4>
@@ -184,27 +264,17 @@ export const ProjectComponents = {
     img: ({
         src,
         alt,
-        ...props
+        caption,
     }: {
         src?: string;
         alt?: string;
-        [key: string]: unknown;
+        caption?: string;
     }) => (
-        <span className="my-4 inline-block overflow-hidden rounded-xl align-middle">
-            <Image
-                alt={alt || 'Blog image'}
-                className="h-auto max-w-full rounded-xl object-cover"
-                height={600}
-                src={src as string}
-                width={1200}
-                {...props}
-            />
-            {alt && (
-                <span className="text-muted-foreground mt-2 block text-center text-xs font-medium">
-                    {alt}
-                </span>
-            )}
-        </span>
+        <DiagramSection
+            src={src as string}
+            alt={alt || 'Project diagram'}
+            caption={caption}
+        />
     ),
 
     // 💡 THE FIX: Swapped to Instrument Serif (font-display)
@@ -371,7 +441,7 @@ export const ProjectComponents = {
     }) => {
         if (className?.includes('language-')) {
             return (
-                <code className={className} {...props}>
+                <code className={`${className}`} {...props}>
                     {children}
                 </code>
             );
@@ -379,7 +449,7 @@ export const ProjectComponents = {
 
         return (
             <code
-                className="bg-muted rounded px-1.5 py-0.5 font-mono text-sm"
+                className="bg-muted/50 border-border/50 rounded-md border px-1.5 py-0.5 font-mono text-[0.875em] font-medium"
                 {...props}
             >
                 {children}
@@ -396,12 +466,83 @@ export const ProjectComponents = {
     }) => (
         <Reveal>
             <blockquote
-                className="border-primary/50 text-foreground/90 bg-muted/20 my-8 border-l-4 py-4 pr-4 pl-6 italic"
+                className="glass-panel border-primary/50 text-foreground/90 my-8 p-6"
                 {...props}
             >
                 {children}
             </blockquote>
         </Reveal>
+    ),
+
+    table: ({
+        children,
+        ...props
+    }: {
+        children: React.ReactNode;
+        [key: string]: unknown;
+    }) => (
+        <div className="mb-8 overflow-x-auto">
+            <table
+                className="text-foreground w-full text-sm leading-relaxed"
+                {...props}
+            >
+                {children}
+            </table>
+        </div>
+    ),
+
+    thead: ({
+        children,
+        ...props
+    }: {
+        children: React.ReactNode;
+        [key: string]: unknown;
+    }) => <thead {...props}>{children}</thead>,
+
+    tbody: ({
+        children,
+        ...props
+    }: {
+        children: React.ReactNode;
+        [key: string]: unknown;
+    }) => <tbody {...props}>{children}</tbody>,
+
+    tr: ({
+        children,
+        ...props
+    }: {
+        children: React.ReactNode;
+        [key: string]: unknown;
+    }) => <tr {...props}>{children}</tr>,
+
+    th: ({
+        children,
+        ...props
+    }: {
+        children: React.ReactNode;
+        [key: string]: unknown;
+    }) => (
+        <th
+            className="text-muted-foreground border-border/50 border-b px-4 pb-3 text-left text-xs font-semibold tracking-wider uppercase"
+            {...props}
+        >
+            {children}
+        </th>
+    ),
+
+    td: ({
+        children,
+        ...props
+    }: {
+        children: React.ReactNode;
+        [key: string]: unknown;
+    }) => (
+        <td
+            className="border-border/50 border-b px-4 py-3 align-top"
+            {...props}
+        >
+            {children}
+        </td>
     ),
 
     Technology,

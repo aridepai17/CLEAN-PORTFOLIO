@@ -85,58 +85,10 @@ export const useThemeToggle = ({
         trackEvent,
     ]);
 
-    const setCrazyLightTheme = useCallback(() => {
-        const animation = createAnimation(variant, start, blur, gifUrl);
-
-        updateStyles(animation.css);
-
-        if (typeof window === 'undefined') return;
-
-        const switchTheme = () => {
-            setTheme('light');
-        };
-
-        if (!document.startViewTransition) {
-            switchTheme();
-            return;
-        }
-
-        try {
-            document.startViewTransition(switchTheme);
-        } catch {
-            switchTheme();
-        }
-    }, [setTheme, variant, start, blur, gifUrl, updateStyles]);
-
-    const setCrazyDarkTheme = useCallback(() => {
-        const animation = createAnimation(variant, start, blur, gifUrl);
-
-        updateStyles(animation.css);
-
-        if (typeof window === 'undefined') return;
-
-        const switchTheme = () => {
-            setTheme('dark');
-        };
-
-        if (!document.startViewTransition) {
-            switchTheme();
-            return;
-        }
-
-        try {
-            document.startViewTransition(switchTheme);
-        } catch {
-            switchTheme();
-        }
-    }, [setTheme, variant, start, blur, gifUrl, updateStyles]);
-
     return {
         isDark,
         setIsDark,
         toggleTheme,
-        setCrazyLightTheme,
-        setCrazyDarkTheme,
     };
 };
 
@@ -162,6 +114,10 @@ export const ThemeToggleButton = ({
         gifUrl,
     });
 
+    const handleToggle = () => {
+        toggleTheme();
+    };
+
     return (
         <Button
             type="button"
@@ -171,7 +127,7 @@ export const ThemeToggleButton = ({
                 'size-10 cursor-pointer p-0 transition-all duration-300 active:scale-95',
                 className,
             )}
-            onClick={toggleTheme}
+            onClick={handleToggle}
             aria-label="Toggle theme"
         >
             <span className="sr-only">Toggle theme</span>

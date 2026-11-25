@@ -45,27 +45,7 @@ Splitr leverages an event-driven architecture to ensure all group members see id
 
 Splitr implements a decoupled real-time data pipeline that maintains instant state synchronization across all connected clients while securely handling asynchronous background tasks.
 
-```text
-
-┌─────────────────────────────────────────────────────────────┐
-│                       User Interaction                      │
-│                  (Next.js Client Components)                │
-└──────────────┬──────────────────────────────┬───────────────┘
-               │                              │
-               ▼                              ▼
-┌──────────────────────────────┐┌─────────────────────────────┐
-│         Clerk Auth           ││       Convex Queries        │
-│   (JWT Session Validation)   ││        & Mutations          │
-└──────────────┬───────────────┘└──────────────┬──────────────┘
-               │                              │
-               ▼                              ▼
-┌──────────────────────────────┐┌─────────────────────────────┐
-│      Inngest Background      ││     Convex Real-Time        │
-│      Job Processing &        ││     Database & Subscriptions│
-│     Automated Reminders      │└─────────────────────────────┘
-└──────────────────────────────┘
-
-```
+![Splitr system architecture](/project/diagrams/splitr-architecture.svg)
 
 - **Client Interaction Layer:** Built on **Next.js 15 (App Router)**, utilizing React Client Components for high-interactivity form states and Server Components for optimized, SEO-friendly initial page loads.
 - **Real-Time Backend-as-a-Service:** **Convex** serves as the primary persistence layer. It executes fully typed queries and mutations, immediately pushing reactive database updates to the client via WebSockets.
@@ -75,25 +55,7 @@ Splitr implements a decoupled real-time data pipeline that maintains instant sta
 
 The monorepo is rigorously structured to enforce a clean separation of concerns between frontend routing, backend schema definitions, and serverless background workers:
 
-```text
-
-splitr/
-├── app/                  # Next.js App Router architecture
-│   ├── (auth)/           # Authentication layout routes
-│   ├── (main)/           # Core application dashboards & group ledgers
-│   ├── api/              # Secure API route handlers & webhooks
-│   └── globals.css       # Global styling configurations
-├── components/           # Reusable modular UI library
-│   └── ui/               # Shadcn/ui component primitives
-├── convex/               # Convex serverless backend environment
-│   └── schema.js         # Strongly typed database schema definitions
-├── hooks/                # Custom React data-fetching and subscription hooks
-├── lib/                  # Utility functions and shared helpers
-│   └── inngest/          # Background job event handlers and queue logic
-├── pics/                 # Architecture graphics & UI screenshots
-└── public/               # Static web assets
-
-```
+![Splitr component topology](/project/diagrams/splitrtopology.png)
 
 ## Security, Authentication & Data Protection
 

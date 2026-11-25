@@ -46,33 +46,7 @@ Roomify delivers an intuitive, high-performance interface optimized for rapid de
 
 Roomify leverages a decoupled, serverless architecture that pairs modern frontend reactivity with powerful decentralized cloud services and multimodal AI.
 
-```text
-
-┌─────────────────────────────────────────────────────────────┐
-│                        CLIENT                               │
-├─────────────────────────────────────────────────────────────┤
-│  ┌─────────────┐   ┌─────────────┐   ┌─────────────┐        │
-│  │  Home Page  │   │ Visualizer  │   │   Upload    │        │
-│  └──────┬──────┘   └──────┬──────┘   └──────┬──────┘        │
-│         └──────────────────┼──────────────────┘             │
-│                            ▼                                │
-│                     React Router (v7)                       │
-│                            │                                │
-│         ┌──────────────────┼──────────────────┐             │
-│         │                  │                  │             │
-│  ┌──────▼──────┐    ┌──────▼──────┐    ┌──────▼──────┐      │
-│  │ Puter.js    │    │ AI Action   │    │   Storage   │      │
-│  │   Auth      │    │  (Gemini)   │    │ (Puter FS)  │      │
-│  └──────┬──────┘    └──────┬──────┘    └──────┬──────┘      │
-└─────────┼──────────────────┼──────────────────┼─────────────┘
-          │                  │                  │
-          ▼                  ▼                  ▼
-┌─────────────────┐┌─────────────────┐┌──────────────────┐
-│ Puter Cloud Auth││ Google Gemini   ││ Puter File System│
-│ & KV Store      ││ 2.5 Flash (AI)  ││ & Hosting        │
-└─────────────────┘└─────────────────┘└──────────────────┘
-
-```
+![Roomify system architecture](/project/diagrams/roomify.svg)
 
 - **Generative AI Engine:** Utilizes Google Gemini 2.5 Flash to execute high-fidelity image-to-image transformation based on customized architectural prompts.
 - **Serverless Cloud Infrastructure:** Powered entirely by Puter.js, handling user authentication, decentralized file storage, key-value metadata persistence, and background worker execution.
@@ -81,27 +55,7 @@ Roomify leverages a decoupled, serverless architecture that pairs modern fronten
 
 The application is engineered on React Router v7, enforcing clean separation between public landing views and dynamic project visualizers.
 
-```text
-
-┌─────────────────────────────────────────────────────────────────┐
-│                         React Router v7                         │
-│  ┌──────────────────────┐          ┌──────────────────────────┐ │
-│  │       / (Home)       │          │     /visualizer/:id      │ │
-│  │  ┌────────────────┐  │          │  ┌────────────────────┐  │ │
-│  │  │     Navbar     │  │          │  │   VisualizerPage   │  │ │
-│  │  └────────────────┘  │          │  │  ┌──────────────┐  │  │ │
-│  │  ┌────────────────┐  │          │  │  │  RenderArea  │  │  │ │
-│  │  │     Upload     │──┼─────────▶│  │  │ (AI Output)  │  │  │ │
-│  │  │   Component    │  │          │  │  └──────────────┘  │  │ │
-│  │  └────────────────┘  │          │  │  ┌──────────────┐  │  │ │
-│  │  ┌────────────────┐  │          │  │  │CompareSlider │  │  │ │
-│  │  │  Projects Grid │  │          │  │  │(Before/After)│  │  │ │
-│  │  └────────────────┘  │          │  │  └──────────────┘  │  │ │
-│  │                      │          │  └────────────────────┘  │ │
-│  └──────────────────────┘          └──────────────────────────┘ │
-└─────────────────────────────────────────────────────────────────┘
-
-```
+![Roomify component topology](/project/diagrams/roomifytopology.png)
 
 The execution lifecycle follows a streamlined, asynchronous pipeline:
 

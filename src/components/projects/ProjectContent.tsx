@@ -41,7 +41,7 @@ export function ProjectContent({ frontmatter, content }: ProjectContentProps) {
               : 'outline';
 
     return (
-        <article className="mx-auto max-w-3xl font-sans">
+        <article className="mx-auto max-w-6xl font-sans">
             <Reveal>
                 <header className="mb-12 space-y-8">
                     <div className="space-y-4 text-center md:text-left">
@@ -54,13 +54,9 @@ export function ProjectContent({ frontmatter, content }: ProjectContentProps) {
                                 {status}
                             </Badge>
                             {technologies.map((tech) => (
-                                <Badge
-                                    key={tech}
-                                    variant="outline"
-                                    className="text-xs font-bold"
-                                >
-                                    {tech}
-                                </Badge>
+                                <div key={tech} className="size-4 shrink-0">
+                                    <ProjectComponents.Technology name={tech} />
+                                </div>
                             ))}
                         </div>
 

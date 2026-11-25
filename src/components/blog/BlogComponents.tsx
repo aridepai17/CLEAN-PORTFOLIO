@@ -116,8 +116,6 @@ export const BlogComponents = {
         <a
             className="text-foreground hover:text-primary decoration-primary/50 hover:decoration-primary underline underline-offset-4 transition-colors"
             href={href}
-            target={href?.startsWith('http') ? '_blank' : undefined}
-            rel={href?.startsWith('http') ? 'noopener noreferrer' : undefined}
             {...props}
         >
             {children}
@@ -193,7 +191,7 @@ export const BlogComponents = {
             <Reveal>
                 <div className="not-prose group glass-panel relative my-8 overflow-hidden">
                     <pre
-                        className="[&::-webkit-scrollbar-thumb]:bg-muted-foreground/20 hover:[&::-webkit-scrollbar-thumb]:bg-muted-foreground/40 !m-0 max-h-[60vh] [scrollbar-width:thin] overflow-x-auto overflow-y-auto !bg-transparent !p-6 font-mono text-sm leading-relaxed transition-colors md:max-h-[70vh] md:!p-8 [&::-webkit-scrollbar]:h-2 [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:bg-transparent"
+                        className="scrollbar-custom-thumb scrollbar-horizontal !m-0 scrollbar-thin scrollbar-track-transparent overflow-x-auto overflow-y-auto !bg-transparent !p-6 font-mono text-sm leading-relaxed transition-colors md:!p-8"
                         {...props}
                     >
                         {children}
@@ -231,7 +229,7 @@ export const BlogComponents = {
         // Handles simple inline code (`like this`)
         return (
             <code
-                className="bg-muted text-foreground rounded px-1.5 py-0.5 font-mono text-[0.875em] font-medium break-words"
+                className="bg-muted/50 border-border/50 rounded-md border px-1.5 py-0.5 font-mono text-[0.875em] font-medium break-words"
                 {...props}
             >
                 {children}
@@ -248,7 +246,7 @@ export const BlogComponents = {
     }) => (
         <Reveal>
             <blockquote
-                className="border-primary/50 text-foreground/90 bg-muted/20 my-8 border-l-4 py-4 pr-4 pl-6 italic"
+                className="glass-panel border-primary/50 text-foreground/90 my-8 p-6"
                 {...props}
             >
                 {children}
@@ -264,7 +262,7 @@ export const BlogComponents = {
         [key: string]: unknown;
     }) => (
         <Reveal>
-            <div className="not-prose glass-panel [&::-webkit-scrollbar-thumb]:bg-muted-foreground/20 hover:[&::-webkit-scrollbar-thumb]:bg-muted-foreground/40 my-8 w-full [scrollbar-width:thin] overflow-x-auto md:my-10 [&::-webkit-scrollbar]:h-2 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:bg-transparent">
+            <div className="not-prose glass-panel scrollbar-custom-thumb scrollbar-horizontal my-8 w-full scrollbar-thin scrollbar-track-transparent overflow-x-auto md:my-10">
                 <table
                     className="w-full border-collapse text-left font-sans text-sm md:text-base"
                     {...props}
@@ -338,7 +336,7 @@ export const BlogComponents = {
         [key: string]: unknown;
     }) => (
         <td
-            className="text-foreground/90 min-w-[150px] px-4 py-4 font-sans leading-relaxed md:px-6"
+            className="text-foreground/90 px-4 py-4 font-sans leading-relaxed md:px-6"
             {...props}
         >
             {children}

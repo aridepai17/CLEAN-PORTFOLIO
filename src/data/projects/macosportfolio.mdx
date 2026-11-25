@@ -66,26 +66,7 @@ Achieving the fluidity of a native operating system relies heavily on bypassing 
 
 The monorepo is meticulously structured to separate the operating system logic (window controllers, dock) from the individual applications (Finder, Safari, Terminal).
 
-```text
-
-src/
-├── components/            # Core OS UI Shell
-│   ├── Dock.jsx           # Proximity-scaled navigation dock
-│   ├── Navbar.jsx         # Global system tray and clock
-│   └── WindowControls.jsx # Traffic light window management (close, minimize, expand)
-├── windows/               # Application Payloads
-│   ├── Finder.jsx         # Interactive project grid
-│   ├── Safari.jsx         # Technical blog and article viewer
-│   ├── Terminal.jsx       # CLI-style skills representation
-│   └── Resume.jsx         # Integrated React-PDF viewer
-├── store/                 # Zustand Global State
-│   ├── window.js          # Z-index, active state, and dimensional data
-│   └── theme.js           # Persistent dark/light mode preferences
-└── hoc/                   # Higher-Order Components
-    └── WindowWrapper.jsx  # Injects GSAP drag logic into any child component
-
-```
-
+![MacOS Portfolio component topology](/project/diagrams/macosportfoliotopology.png)
 
 ## Performance Optimization
 
