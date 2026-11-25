@@ -54,13 +54,10 @@ export function ProjectContent({ frontmatter, content }: ProjectContentProps) {
                                 {status}
                             </Badge>
                             {technologies.map((tech) => (
-                                <Badge
+                                <ProjectComponents.Technology
                                     key={tech}
-                                    variant="outline"
-                                    className="text-xs font-bold"
-                                >
-                                    {tech}
-                                </Badge>
+                                    name={tech}
+                                />
                             ))}
                         </div>
 
