@@ -212,7 +212,7 @@ export function FloatingToC({
                             <div className="text-muted-foreground px-3 pt-3 pb-2 text-xs font-semibold tracking-wider uppercase">
                                 Table of Contents
                             </div>
-                            <nav className="[&::-webkit-scrollbar-thumb]:bg-muted-foreground/20 hover:[&::-webkit-scrollbar-thumb]:bg-muted-foreground/40 flex max-h-[50vh] [scrollbar-width:thin] flex-col gap-0.5 overflow-y-auto overscroll-contain [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:bg-transparent">
+                            <nav className="scrollbar-custom-thumb flex max-h-[50vh] scrollbar-thin scrollbar-track-transparent flex-col gap-0.5 overflow-y-auto overscroll-contain">
                                 {headings.map((heading) => {
                                     const isActive = activeId === heading.id;
                                     return (
