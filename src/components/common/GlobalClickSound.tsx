@@ -40,8 +40,8 @@ export function GlobalClickSound({
             void play();
         };
 
-        document.addEventListener('click', handleClick);
-        return () => document.removeEventListener('click', handleClick);
+        document.addEventListener('click', handleClick, true);
+        return () => document.removeEventListener('click', handleClick, true);
     }, [enabled, play]);
 
     return null;
