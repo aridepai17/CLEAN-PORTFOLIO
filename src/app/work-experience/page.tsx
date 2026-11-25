@@ -1,7 +1,6 @@
 import Container from '@/components/common/Container';
 import Reveal from '@/components/common/Reveal';
 import { ExperienceList } from '@/components/experience/ExperienceList';
-import { Separator } from '@/components/ui/separator';
 import { experiences } from '@/config/Experience';
 import { generateMetadata as getMetadata } from '@/config/Meta';
 import { Metadata } from 'next';
@@ -36,8 +35,6 @@ export default function WorkExperiencePage() {
                             roles.
                         </p>
                     </div>
-
-                    <Separator />
 
                     {/* Work Experiences */}
                     <div className="space-y-6">
