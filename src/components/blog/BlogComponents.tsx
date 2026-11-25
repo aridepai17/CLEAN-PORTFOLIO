@@ -5,15 +5,6 @@ import React from 'react';
 
 import { CodeCopyButton } from './CodeCopyButton';
 
-const sanitizeFormula = (formula: string): string => {
-    return formula
-        .replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;')
-        .replace(/javascript:/gi, '')
-        .replace(/on\w+=/gi, '')
-        .trim();
-};
-
 const Math = ({
     formula,
     inline = false,
@@ -21,8 +12,7 @@ const Math = ({
     formula: string;
     inline?: boolean;
 }) => {
-    const safeFormula = sanitizeFormula(formula);
-    const html = katex.renderToString(safeFormula, {
+    const html = katex.renderToString(formula, {
         throwOnError: false,
         displayMode: !inline,
     });
