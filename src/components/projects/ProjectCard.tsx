@@ -18,6 +18,7 @@ import type { AnalyticsEventData } from '@/types/analytics';
 import { type Project } from '@/types/project';
 import { Link } from 'next-view-transitions';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
 
 import ArrowRight from '../svgs/ArrowRight';
@@ -34,6 +35,7 @@ export function ProjectCard({ project }: ProjectCardProps) {
     const [dialogOpen, setDialogOpen] = useState<boolean>(false);
     const [isImageLoaded, setIsImageLoaded] = useState<boolean>(false);
     const { trackEvent } = useUmami();
+    const router = useRouter();
 
     const projectId =
         project.projectDetailsPageSlug.split('/').filter(Boolean).pop() ??
@@ -52,8 +54,20 @@ export function ProjectCard({ project }: ProjectCardProps) {
             },
         });
 
+    const handleCardClick = () => {
+        trackProject('view_details');
+        router.push(project.projectDetailsPageSlug);
+    };
+
+    const stopPropagation = (e: React.MouseEvent) => {
+        e.stopPropagation();
+    };
+
     return (
-        <Card className="group border-border/50 bg-card hover:border-border h-full w-full overflow-hidden rounded-xl border p-0 shadow-sm transition-all duration-300 hover:shadow-md">
+        <Card
+            className="group border-border/50 bg-card hover:border-border h-full w-full overflow-hidden rounded-xl border p-0 shadow-sm transition-all duration-300 hover:shadow-md"
+            onClick={handleCardClick}
+        >
             <CardHeader className="p-0">
                 <div className="group bg-muted relative aspect-video overflow-hidden">
                     <Image
@@ -77,9 +91,12 @@ export function ProjectCard({ project }: ProjectCardProps) {
                                         type="button"
                                         aria-label={`Play preview video for ${project.title}`}
                                         className="flex size-16 items-center justify-center rounded-full bg-white/20 backdrop-blur-sm transition-all duration-200 group-hover:cursor-pointer hover:bg-white/30 focus:outline-none focus-visible:ring-2 focus-visible:ring-white active:scale-95"
-                                        onClick={() =>
-                                            trackProject('play_video')
-                                        }
+                                        onClick={(event) => {
+                                            trackProject('play_video');
+                                            stopPropagation(
+                                                event as React.MouseEvent,
+                                            );
+                                        }}
                                     >
                                         <PlayCircle />
                                     </button>
@@ -109,7 +126,10 @@ export function ProjectCard({ project }: ProjectCardProps) {
                     <div className="flex items-start justify-between gap-4">
                         <Link
                             href={project.projectDetailsPageSlug}
-                            onClick={() => trackProject('view_details')}
+                            onClick={(event) => {
+                                trackProject('view_details');
+                                stopPropagation(event as React.MouseEvent);
+                            }}
                             className="focus-visible:ring-primary min-w-0 rounded-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-black"
                         >
                             <h3 className="font-display text-foreground group-hover:text-primary text-3xl leading-tight font-normal transition-colors hover:cursor-pointer">
@@ -125,9 +145,12 @@ export function ProjectCard({ project }: ProjectCardProps) {
                                             href={project.link}
                                             target="_blank"
                                             rel="noopener noreferrer"
-                                            onClick={() =>
-                                                trackProject('visit_website')
-                                            }
+                                            onClick={(event) => {
+                                                trackProject('visit_website');
+                                                stopPropagation(
+                                                    event as React.MouseEvent,
+                                                );
+                                            }}
                                         >
                                             <Website />
                                         </Link>
@@ -145,9 +168,12 @@ export function ProjectCard({ project }: ProjectCardProps) {
                                             href={project.github}
                                             target="_blank"
                                             rel="noopener noreferrer"
-                                            onClick={() =>
-                                                trackProject('visit_github')
-                                            }
+                                            onClick={(event) => {
+                                                trackProject('visit_github');
+                                                stopPropagation(
+                                                    event as React.MouseEvent,
+                                                );
+                                            }}
                                         >
                                             <Github />
                                         </Link>
@@ -172,7 +198,10 @@ export function ProjectCard({ project }: ProjectCardProps) {
                             {project.technologies.map((technology, index) => (
                                 <Tooltip key={index}>
                                     <TooltipTrigger asChild>
-                                        <div className="size-6 transition-all duration-300 hover:scale-120 hover:cursor-pointer">
+                                        <div
+                                            className="size-6 transition-all duration-300 hover:scale-120 hover:cursor-pointer"
+                                            onClick={stopPropagation}
+                                        >
                                             {technology.icon}
                                         </div>
                                     </TooltipTrigger>
@@ -211,7 +240,10 @@ export function ProjectCard({ project }: ProjectCardProps) {
                     <Link
                         href={project.projectDetailsPageSlug}
                         className="text-foreground group/link hover:text-primary flex items-center gap-1.5 font-sans text-sm font-semibold transition-colors focus:outline-none"
-                        onClick={() => trackProject('view_details')}
+                        onClick={(event) => {
+                            trackProject('view_details');
+                            stopPropagation(event as React.MouseEvent);
+                        }}
                     >
                         View Details
                         <ArrowRight className="size-3.5 transition-transform group-hover/link:translate-x-1" />
