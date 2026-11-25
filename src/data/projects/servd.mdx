@@ -14,6 +14,7 @@ technologies:
     - 'Tailwind CSS'
     - 'Strapi'
     - 'PostgreSQL'
+    - 'Groq'
     - 'Google Gemini'
     - 'Clerk'
     - 'Razorpay'
@@ -37,94 +38,15 @@ Home cooks face significant friction when trying to minimize waste: manual inven
 
 ## System Architecture & Decoupled Topology
 
-Servd implements a resilient, decoupled full-stack architecture that strictly isolates the presentation and client-side routing layer from content management and database persistence.
+Servd implements a resilient, decoupled full-stack architecture that strictly isolates the presentation and client-side routing layer from content management and database persistence. Next.js API Routes sit between the React frontend and the Strapi backend, with Groq AI handling multi-modal vision and recipe generation.
 
-```text
-
-┌─────────────────────────────────────────────────────────────────┐
-│                        User's Browser                           │
-│                                                                 │
-│  ┌──────────────────────────────────────────────────────────┐   │
-│  │                    Next.js Frontend                      │   │
-│  │  ┌──────────┐  ┌──────────┐  ┌──────────┐  ┌──────────┐  │   │
-│  │  │ Landing  │  │ Dashboard│  │  Pantry  │  │ Recipes  │  │   │
-│  │  │   Page   │  │          │  │ Manager  │  │          │  │   │
-│  │  └──────────┘  └──────────┘  └──────────┘  └──────────┘  │   │
-│  └──────────────────────────────────────────────────────────┘   │
-│                                 │                               │
-│            Clerk Auth           │                               │
-│            (OAuth/Email)        │                               │
-└──────────────────────────────┼──────────────────────────────────┘
-                               │
-                               ▼
-┌─────────────────────────────────────────────────────────────────┐
-│                     Next.js API Routes                          │
-│  ┌───────────────────────────────────────────────────────────┐  │
-│  │  /api/subscription/create   │  Razorpay Payment Links     │  │
-│  │  /api/subscription/callback │  Payment verification       │  │
-│  │  /api/subscription/verify   │  Subscription activation    │  │
-│  └───────────────────────────────────────────────────────────┘  │
-│                                                                 │
-│              Google Gemini AI (Recipe Generation)               │
-│              TheMealDB API (Recipe Discovery)                   │
-│              Unsplash API (Recipe Images)                       │
-└──────────────────────────────┼──────────────────────────────────┘
-                               │
-                               ▼
-┌─────────────────────────────────────────────────────────────────┐
-│                       Strapi Backend                            │
-│  ┌──────────┐  ┌──────────┐  ┌──────────┐  ┌──────────┐         │
-│  │  Users   │  │ Recipes  │  │ Pantry   │  │ Saved    │         │
-│  │          │  │          │  │ Items    │  │ Recipes  │         │
-│  └──────────┘  └──────────┘  └──────────┘  └──────────┘         │
-│                                                                 │
-│                        PostgreSQL DB                            │
-└─────────────────────────────────────────────────────────────────┘
-
-```
+![Servd system architecture](/project/diagrams/servd-architecture.svg)
 
 ## Intelligent Pantry & Multi-Modal AI Pipeline
 
 Processing user-generated images through large language models introduces risks regarding compute exhaustion and unstructured payloads. Servd addresses this via an optimized pipeline:
 
-```text
-User Input (Photo/Text)
-        │
-        ▼
-┌─────────────────┐
-│ Clerk Auth      │ ← Verify user identity & subscription tier
-│ Authentication  │
-└────────┬────────┘
-         │
-         ▼
-┌─────────────────┐
-│ Arcjet Rate     │ ← Check usage limits (10 scans/month free)
-│ Limit Check     │   (1000/day for Pro)
-└────────┬────────┘
-         │
-         ▼
-┌─────────────────┐
-│ Google Gemini   │ ← AI vision for image recognition
-│ Vision API      │   AI text for recipe generation
-└────────┬────────┘
-         │
-         ▼
-┌─────────────────┐
-│ Gemini AI       │ ← Generate structured recipe JSON
-│ Recipe Gen      │
-└────────┬────────┘
-         │
-         ▼
-┌─────────────────┐
-│ Strapi Backend  │ ← Save generated recipes
-│ (PostgreSQL)    │   Link to user account
-└────────┬────────┘
-         │
-         ▼
-         │
-    Display to User
-
-```
+![Servd intelligent pantry pipeline](/project/diagrams/servdpipeline.png)
 
 - **Smart Pantry Scanning:** Automatically parses refrigerator and pantry snapshots using Google Gemini Vision to extract ingredient arrays.
 - **Context-Aware Synthesis:** Dynamically cross-references scanned inventories with user dietary preferences, skill levels, and missing component metrics.
@@ -134,44 +56,7 @@ User Input (Photo/Text)
 
 To guarantee robust monetization without relying on client-side state assertions, subscription lifecycle upgrades follow a rigorous server-to-server validation protocol:
 
-1. **Payment Initialization:** The Next.js API route provisions a secure checkout session via Razorpay.
-2. **Cryptographic Validation:** Incoming webhook callbacks undergo strict **HMAC-SHA256 signature verification** and timing-safe comparisons to completely eliminate replay attacks.
-3. **Tenant State Mutation:** Validated payloads trigger backend database updates via Strapi, instantly scaling user resource quotas from the free tier to Pro status.
-
-```text
-User Clicks "Upgrade"
-        │
-        ▼
-┌─────────────────┐
-│ Create Razorpay │ ← Generate Payment Link
-│ Payment Link    │   Customer ID lookup/create
-└────────┬────────┘
-         │
-         ▼
-    User Completes Payment on Razorpay
-        │
-        ▼
-┌─────────────────┐
-│ Razorpay        │ ← POST callback with payment info
-│ Callback        │   Signature verification (HMAC-SHA256)
-└────────┬────────┘
-         │
-         ▼
-┌─────────────────┐
-│ Verify Payment  │ ← Fetch payment from Razorpay API
-│ Status          │   Validate amount & customer
-└────────┬────────┘
-         │
-         ▼
-┌─────────────────┐
-│ Update Strapi   │ ← Set subscriptionTier = "pro"
-│ User Record     │   Store payment references
-└────────┬────────┘
-         │
-         ▼
-    Redirect to Success Page
-
-```
+![Servd monetization & webhook flow](/project/diagrams/servdmonetization.png)
 
 
 ## Data Schema & Relational Design
@@ -196,25 +81,7 @@ Servd was engineered from the ground up to withstand production traffic spikes a
 
 The repository is structured to cleanly separate Next.js server actions and application routes from the underlying Strapi headless CMS microservice:
 
-```text
-
-SERVD/
-├── frontend/                 # Next.js frontend application
-│   ├── app/                  # App Router pages and API routes
-│   │   ├── (auth)/           # Authentication layout group
-│   │   ├── (main)/           # Core application dashboards & pantry views
-│   │   └── api/              # Secure API route handlers & webhooks
-│   ├── components/           # Reusable React UI primitives
-│   ├── actions/              # Server actions for atomic data mutations
-│   ├── lib/                  # Utility wrappers (Arcjet, auth helpers)
-│   └── hooks/                # Custom React data-fetching hooks
-│
-├── backend/                  # Strapi Headless CMS application
-│   ├── src/                  # Custom API content types and controllers
-│   ├── config/               # Database and server environment settings
-│   └── database/             # Migrations and schema definitions
-
-```
+![Servd folder structure](/project/diagrams/servdfolder.png)
 
 ## Performance, Error Resilience & Observability
 
