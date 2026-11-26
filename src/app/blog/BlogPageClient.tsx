@@ -4,7 +4,6 @@ import { BlogList } from '@/components/blog/BlogList';
 import Container from '@/components/common/Container';
 import Reveal from '@/components/common/Reveal';
 import { Badge } from '@/components/ui/badge';
-import { Separator } from '@/components/ui/separator';
 import { useHapticFeedback } from '@/hooks/use-haptic-feedback';
 import { useUmami } from '@/hooks/use-umami';
 import { BlogPostPreview } from '@/types/blog';
@@ -101,8 +100,6 @@ export function BlogPageClient({
                             and programming.
                         </p>
                     </div>
-
-                    <Separator />
 
                     {/* Tags */}
                     {initialTags.length > 0 && (
