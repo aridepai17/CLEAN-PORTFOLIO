@@ -65,7 +65,7 @@ export function ProjectCard({ project }: ProjectCardProps) {
 
     return (
         <Card
-            className="group border-border/50 bg-card hover:border-border h-full w-full overflow-hidden rounded-xl border p-0 shadow-sm transition-all duration-300 hover:shadow-md"
+            className="group border-border/50 bg-card hover:border-border h-full w-full cursor-pointer overflow-hidden rounded-xl border p-0 shadow-sm transition-all duration-300 hover:shadow-md"
             onClick={handleCardClick}
         >
             <CardHeader className="p-0">
