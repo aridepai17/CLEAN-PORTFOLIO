@@ -10,6 +10,7 @@ import rehypeSlug from 'rehype-slug';
 import { TrackedLink } from '../common/TrackedLink';
 import GitHubIcon from '../svgs/GitHubIcon';
 import Website from '../svgs/Website';
+import { DiagramSection } from './DiagramSection';
 import { ProjectComponents } from './ProjectComponents';
 
 interface ProjectContentProps {
@@ -39,6 +40,20 @@ export function ProjectContent({ frontmatter, content }: ProjectContentProps) {
             : status === 'in-progress'
               ? 'secondary'
               : 'outline';
+
+    const components = {
+        ...ProjectComponents,
+        img: (props: { src?: string; alt?: string; caption?: string }) => {
+            const src = props.src as string;
+            return (
+                <DiagramSection
+                    src={src}
+                    alt={props.alt || 'Project diagram'}
+                    caption={props.caption}
+                />
+            );
+        },
+    };
 
     return (
         <article className="mx-auto max-w-6xl font-sans">
@@ -204,7 +219,7 @@ export function ProjectContent({ frontmatter, content }: ProjectContentProps) {
                 <div className="prose prose-neutral dark:prose-invert max-w-none text-lg leading-relaxed">
                     <MDXRemote
                         source={content}
-                        components={ProjectComponents}
+                        components={components}
                         options={{
                             mdxOptions: {
                                 rehypePlugins: [

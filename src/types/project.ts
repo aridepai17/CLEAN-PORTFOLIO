@@ -27,6 +27,7 @@ export interface ProjectCaseStudyFrontmatter {
     challenges?: string[];
     learnings?: string[];
     isPublished: boolean;
+    diagramLayouts?: Record<string, 'tall' | 'wide' | 'default'>;
 }
 
 export interface ProjectCaseStudy {
