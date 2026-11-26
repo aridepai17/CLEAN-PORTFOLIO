@@ -549,14 +549,12 @@ html.dark .shiki span {
     }
 }
 
-/* Hide scrollbars on image containers while preserving touch-swipe on mobile */
-@media (max-width: 640px) {
-    .scrollbar-hide {
-        scrollbar-width: none;
-        -ms-overflow-style: none;
-    }
+/* Hide scrollbars on image containers while preserving touch-swipe / wheel scroll */
+.scrollbar-hide {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
 
-    .scrollbar-hide::-webkit-scrollbar {
-        display: none;
-    }
+.scrollbar-hide::-webkit-scrollbar {
+    display: none;
 }

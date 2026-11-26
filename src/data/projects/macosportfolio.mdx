@@ -3,6 +3,8 @@ title: 'MacOS PORTFOLIO'
 description: 'A highly interactive, web-based operating system simulation that meticulously replicates the MacOS desktop experience to showcase technical projects and engineering capabilities.'
 image: '/project/macosportfolio.png'
 isPublished: true
+diagramLayouts:
+    '/project/diagrams/macosportfoliotopology.svg': 'wide'
 status: 'completed'
 timeline: '2026'
 role: 'Frontend & Creative Engineer'
@@ -31,7 +33,6 @@ Traditional grid-based portfolios effectively list projects, but they often fail
 
 To bridge the gap between a static resume and a live technical demonstration, this portfolio was architected to fully simulate a native operating system within the browser. By replicating the MacOS desktop metaphor, the application instantly proves mastery over advanced frontend concepts: complex state machines, overlapping stacking contexts, hardware-accelerated animations, and responsive micro-interactions.
 
-
 ## Core System Capabilities
 
 The portfolio functions as a self-contained web OS, featuring modular "applications" that house different aspects of my professional profile:
@@ -41,7 +42,6 @@ The portfolio functions as a self-contained web OS, featuring modular "applicati
 - **Terminal (Skill Execution):** A simulated command-line interface that outputs technical proficiencies and development environments.
 - **Dynamic Theming & Dock:** An interactive, physics-based application dock with instant dark/light mode system tray toggles.
 
-
 ## State Management & Window Architecture
 
 Managing a desktop environment in React requires stepping outside standard parent-child data flows. If every window drag triggered a React re-render, the application would immediately drop frames.
@@ -49,9 +49,13 @@ Managing a desktop environment in React requires stepping outside standard paren
 To solve this, the application decouples UI rendering from global state using **Zustand** and **Immer**.
 
 <FormulaCard title="Atomic Z-Index Layering System">
-Managing stacking contexts for multiple overlapping windows requires a specialized state machine. The Zustand store maintains a centralized registry of window focus hierarchies. When a user interacts with a background window, the store instantly mutates the active window to the highest Z-index order via a custom `useWindow()` hook, bypassing the React component tree to prevent unnecessary reconciliations.
+    Managing stacking contexts for multiple overlapping windows requires a
+    specialized state machine. The Zustand store maintains a centralized
+    registry of window focus hierarchies. When a user interacts with a
+    background window, the store instantly mutates the active window to the
+    highest Z-index order via a custom `useWindow()` hook, bypassing the React
+    component tree to prevent unnecessary reconciliations.
 </FormulaCard>
-
 
 ## Animation & Rendering Engine (GSAP)
 
@@ -61,12 +65,11 @@ Achieving the fluidity of a native operating system relies heavily on bypassing 
 - **Dock Magnification:** The bottom navigation dock calculates mouse proximity in real-time, applying a localized scaling matrix to nearby application icons to perfectly mimic the iconic MacOS hover effect.
 - **Hardware Acceleration:** All window opening/closing sequences use `scale` and `opacity` transforms combined with React Spring, ensuring a locked 60fps experience even on mobile devices.
 
-
 ## Component Topology & File Structure
 
 The monorepo is meticulously structured to separate the operating system logic (window controllers, dock) from the individual applications (Finder, Safari, Terminal).
 
-![MacOS Portfolio component topology](/project/diagrams/macosportfoliotopology.png)
+![MacOS Portfolio component topology](/project/diagrams/macosportfoliotopology.svg)
 
 ## Performance Optimization
 

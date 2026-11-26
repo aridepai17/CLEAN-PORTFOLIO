@@ -35,7 +35,7 @@ export const Quote = () => {
                     </p>
                     <footer>
                         <p className="text-muted-foreground text-right font-sans text-xs font-semibold tracking-wider uppercase">
-                            &mdash; {author}
+                            {author}
                         </p>
                     </footer>
                 </blockquote>
