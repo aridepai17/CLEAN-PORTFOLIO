@@ -35,7 +35,6 @@ According to the USDA, approximately 30% to 40% of the food supply in the United
 
 Home cooks face significant friction when trying to minimize waste: manual inventory logging is tedious, and bridging the gap between random leftover ingredients and a coherent, delicious recipe requires cognitive overhead. **Servd** was engineered to solve this by transforming raw kitchen inventory into structured, context-aware culinary assets using multi-modal AI computer vision and robust inventory management.
 
-
 ## System Architecture & Decoupled Topology
 
 Servd implements a resilient, decoupled full-stack architecture that strictly isolates the presentation and client-side routing layer from content management and database persistence. Next.js API Routes sit between the React frontend and the Strapi backend, with Groq AI handling multi-modal vision and recipe generation.
@@ -46,18 +45,16 @@ Servd implements a resilient, decoupled full-stack architecture that strictly is
 
 Processing user-generated images through large language models introduces risks regarding compute exhaustion and unstructured payloads. Servd addresses this via an optimized pipeline:
 
-![Servd intelligent pantry pipeline](/project/diagrams/servdpipeline.png)
+![Servd intelligent pantry pipeline](/project/diagrams/servdpipeline.svg)
 
 - **Smart Pantry Scanning:** Automatically parses refrigerator and pantry snapshots using Google Gemini Vision to extract ingredient arrays.
 - **Context-Aware Synthesis:** Dynamically cross-references scanned inventories with user dietary preferences, skill levels, and missing component metrics.
-
 
 ## Secure Monetization & Webhook Verification
 
 To guarantee robust monetization without relying on client-side state assertions, subscription lifecycle upgrades follow a rigorous server-to-server validation protocol:
 
-![Servd monetization & webhook flow](/project/diagrams/servdmonetization.png)
-
+![Servd monetization & webhook flow](/project/diagrams/servdmonetization.svg)
 
 ## Data Schema & Relational Design
 
@@ -76,19 +73,17 @@ Servd was engineered from the ground up to withstand production traffic spikes a
 - **Zero-Trust Token Isolation:** Strapi administrative API tokens remain locked on the server tier and are never exposed to the client browser bundle.
 - **Input Sanitization:** All payload parameters undergo strict server-side schema validation prior to database execution.
 
-
 ## Monorepository Topology
 
 The repository is structured to cleanly separate Next.js server actions and application routes from the underlying Strapi headless CMS microservice:
 
-![Servd folder structure](/project/diagrams/servdfolder.png)
+![Servd folder structure](/project/diagrams/servdfolder.svg)
 
 ## Performance, Error Resilience & Observability
 
 - **Edge Caching:** Static and dynamic assets are optimized via Next.js 15 edge caching strategies to ensure sub-second First Contentful Paint (FCP).
 - **Graceful Error Boundaries:** API failures during AI inference or payment gateways fail safely with contextual toast feedback via Sonner, preventing unhandled promise rejections.
 - **Zero-Latency Mutations:** React Server Actions handle atomic updates with optimistic UI rendering where applicable.
-
 
 ## Scalability Roadmap & Future Vision
 
